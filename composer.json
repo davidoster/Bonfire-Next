@@ -1,0 +1,33 @@
+{
+    "name": "Bonfire Next",
+    "description": "The Modern Kickstart for CodeIgniter Applications",
+    "version": "1.0.0-dev",
+    "homepage": "http://cibonfire.com",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-0": { "": "src/"}
+    },
+    "authors": [
+        {
+            "name": "Lonnie Ezell",
+            "email": "lonnieje@gmail.com",
+            "homepage": "lonnieezell.com",
+            "role": "Project Lead"
+        }
+    ],
+    "support": {
+        "forum": "http://forums.cibonfire.com/"
+    },
+    "require": {
+        "php": ">=5.3.14",
+        "lonnieezell/codeigniter-forensics": "dev-master"
+    },
+    "minimum-stability": "dev",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/lonnieezell/codeigniter-forensics"
+        }
+    ]
+}
