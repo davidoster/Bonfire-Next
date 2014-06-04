@@ -207,7 +207,6 @@ if (defined('ENVIRONMENT'))
  */
     $assign_to_config['csrf_ignored_folders'] = array();
 
-
 // --------------------------------------------------------------------
 // END OF USER CONFIGURABLE SETTINGS.  DO NOT EDIT BELOW THIS LINE
 // --------------------------------------------------------------------

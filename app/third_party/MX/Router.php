@@ -49,7 +49,7 @@ class MX_Router extends CI_Router
 		
 		/* locate module controller */
 		if ($located = $this->locate($segments)) return $located;
-		
+
 		/* use a default 404_override controller */
 		if (isset($this->routes['404_override']) AND $this->routes['404_override']) {
 			$segments = explode('/', $this->routes['404_override']);
@@ -66,24 +66,24 @@ class MX_Router extends CI_Router
 		$this->module = '';
 		$this->directory = '';
 		$ext = $this->config->item('controller_suffix').EXT;
-		
+
 		/* use module route if available */
 		if (isset($segments[0]) AND $routes = Modules::parse_routes($segments[0], implode('/', $segments))) {
 			$segments = $routes;
 		}
-	
+
 		/* get the segments array elements */
 		list($module, $directory, $controller) = array_pad($segments, 3, NULL);
 
 		/* check modules */
 		foreach (Modules::$locations as $location => $offset) {
-		
+
 			/* module exists? */
 			if (is_dir($source = $location.$module.'/controllers/')) {
 				
 				$this->module = $module;
 				$this->directory = $offset.$module.'/controllers/';
-				
+
 				/* module sub-controller exists? */
 				if($directory AND is_file($source.$directory.$ext)) {
 					return array_slice($segments, 1);

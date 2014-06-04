@@ -10,8 +10,9 @@ if(!defined('SPARKPATH'))
 
 /* get module locations from config settings or use the default module location and offset */
 is_array(Modules::$locations = $CFG->item('modules_locations')) OR Modules::$locations = array(
-    APPPATH.'modules/' => '../modules/',
-    SPARKPATH => '../sparks/',
+    APPPATH.'modules/'  => '../modules/',
+    SPARKPATH           => '../sparks/',
+    BFPATH .'modules/'  => '../bonfire/modules/'
 );
 
 /* PHP5 spl_autoload */
@@ -134,6 +135,18 @@ class Modules
 
         /* autoload library classes */
         if(is_file($location = APPPATH.'libraries/'.$class.EXT)) {
+            include_once $location;
+            return;
+        }
+
+        /* autoload Bonfirecore classes */
+        if(is_file($location = BFPATH.'core/'.$class.EXT)) {
+            include_once $location;
+            return;
+        }
+
+        /* autoload Bonfire library classes */
+        if(is_file($location = BFPATH.'libraries/'.$class.EXT)) {
             include_once $location;
             return;
         }

@@ -1,5 +1,17 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+//--------------------------------------------------------------------
+// Module Locations
+//--------------------------------------------------------------------
+// These paths are checked in the order listed whenever a module is
+// attempting to be located, whether it's loading a library, helper,
+// or routes file.
+//
+$config['modules_locations'] = array(
+    APPPATH .'modules/', 		// application/modules
+    BFPATH .'modules/'			// bonfire/modules
+);
+
 /*
 |--------------------------------------------------------------------------
 | Base Site URL
@@ -26,7 +38,7 @@ $config['base_url']	= '';
 | variable so that it is blank.
 |
 */
-$config['index_page'] = 'index.php';
+$config['index_page'] = '';
 
 /*
 |--------------------------------------------------------------------------
@@ -91,7 +103,7 @@ $config['charset'] = 'UTF-8';
 | setting this variable to TRUE (boolean).  See the user guide for details.
 |
 */
-$config['enable_hooks'] = FALSE;
+$config['enable_hooks'] = TRUE;
 
 
 /*
