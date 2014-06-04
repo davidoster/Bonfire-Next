@@ -49,10 +49,10 @@ $active_group = 'default';
 $active_record = TRUE;
 
 $db['default']['hostname'] = 'localhost';
-$db['default']['username'] = 'bonfire';
+$db['default']['username'] = '';
 $db['default']['password'] = '';
-$db['default']['database'] = 'bonfire';
-$db['default']['dbdriver'] = 'mysql';
+$db['default']['database'] = '';
+$db['default']['dbdriver'] = 'mysqli';
 $db['default']['dbprefix'] = 'bf_';
 $db['default']['pconnect'] = TRUE;
 $db['default']['db_debug'] = TRUE;
@@ -61,8 +61,8 @@ $db['default']['cachedir'] = '';
 $db['default']['char_set'] = 'utf8';
 $db['default']['dbcollat'] = 'utf8_general_ci';
 $db['default']['swap_pre'] = '';
-$db['default']['autoinit'] = TRUE;
-$db['default']['stricton'] = TRUE;
+$db['default']['autoinit'] = FALSE;
+$db['default']['stricton'] = FALSE;
 
 
 /* End of file database.php */
