@@ -205,7 +205,7 @@ if (defined('ENVIRONMENT'))
  * Example:
  *      array('users', 'activities/activity')
  */
-    $assign_to_config['csrf_ignofred_folders'] = array();
+    $assign_to_config['csrf_ignored_folders'] = array();
 
 
 // --------------------------------------------------------------------
