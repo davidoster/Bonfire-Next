@@ -155,7 +155,7 @@ class PlatesTemplate implements TemplateInterface {
         {
             foreach ($key as $k => $v)
             {
-                $this->template->$k = $v;
+                $this->template->{$k} = $v;
             }
 
             return;

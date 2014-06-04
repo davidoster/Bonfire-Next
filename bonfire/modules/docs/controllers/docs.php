@@ -90,8 +90,7 @@ class Docs extends Base_Controller
         $data['sidebar'] = $this->build_sidebar();
         $data['content'] = $content;
 
-        $this->template->set($data);
-        $this->template->render();
+        $this->render($data);
     }
 
     //--------------------------------------------------------------------
