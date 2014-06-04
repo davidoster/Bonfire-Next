@@ -33,10 +33,15 @@ if (defined('ENVIRONMENT'))
 	switch (ENVIRONMENT)
 	{
 		case 'development':
-			error_reporting(E_ALL);
+			error_reporting(E_ALL ^ E_NOTICE);
+            if (! ini_get('display_errors'))
+            {
+                ini_set('display_errors', 1);
+            }
 		break;
 	
 		case 'testing':
+            // no break
 		case 'production':
 			error_reporting(0);
 		break;
@@ -48,6 +53,46 @@ if (defined('ENVIRONMENT'))
 
 /*
  *---------------------------------------------------------------
+ * DEFAULT INI SETTINGS
+ *---------------------------------------------------------------
+ *
+ * Necessary setting for PHP 5.3+ compatibility.
+ *
+ * Note: This now defaults to UTC instead of GMT if the date.timezone value is
+ * not set (PHP 5.4+), but on PHP 5.3 it may use the TZ environment variable or
+ * attempt to guess the timezone from the host operating system. It is
+ * recommended to set date.timezone to avoid this, or you can replace
+ * @date_default_timezone_get() below with 'UTC' or 'GMT', as desired.
+ *
+ * Inspired by PyroCMS and Composer code.
+ * @link https://www.pyrocms.com/   PyroCMS
+ * @link http://getcomposer.org/    Composer
+ */
+    if (ini_get('date.timezone') == '' && function_exists('date_default_timezone_get'))
+    {
+        if (function_exists('date_default_timezone_get'))
+        {
+            date_default_timezone_set(@date_default_timezone_get());
+        }
+        else
+        {
+            date_default_timezone_set('GMT');
+        }
+    }
+
+/*---------------------------------------------------------------
+ * BONFIRE FOLDER NAME
+ *---------------------------------------------------------------
+ *
+ * Simply change the first "path" variable and the individual paths
+ * will be set accordingly.
+ */
+    $path = '..';
+    $bonfire_path = "{$path}/bonfire";
+
+
+/*
+ *---------------------------------------------------------------
  * SYSTEM FOLDER NAME
  *---------------------------------------------------------------
  *
@@ -56,7 +101,7 @@ if (defined('ENVIRONMENT'))
  * as this file.
  *
  */
-	$system_path = '../codeigniter';
+	$system_path = "{$path}/codeigniter";
 
 /*
  *---------------------------------------------------------------
@@ -72,7 +117,22 @@ if (defined('ENVIRONMENT'))
  * NO TRAILING SLASH!
  *
  */
-	$application_folder = '../app';
+	$application_folder = "{$path}/app";
+
+/*
+ *---------------------------------------------------------------
+ * VIEW FOLDER NAME
+ *---------------------------------------------------------------
+ *
+ * If you want to move the "view" folder out of the application
+ * folder then set its path here. The folder can be renamed
+ * and relocated anywhere on your server.  If blank, if will default
+ * to the standard location inside your application folder. If
+ * you do move this, use a full server path.
+ *
+ * NO TRAILING SLASH!
+ */
+    $view_folder = '';
 
 /*
  * --------------------------------------------------------------------
@@ -122,6 +182,26 @@ if (defined('ENVIRONMENT'))
  */
 	// $assign_to_config['name_of_config_item'] = 'value of config item';
 
+
+/*
+ *---------------------------------------------------------------
+ * CSRF BYPASS
+ *---------------------------------------------------------------
+ *
+ * By default, Bonfire ships with CSRF protection set to ON for all
+ * forms in the system. We also highly encourage its use for security
+ * reasons in your own applications. On rare occasions, you may need
+ * to bypass the CSRF protection for a controller, such as within
+ * an API where the request is coming from an external controller and
+ * no CSRF token would be available.
+ *
+ * The controllers currently must either be in the root controllers
+ * folder (NOT in a subfolder), or in a module.
+ *
+ * Example:
+ *      array('users', 'activities/activity')
+ */
+    $assign_to_config['csrf_ignofred_folders'] = array();
 
 
 // --------------------------------------------------------------------
@@ -175,6 +255,8 @@ if (defined('ENVIRONMENT'))
 	// Name of the "system folder"
 	define('SYSDIR', trim(strrchr(trim(BASEPATH, '/'), '/'), '/'));
 
+    // Bonfire Path
+    define('BFPATH', $bonfire_path .'/');
 
 	// The path to the "application" folder
 	if (is_dir($application_folder))
@@ -190,6 +272,21 @@ if (defined('ENVIRONMENT'))
 
 		define('APPPATH', BASEPATH.$application_folder.'/');
 	}
+
+    // The path to the "views" folder
+    if (is_dir($view_folder))
+    {
+        define('VIEWPATH', $view_folder .'/');
+    }
+    else
+    {
+        if (! is_dir(APPPATH .'views/'))
+        {
+            exit("Your view folder path does not appear to be set correctly. Please open the following file and correct this: ". SELF);
+        }
+
+        define('VIEWPATH', APPPATH .'views/');
+    }
 
 /*
  * --------------------------------------------------------------------
