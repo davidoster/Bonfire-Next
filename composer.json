@@ -6,13 +6,15 @@
     "type": "project",
     "license": "MIT",
     "autoload": {
-        "psr-0": { "": "src/"}
+        "psr-4": {
+            "Bonfire\\": ["bonfire/libraries/", "bonfire/interfaces/" ]
+        }
     },
     "authors": [
         {
             "name": "Lonnie Ezell",
             "email": "lonnieje@gmail.com",
-            "homepage": "lonnieezell.com",
+            "homepage": "http://lonnieezell.com",
             "role": "Project Lead"
         }
     ],
@@ -21,7 +23,10 @@
     },
     "require": {
         "php": ">=5.3.14",
-        "lonnieezell/codeigniter-forensics": "dev-master"
+        "lonnieezell/codeigniter-forensics": "dev-master",
+        "league/plates": "2.*",
+        "kriswallsmith/assetic": "1.2.*@dev",
+        "monolog/monolog": "1.9.*@dev"
     },
     "minimum-stability": "dev",
     "repositories": [

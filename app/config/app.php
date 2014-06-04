@@ -11,8 +11,21 @@
  */
 $config['enable_activity_logging'] = TRUE;
 
+/*
+|---------------------------------------------------------------------
+| THEME PATHS
+|---------------------------------------------------------------------
+| An array of folders to look in for themes. There must be at least
+| one folder path at all times, to serve as the fall-back for when
+| a theme isn't found. Paths are relative to the FCPATH.
+*/
+$config['template.theme_paths'] = [
+    'admin' => APPPATH .'../themes/admin',
+    'docs'  => APPPATH .'../themes/docs'
+];
+
 //--------------------------------------------------------------------
-// !Migrations
+// Migrations
 //--------------------------------------------------------------------
 $config['migrate.auto_core']	= FALSE;
 $config['migrate.auto_app']		= FALSE;

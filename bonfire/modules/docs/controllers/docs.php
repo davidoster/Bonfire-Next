@@ -26,9 +26,6 @@ class Docs extends Base_Controller
     {
         parent::__construct();
 
-        $this->load->library('template');
-        $this->load->library('assets');
-
         $this->load->config('docs');
         $this->lang->load('docs');
 
@@ -69,7 +66,7 @@ class Docs extends Base_Controller
             show_error(lang('docs_not_allowed'));
         }
 
-        Template::set_theme(config_item('docs.theme'), 'docs');
+        $this->template->setTheme(config_item('docs.theme'), 'docs');
 
         $this->load->helper('form');
     }
