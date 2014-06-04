@@ -1,5 +1,15 @@
 <?php
 
+/*
+|--------------------------------------------------------------------
+| DI Classes
+|--------------------------------------------------------------------
+| Any classes that are instantiated into the Base_Controller's DI container
+| must be listed here so they can be easily swapped out per application.
+*/
+$config['di.templateEngine'] = 'Bonfire\PlatesTemplate';
+
+
 //--------------------------------------------------------------------
 // ACTIVITIES
 //--------------------------------------------------------------------

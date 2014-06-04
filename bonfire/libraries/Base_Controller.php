@@ -50,7 +50,6 @@ class Base_Controller extends MX_Controller {
     protected $container;
 
 
-
     //--------------------------------------------------------------------
 
     public function __construct ()
@@ -58,7 +57,6 @@ class Base_Controller extends MX_Controller {
         parent::__construct();
 
         $this->init();
-
     }
 
     //--------------------------------------------------------------------
@@ -73,7 +71,7 @@ class Base_Controller extends MX_Controller {
         $this->container = new Pimple();
 
         // Setup our Template Engine
-        $this->container['templateEngineName']  = 'Bonfire\PlatesTemplate';
+        $this->container['templateEngineName']  = config_item('di.templateEngine');
         $this->container['templateEngine']      = function ($c) {
             return new $c['templateEngineName']();
         };

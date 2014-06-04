@@ -1,4 +1,4 @@
-<?php if (empty($content)) : ?>
+<?php if (empty($this->content)) : ?>
 
     <div class="alert">
         <span class="glyphicon glyphicon-book"></span>
@@ -8,7 +8,7 @@
 <?php else: ?>
 
     <div class="page">
-        <?php echo $content; ?>
+        <?php echo $this->content; ?>
     </div>
 
 <?php endif; ?>

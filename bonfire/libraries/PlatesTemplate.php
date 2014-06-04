@@ -40,6 +40,13 @@ class PlatesTemplate implements TemplateInterface {
         $this->template = new Template($this->engine);
 
         $this->theme = config_item('template.default_theme');
+
+        /*
+         * Load Extensions
+         */
+
+        // URI Extension
+        $this->engine->loadExtension(new \League\Plates\Extension\URI( uri_string() ));
     }
 
     //--------------------------------------------------------------------
@@ -63,8 +70,21 @@ class PlatesTemplate implements TemplateInterface {
         $view = ! empty($this->view) ? $this->view :
             $this->ci->router->fetch_class() .'/'. $this->ci->router->fetch_method();
 
+        $module = $this->ci->router->fetch_module();
+
         // Make sure the engine can find our views folder...
-        $this->engine->setDirectory(APPPATH .'views');
+        if (! empty($module))
+        {
+            // Strip the module name from the view path...
+            $view = str_replace($module .'/', '', $view);
+
+            $this->engine->setDirectory(\Bonfire\Modules::path( $module, 'views' ));
+        }
+        else
+        {
+            $this->engine->setDirectory(APPPATH .'views');
+        }
+
 
         // Render the output!
         $output = $this->template->render($view);

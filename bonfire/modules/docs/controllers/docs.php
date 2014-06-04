@@ -1,4 +1,6 @@
-<?php defined('BASEPATH') || exit('No direct script access allowed');
+<?php
+
+defined('BASEPATH') || exit('No direct script access allowed');
 
 class Docs extends Base_Controller
 {
@@ -20,7 +22,7 @@ class Docs extends Base_Controller
     /**
      * Constructor
      *
-     * @return void
+     * @return \Docs
      */
     public function __construct()
     {
@@ -66,7 +68,7 @@ class Docs extends Base_Controller
             show_error(lang('docs_not_allowed'));
         }
 
-        $this->template->setTheme(config_item('docs.theme'), 'docs');
+        $this->template->setTheme('docs');
 
         $this->load->helper('form');
     }
@@ -88,9 +90,11 @@ class Docs extends Base_Controller
         $data['sidebar'] = $this->build_sidebar();
         $data['content'] = $content;
 
-        Template::set($data);
-        Template::render();
+        $this->template->set($data);
+        $this->template->render();
     }
+
+    //--------------------------------------------------------------------
 
     /**
      * Display search results and handles the search itself.
@@ -118,9 +122,9 @@ class Docs extends Base_Controller
 
         $this->benchmark->mark('search_end');
 
-        Template::set('search_time', $this->benchmark->elapsed_time('search_start', 'search_end'));
-        Template::set('search_terms', $terms);
-        Template::render();
+        $this->template->set('search_time', $this->benchmark->elapsed_time('search_start', 'search_end'));
+        $this->template->set('search_terms', $terms);
+        $this->template->render();
     }
 
     //--------------------------------------------------------------------------
@@ -156,6 +160,8 @@ class Docs extends Base_Controller
 
         return $this->post_process($this->load->view('docs/_sidebar', $data, true));
     }
+
+    //--------------------------------------------------------------------
 
     /**
      * Retrieves the list of files in a folder and preps the name and filename
@@ -245,9 +251,9 @@ class Docs extends Base_Controller
     private function get_module_docs()
     {
         $docs_modules = array();
-        foreach (Modules::list_modules() as $module) {
+        foreach (\Bonfire\Modules::list_modules() as $module) {
             $ignored_folders = array();
-            $path = Modules::path($module) . $this->docsDir;
+            $path = \Bonfire\Modules::path($module) . $this->docsDir;
 
             // If these are developer docs, add the folder to the path.
             if ($this->docsGroup == $this->docsTypeBf) {
@@ -268,6 +274,8 @@ class Docs extends Base_Controller
 
         return $docs_modules;
     }
+
+    //--------------------------------------------------------------------
 
     /**
      * Does the actual work of reading in and parsing the help file.
@@ -348,6 +356,8 @@ class Docs extends Base_Controller
         return trim($content);
     }
 
+    //--------------------------------------------------------------------
+
     /**
      * Perform a few housekeeping tasks on a page, like rewriting URLs to full
      * URLs, not relative, ensuring they link correctly, etc.
@@ -427,4 +437,7 @@ class Docs extends Base_Controller
 
         return $content;
     }
+
+    //--------------------------------------------------------------------
+
 }
