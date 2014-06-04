@@ -1,5 +1,9 @@
 <?php
 
+// Load Composer's autoload so we can use
+// modern autoloading and packages.
+include '../vendor/autoload.php';
+
 /*
  *---------------------------------------------------------------
  * APPLICATION ENVIRONMENT
