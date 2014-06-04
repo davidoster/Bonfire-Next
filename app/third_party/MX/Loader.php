@@ -42,7 +42,7 @@ class MX_Loader extends CI_Loader
 
     public function __construct() {
 
-        parent::__construct();
+//        parent::__construct();
 
         /* set the module name */
         $this->_module = CI::$APP->router->fetch_module();
