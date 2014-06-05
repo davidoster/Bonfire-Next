@@ -1,8 +1,8 @@
 <div id="toc">
     <ul class="nav">
         <?php
-        if ( ! empty($docs) && is_array($docs)) :
-            foreach ($docs as $file => $name) :
+        if ( ! empty($this->docs) && is_array($this->docs)) :
+            foreach ($this->docs as $file => $name) :
                 if (is_array($name)) :
         ?>
         <li class='parent'>
@@ -24,17 +24,17 @@
         <?php
         endif;
 
-        if ( ! empty($module_docs) && is_array($module_docs)) : ?>
+        if ( ! empty($this->module_docs) && is_array($this->module_docs)) : ?>
         <li class="parent"><div class="nav-header"><?php e(lang('docs_title_modules')); ?></div></li>
         <!-- Module Specific Docs -->
         <?php
-            foreach ($module_docs as $module => $mod_files) :
+            foreach ($this->module_docs as $module => $mod_files) :
                 if (count($mod_files)) :
         ?>
         <li class="parent">
             <div class='nav-header'><?php echo $module; ?></div>
             <ul class='nav'>
-            <?php foreach ($mod_files as $fileName => $title) : ?>
+            <?php foreach ($this->mod_files as $fileName => $title) : ?>
                 <li><?php echo anchor(site_url($docsDir . '/' . str_replace($docsExt, '', $fileName)), ucwords($title)); ?></li>
             <?php endforeach; ?>
             </ul>
