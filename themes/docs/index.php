@@ -50,7 +50,7 @@
     <!-- Content Area -->
     <div class="container">
 
-        <?= $this->notice ?>
+        <?= isset($this->notice) ? $this->notice : ''; ?>
 
         <div class="row">
 

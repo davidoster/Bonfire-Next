@@ -364,13 +364,25 @@ if ( ! is_php('5.4'))
 	$class = ucfirst($RTR->class);
 	$method = $RTR->method;
 
-	if (empty($class) OR ! file_exists(APPPATH.'controllers/'.$RTR->directory.$class.'.php'))
+    /*
+     * Modified by the Bonfire Team to allow loading of controllers from
+     * modules within the Bonfire folder also.
+     */
+
+	if (empty($class) OR (! file_exists(APPPATH.'controllers/'.$RTR->directory.$class.'.php') AND ! file_exists($RTR->directory.$class.'.php')) )
 	{
 		$e404 = TRUE;
 	}
 	else
 	{
-		require_once(APPPATH.'controllers/'.$RTR->directory.$class.'.php');
+        if (file_exists(APPPATH.'controllers/'.$RTR->directory.$class.'.php'))
+        {
+            require_once(APPPATH.'controllers/'.$RTR->directory.$class.'.php');
+        }
+        else
+        {
+            require_once($RTR->directory.$class .'.php');
+        }
 
 		if ( ! class_exists($class, FALSE) OR $method[0] === '_' OR method_exists('CI_Controller', $method))
 		{

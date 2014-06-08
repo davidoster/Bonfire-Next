@@ -99,7 +99,7 @@ class Docs extends Base_Controller
         $content = $this->read_page($this->uri->segment_array());
         $content = $this->post_process($content);
 
-        $data['sidebar'] = $this->build_sidebar();
+        $data['sidebar'] = $this->buildSidebar();
         $data['content'] = $content;
 
         $this->render($data);
@@ -156,7 +156,7 @@ class Docs extends Base_Controller
      *
      * @return string The HTML for the sidebar.
      */
-    private function build_sidebar ()
+    private function buildSidebar ()
     {
         $data = array();
 
