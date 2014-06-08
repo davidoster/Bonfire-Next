@@ -211,6 +211,8 @@ class Base_Controller extends MX_Controller {
      * @param  bool   $typography If TRUE, will run the text through 'Auto_typography'
      *                            before outputting to the browser.
      *
+     * @todo Allow a custom output type to be set (ie, text/css)
+     *
      * @return void
      */
     public function renderText ($text, $typography = FALSE)
@@ -294,7 +296,7 @@ class Base_Controller extends MX_Controller {
      * @throws \LogicException
      * @return void
      */
-    public function render_js ($js = NULL)
+    public function renderJS ($js = NULL)
     {
         if (! is_string($js))
         {
@@ -316,7 +318,7 @@ class Base_Controller extends MX_Controller {
      *
      * @return void
      */
-    public function render_realtime ()
+    public function renderRealtime ()
     {
         if (ob_get_level() > 0)
         {
@@ -336,7 +338,7 @@ class Base_Controller extends MX_Controller {
      *
      * @param  string $location [description]
      */
-    public function ajax_redirect ($location = '')
+    public function ajaxRedirect ($location = '')
     {
         $location = empty($location) ? '/' : $location;
 
@@ -365,7 +367,7 @@ class Base_Controller extends MX_Controller {
      *
      * @return mixed    The formatted JSON data, or NULL.
      */
-    public function get_json ($format = 'object', $depth = 512)
+    public function getJson ($format = 'object', $depth = 512)
     {
         $as_array = $format == 'array' ? TRUE : FALSE;
 
