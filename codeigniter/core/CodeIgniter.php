@@ -369,7 +369,7 @@ if ( ! is_php('5.4'))
      * modules within the Bonfire folder also.
      */
 
-	if (empty($class) OR (! file_exists(APPPATH.'controllers/'.$RTR->directory.$class.'.php') AND ! file_exists($RTR->directory.$class.'.php')) )
+	if (empty($class) OR (! file_exists(APPPATH.'controllers/'.$RTR->directory.$class.'.php') AND ! file_exists($RTR->directory.$class.'.php') AND ! file_exists(BFPATH.'controllers/'.$RTR->directory.$class.'.php')) )
 	{
 		$e404 = TRUE;
 	}
@@ -378,6 +378,10 @@ if ( ! is_php('5.4'))
         if (file_exists(APPPATH.'controllers/'.$RTR->directory.$class.'.php'))
         {
             require_once(APPPATH.'controllers/'.$RTR->directory.$class.'.php');
+        }
+        else if (file_exists(BFPATH.'controllers/'.$RTR->directory.$class.'.php'))
+        {
+            require_once(BFPATH.'controllers/'.$RTR->directory.$class.'.php');
         }
         else
         {

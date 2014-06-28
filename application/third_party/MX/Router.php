@@ -123,6 +123,11 @@ class MX_Router extends CI_Router
 			$this->directory = $module.'/';
 			return array_slice($segments, 1);
 		}
+
+        /* bonfire controller exists? */
+        if (is_file(BFPATH.'controllers/'.$module.$ext)) {
+            return $segments;
+        }
 		
 		/* application sub-directory default controller exists? */
 		if (is_file(APPPATH.'controllers/'.$module.'/'.$this->default_controller.$ext)) {
