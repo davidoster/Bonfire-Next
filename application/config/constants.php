@@ -27,6 +27,38 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /*
+|--------------------------------------------------------------------------
+| Assets Public Folder
+|--------------------------------------------------------------------------
+|
+| This folder is used when compiling assets and saving them to
+| the public folder. This is also the base URI that is used when
+| creating the links to the folder.
+|
+|   Default value: 'assets'
+|   URL http://mysite.com/assets
+|   File /public/assets
+*/
+define('BF_ASSET_PATH', 'assets');
+
+/*
+|--------------------------------------------------------------------------
+| Module Areas
+|--------------------------------------------------------------------------
+|
+| These constants allow you to map module controller's to certain areas
+| of the site and make them directly accessible by URL. The primary ones
+| used by Bonfire are the ADMIN_PATH and DEVELOPER_PATH which map to
+| /admin and /develop respectively.
+|
+| These paths are used in the routes config file to setup these areas
+| and are also accessible when building site url's in your code.
+*/
+define('ADMIN_PATH', 'admin');
+define('DEVELOPER_PATH', 'devtools');
+
+
+/*
  * Compatibility only
  */
 define('EXT', '.php');

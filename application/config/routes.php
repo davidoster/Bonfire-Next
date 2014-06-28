@@ -26,6 +26,10 @@
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+use \Bonfire\Route as Route;
+
+$routes = new Route();
+
 /*
 | -------------------------------------------------------------------------
 | URI ROUTING
@@ -77,6 +81,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['default_controller'] = 'welcome';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
+
+// Work with the Assets Pipeline to change the path that
+// Assets are referenced at. By default, this is the '/assets' public folder.
+$routes->get(BF_ASSET_PATH .'/(:any)', 'bf_pipeline/$1');
+
+// Map all /admin/* methods to a module's 'admin' controller.
+// Can be changed in constants file.
+$routes->area(ADMIN_PATH, 'admin');
+
+// Map all /developer/* methods to a module's 'admin' controller.
+// Can be changed in constants file.
+$routes->area(DEVELOPER_PATH, 'developer');
+
+
+
+
+//--------------------------------------------------------------------
+
+// Make sure CI's Router gets the array they expect.
+$route = $routes->map($route);
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */
