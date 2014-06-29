@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <title>Docs</title>
+
+    <link rel="stylesheet" href="/assets/docs.css" />
 </head>
 <body style="padding-top: 70px;">
 

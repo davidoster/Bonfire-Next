@@ -4,8 +4,56 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9f1f23a014a2ae9a80383bcf24220b86",
+    "hash": "45fdb351e0734f54dbce8bf4b429d7d5",
     "packages": [
+        {
+            "name": "ci-bonfire/assets",
+            "version": "dev-develop",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ci-bonfire/assets.git",
+                "reference": "232a49216cfd9a27db0de0f66258f5a6ae8e449b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ci-bonfire/assets/zipball/232a49216cfd9a27db0de0f66258f5a6ae8e449b",
+                "reference": "232a49216cfd9a27db0de0f66258f5a6ae8e449b",
+                "shasum": ""
+            },
+            "require": {
+                "league/flysystem": "0.5.*@dev",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "cssmin/cssmin": "*",
+                "mrclay/minify": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Bonfire\\Assets\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Lonnie Ezell",
+                    "email": "lonnieje@gmail.com",
+                    "homepage": "http://lonnieezell.com"
+                }
+            ],
+            "description": "A platform-agnostic, lightweight Asset Pipeline for PHP 5.4+",
+            "homepage": "https://github.com/ci-bonfire/Assets",
+            "keywords": [
+                "assets",
+                "bonfire",
+                "minification"
+            ],
+            "time": "2014-06-24 03:21:57"
+        },
         {
             "name": "compwright/codeigniter-installers",
             "version": "dev-master",
@@ -135,25 +183,101 @@
             "time": "2014-05-05 12:59:42"
         },
         {
-            "name": "league/plates",
-            "version": "2.1.0",
+            "name": "league/flysystem",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/thephpleague/plates.git",
-                "reference": "814f7005134187d769bd9df74a40d345d675cd04"
+                "url": "https://github.com/thephpleague/flysystem.git",
+                "reference": "6b0ac9e28b2942121c9e88a82121850b810c67c2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/plates/zipball/814f7005134187d769bd9df74a40d345d675cd04",
-                "reference": "814f7005134187d769bd9df74a40d345d675cd04",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/6b0ac9e28b2942121c9e88a82121850b810c67c2",
+                "reference": "6b0ac9e28b2942121c9e88a82121850b810c67c2",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "aws/aws-sdk-php": "~2.5",
+                "dropbox/dropbox-sdk": "~1.1.1",
+                "league/phpunit-coverage-listener": "~1.1",
+                "mockery/mockery": "~0.9",
+                "phpseclib/phpseclib": "~0.3.5",
+                "phpunit/phpunit": "~4.0",
+                "predis/predis": "~0.8.4",
+                "rackspace/php-opencloud": "~1.9.1",
+                "sabre/dav": "~1.8.7"
+            },
+            "suggest": {
+                "aws/aws-sdk-php": "Allows you to use AWS S3 storage",
+                "dropbox/dropbox-sdk": "Allows you to use Dropbox storage",
+                "phpseclib/phpseclib": "Allows SFTP server storage",
+                "predis/predis": "Allows you to use Predis for caching",
+                "rackspace/php-opencloud": "Allows you to use Rackspace Cloud Files",
+                "sabre/dav": "Enables WebDav support"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.5-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "League\\Flysystem\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Frank de Jonge",
+                    "email": "info@frenky.net"
+                }
+            ],
+            "description": "Filesystem abstraction, but easy.",
+            "keywords": [
+                "WebDAV",
+                "aws",
+                "dropbox",
+                "filesystem",
+                "ftp",
+                "remote",
+                "s3",
+                "sftp"
+            ],
+            "time": "2014-06-23 13:56:25"
+        },
+        {
+            "name": "league/plates",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/plates.git",
+                "reference": "87332326ec0bd61fd4ca2cd4cb6f043a194d49f8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/plates/zipball/87332326ec0bd61fd4ca2cd4cb6f043a194d49f8",
+                "reference": "87332326ec0bd61fd4ca2cd4cb6f043a194d49f8",
                 "shasum": ""
             },
             "require-dev": {
-                "mikey179/vfsstream": "v1.2.0",
-                "mockery/mockery": "dev-master@dev",
-                "phpunit/phpunit": "3.7.*"
+                "mikey179/vfsstream": "~1.2.0",
+                "mockery/mockery": "~0.9",
+                "phpunit/phpunit": "~4.0",
+                "squizlabs/php_codesniffer": "~1.5"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.1-dev"
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "League\\Plates\\": "src"
@@ -177,7 +301,7 @@
                 "package",
                 "templating"
             ],
-            "time": "2014-04-02 19:15:11"
+            "time": "2014-06-23 20:42:30"
         },
         {
             "name": "lonnieezell/codeigniter-forensics",
@@ -185,12 +309,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/lonnieezell/codeigniter-forensics.git",
-                "reference": "ebd64277757cbb18edc69b2a69ca9935bc1c8df7"
+                "reference": "8f47ed9a86906373dd7008779f4f1481182434f2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lonnieezell/codeigniter-forensics/zipball/ebd64277757cbb18edc69b2a69ca9935bc1c8df7",
-                "reference": "ebd64277757cbb18edc69b2a69ca9935bc1c8df7",
+                "url": "https://api.github.com/repos/lonnieezell/codeigniter-forensics/zipball/8f47ed9a86906373dd7008779f4f1481182434f2",
+                "reference": "8f47ed9a86906373dd7008779f4f1481182434f2",
                 "shasum": ""
             },
             "require": {
@@ -219,7 +343,7 @@
                 "issues": "http://lonnieezell.github.io/codeigniter-forensics/issues",
                 "source": "http://lonnieezell.github.io/codeigniter-forensics/"
             },
-            "time": "2013-11-21 15:50:15"
+            "time": "2014-06-13 13:43:54"
         },
         {
             "name": "monolog/monolog",
@@ -227,12 +351,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "016423a804140a33814b8fad4240dbfa49a884da"
+                "reference": "0951050a1e9bc3a031c780e8e5a8c94bdeb9d9c4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/016423a804140a33814b8fad4240dbfa49a884da",
-                "reference": "016423a804140a33814b8fad4240dbfa49a884da",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/0951050a1e9bc3a031c780e8e5a8c94bdeb9d9c4",
+                "reference": "0951050a1e9bc3a031c780e8e5a8c94bdeb9d9c4",
                 "shasum": ""
             },
             "require": {
@@ -260,7 +384,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.9.x-dev"
+                    "dev-master": "1.10.x-dev"
                 }
             },
             "autoload": {
@@ -287,7 +411,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2014-05-29 15:04:35"
+            "time": "2014-06-20 14:09:34"
         },
         {
             "name": "psr/log",
@@ -339,12 +463,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Process.git",
-                "reference": "e4b5fcd31ce60a0721fb36d6478de0185afe744b"
+                "reference": "0c367d63ab161bfc757e5e882a1d9dde8d344be3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Process/zipball/e4b5fcd31ce60a0721fb36d6478de0185afe744b",
-                "reference": "e4b5fcd31ce60a0721fb36d6478de0185afe744b",
+                "url": "https://api.github.com/repos/symfony/Process/zipball/0c367d63ab161bfc757e5e882a1d9dde8d344be3",
+                "reference": "0c367d63ab161bfc757e5e882a1d9dde8d344be3",
                 "shasum": ""
             },
             "require": {
@@ -379,7 +503,7 @@
             ],
             "description": "Symfony Process Component",
             "homepage": "http://symfony.com",
-            "time": "2014-05-23 14:36:49"
+            "time": "2014-06-18 11:43:36"
         }
     ],
     "packages-dev": [
@@ -392,7 +516,8 @@
     "stability-flags": {
         "lonnieezell/codeigniter-forensics": 20,
         "kriswallsmith/assetic": 20,
-        "monolog/monolog": 20
+        "monolog/monolog": 20,
+        "ci-bonfire/assets": 20
     },
     "platform": {
         "php": ">=5.3.14"

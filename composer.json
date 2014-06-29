@@ -26,7 +26,8 @@
         "lonnieezell/codeigniter-forensics": "dev-master",
         "league/plates": "2.*",
         "kriswallsmith/assetic": "1.2.*@dev",
-        "monolog/monolog": "1.9.*@dev"
+        "monolog/monolog": "1.9.*@dev",
+        "ci-bonfire/assets": "dev-develop"
     },
     "minimum-stability": "dev",
     "repositories": [

@@ -396,14 +396,6 @@ class Base_Controller extends MX_Controller {
         };
 
         $this->template = $this->container['templateEngine'];
-
-        // Setup our Assets Engine
-        $this->container['assetEngineName']    = config_item('di.assetEngine');
-        $this->container['assetEngine']         = function ($c) {
-            return new $c['assetEngineName']();
-        };
-
-        $this->assets = $this->container['assetEngine'];
     }
 
     //--------------------------------------------------------------------
