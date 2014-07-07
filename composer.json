@@ -27,13 +27,24 @@
         "league/plates": "2.*",
         "kriswallsmith/assetic": "1.2.*@dev",
         "monolog/monolog": "1.9.*@dev",
-        "ci-bonfire/assets": "dev-develop"
+        "ci-bonfire/assets": "dev-develop",
+        "cssmin/cssmin": "*",
+        "mrclay/minify": "*"
     },
     "minimum-stability": "dev",
     "repositories": [
         {
             "type": "vcs",
             "url": "https://github.com/lonnieezell/codeigniter-forensics"
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "cssmin/cssmin",
+                "version": "3.0.1",
+                "dist": { "url": "http://cssmin.googlecode.com/files/cssmin-v3.0.1.php", "type": "file" },
+                "autoload": { "classmap": [ "cssmin-v3.0.1.php" ] }
+            }
         }
     ]
 }

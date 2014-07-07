@@ -1,3 +1,4 @@
-/*= require {theme:docs}/css/bootstrap.css */
-/*= require {theme:docs}/css/bootstrap-theme.css */
-/*= require {theme:docs}/css/_custom.css */
+/*= require ../application/assets/css/bootstrap320/bootstrap.css */
+/*= require ../application/assets/css/bootstrap320/bootstrap-theme.css */
+/*= require {theme:docs}/css/custom.css */
+/*= require {theme:docs}/css/default.css */

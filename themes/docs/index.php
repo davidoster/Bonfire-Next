@@ -6,10 +6,10 @@
 
     <link rel="stylesheet" type="text/css" href="/assets/docs.css" />
 </head>
-<body style="padding-top: 70px;">
+<body>
 
     <!-- Navbar -->
-    <header class="navbar navbar-inverse navbar-fixed-top" role="banner">
+    <header class="navbar navbar-inverse" role="banner">
         <div class="container">
 
             <div class="navbar-header">
@@ -40,7 +40,7 @@
                 <!-- Search Form -->
                 <?= form_open( site_url('docs/search'), 'class="navbar-form navbar-right"' ); ?>
                 <div class="form-group">
-                        <input type="text" class="form-control" name="search_terms" placeholder="<?= lang('docs_search_for') ?>"/>
+                        <input type="search" class="form-control" name="search_terms" placeholder="<?= lang('docs_search_for') ?>"/>
                     </div>
                     <input type="submit" name="submit" class="btn btn-default" value="<?= lang('docs_search') ?>">
                 </form>
@@ -56,18 +56,27 @@
 
         <div class="row">
 
-            <div class="col-md-3 sidebar">
-                <div class="inner">
-                    <?php if (isset($this->sidebar)) : ?>
-                        <?= $this->sidebar; ?>
-                    <?php endif; ?>
-                </div>
+            <div class="col-md-9 main">
+                <?php $content = $this->content();  ?>
+                <?php if (! empty($content)) : ?>
+                    <?= $content; ?>
+                <?php else: ?>
+                    <div class="alert">
+                        Unable to locate the file.
+                    </div>
+                <?php endif; ?>
             </div>
 
-            <div class="col-md-9 main">
-                <div class="inner">
-                    <?= $this->content(); ?>
-                </div>
+            <div class="col-md-3 sidebar">
+                <?php if (isset($this->sections)) : ?>
+                    <h3>In This Chapter</h3>
+                    <?= $this->sections ?>
+                <?php endif; ?>
+
+                <?php if (isset($this->sidebar)) : ?>
+                    <h3>Chapter List</h3>
+                    <?= $this->sidebar; ?>
+                <?php endif; ?>
             </div>
 
         </div>
@@ -76,6 +85,5 @@
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="/assets/js/jquery-2.1.1.min.js"><\/script>')</script>
-    <?php //echo Assets::js(); ?>
 </body>
 </html>

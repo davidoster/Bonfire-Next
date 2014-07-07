@@ -138,7 +138,7 @@ class Docs extends Base_Controller
 
         $this->benchmark->mark('search_end');
 
-        $data['search_time'] = $this->benchmark->elapsed_time('search_start', 'search_end');
+        $data['search_time']  = $this->benchmark->elapsed_time('search_start', 'search_end');
         $data['search_terms'] = $terms;
 
         $this->render($data);
@@ -418,6 +418,11 @@ class Docs extends Base_Controller
      */
     private function post_process ($content)
     {
+        if (empty($content))
+        {
+            return $content;
+        }
+
         $xml = new SimpleXMLElement('<?xml version="1.0" standalone="yes"?><div>' . $content . '</div>');
 
         /*

@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "45fdb351e0734f54dbce8bf4b429d7d5",
+    "hash": "d7fe608e05e89653e92740a404d3d9c0",
     "packages": [
         {
             "name": "ci-bonfire/assets",
@@ -107,6 +107,22 @@
                 "sparks"
             ],
             "time": "2012-11-12 16:11:38"
+        },
+        {
+            "name": "cssmin/cssmin",
+            "version": "3.0.1",
+            "dist": {
+                "type": "file",
+                "url": "http://cssmin.googlecode.com/files/cssmin-v3.0.1.php",
+                "reference": null,
+                "shasum": null
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "cssmin-v3.0.1.php"
+                ]
+            }
         },
         {
             "name": "kriswallsmith/assetic",
@@ -347,16 +363,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "dev-master",
+            "version": "1.9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "0951050a1e9bc3a031c780e8e5a8c94bdeb9d9c4"
+                "reference": "65026b610f8c19e61d7242f600530677b0466aac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/0951050a1e9bc3a031c780e8e5a8c94bdeb9d9c4",
-                "reference": "0951050a1e9bc3a031c780e8e5a8c94bdeb9d9c4",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/65026b610f8c19e61d7242f600530677b0466aac",
+                "reference": "65026b610f8c19e61d7242f600530677b0466aac",
                 "shasum": ""
             },
             "require": {
@@ -384,7 +400,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.10.x-dev"
+                    "dev-master": "1.9.x-dev"
                 }
             },
             "autoload": {
@@ -411,7 +427,47 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2014-06-20 14:09:34"
+            "time": "2014-04-24 13:29:03"
+        },
+        {
+            "name": "mrclay/minify",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mrclay/minify.git",
+                "reference": "fb3931f8cd54a637b2a42170c3a9a1c4da9e69a9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mrclay/minify/zipball/fb3931f8cd54a637b2a42170c3a9a1c4da9e69a9",
+                "reference": "fb3931f8cd54a637b2a42170c3a9a1c4da9e69a9",
+                "shasum": ""
+            },
+            "require": {
+                "ext-pcre": "*",
+                "php": ">=5.2.1"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "min/lib/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Stephen Clay",
+                    "email": "steve@mrclay.org",
+                    "homepage": "http://www.mrclay.org/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Minify is a PHP5 app that helps you follow several rules for client-side performance. It combines multiple CSS or Javascript files, removes unnecessary whitespace and comments, and serves them with gzip encoding and optimal client-side cache headers",
+            "homepage": "http://code.google.com/p/minify/",
+            "time": "2014-04-03 23:53:48"
         },
         {
             "name": "psr/log",
