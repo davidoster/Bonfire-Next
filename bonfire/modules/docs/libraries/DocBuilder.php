@@ -167,8 +167,14 @@ class DocBuilder {
                 continue;
             }
 
+            // If it's a full external path, go on...
+            if (strpos($href, 'http://') !== false || strpos($href, 'https://') !== false)
+            {
+                continue;
+            }
+
             // If it's a full local path, get rid of it.
-            if (strpos($href, $site_url) === 0)
+            if (strpos($href, $site_url) !== false)
             {
                 $href = str_replace($site_url, '', $href);
             }
@@ -272,7 +278,10 @@ class DocBuilder {
         $current_obj = [];
 
         $i = 0;
-        foreach ($xml->div->children() as $type => $line )
+
+        $objs = count($xml->children() == 1) ? $xml->div->children() : $xml->children();
+
+        foreach ($objs as $type => $line )
         {
             $i++;
 
