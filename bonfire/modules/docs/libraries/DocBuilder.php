@@ -57,7 +57,7 @@ class DocBuilder {
      * @param  string $path             The 'path' of the file (relative to the docs folder. Usually from the URI)
      * @param  string $restrictToFolder (Optional) The nickname of one of the folders to restrict the search to.
      *
-     * @throws InvalidArgumentException
+     * @throws RuntimeException
      * @return null|string
      */
     private function locateAndReadFile ($path, $restrictToFolder=null)
@@ -69,7 +69,7 @@ class DocBuilder {
             // Make sure the folder exists
             if (! is_null($restrictToFolder) && ! isset($this->doc_folders[ $restrictToFolder ]))
             {
-                throw new InvalidArgumentException('You must add the docs folder that you wish to find docs from.');
+                throw new RuntimeException('You must add the docs folder that you wish to find docs from.');
             }
 
             $folders = array( $this->doc_folders[$restrictToFolder] );
