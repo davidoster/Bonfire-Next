@@ -10,6 +10,9 @@ class Pipeline extends Base_Controller {
      */
     public function _remap ($method)
     {
+        $method = $this->uri->uri_string();
+        $method = ltrim( str_ireplace(BF_ASSET_PATH, '', $method), '/ ');
+
         $this->index($method);
     }
 
