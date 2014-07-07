@@ -97,7 +97,7 @@ $config = array(
 $config['filters'] = array(
     '.min.js'       => array('\Bonfire\Assets\Filters\JSMinPlus'),
     '.min.css'      => array('\Bonfire\Assets\Filters\CSSMin'),
-    '.js'           => array('\Bonfire\Assets\Filters\JSMinPlus'),
+    '.js'           => array(/*'\Bonfire\Assets\Filters\JSMinPlus'*/),
     '.js.coffee'    => array(),
     '.coffee'       => array(),
     '.css'          => array(/*['\Bonfire\Assets\Filters\CSSMin', [ 'filters'=> []] ] */),
