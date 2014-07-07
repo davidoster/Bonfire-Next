@@ -25,7 +25,27 @@ class Pipeline extends Base_Controller {
 
         $pipeline = new \Bonfire\Assets\AssetPipeline($asset, $config, $filters);
 
-        echo '<pre>'. print_r($pipeline->process( ), true);
+        // Allow theme replacement for directives
+        $pipeline->registerTag('themed', function ($str) {
+            if (preg_match('/{theme:[a-zA-Z]+}/', $str, $matches) !== false)
+            {
+                if (isset($matches[0]))
+                {
+                    $theme_path = APPPATH .'../themes/';
+                    $theme = trim( str_replace('theme:', '', $matches[0]), '{} ');
+
+                    return $theme_path . $theme .'/'. str_replace($matches[0] .'/', '', $str);
+                }
+            }
+
+            return $str;
+        });
+
+        $output = $pipeline->process( );
+
+        $this->output->enable_profiler(FALSE)
+                     ->set_content_type('text/css')
+                     ->set_output($output);
     }
 
     //--------------------------------------------------------------------

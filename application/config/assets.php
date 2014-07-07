@@ -31,6 +31,7 @@ $config = array(
      * within the application, or even within third-party folders,
      * and be easily updated as separate entities, and yet still
      * be served by the system.
+     *
      */
     'asset_folders'         => array (
         APPPATH .'assets/'
@@ -94,22 +95,16 @@ $config = array(
  * and the file will be served as-is.
  */
 $config['filters'] = array(
-    '.min.js'       => array(),
-    '.min.css'      => array(),
-    '.js'           => array(
-        '\Bonfire\Assets\Filters\JSMinPlus'
-    ),
+    '.min.js'       => array('\Bonfire\Assets\Filters\JSMinPlus'),
+    '.min.css'      => array('\Bonfire\Assets\Filters\CSSMin'),
+    '.js'           => array('\Bonfire\Assets\Filters\JSMinPlus'),
     '.js.coffee'    => array(),
     '.coffee'       => array(),
-    '.css'          => array(
-        ['\Bonfire\Assets\Filters\CSSMin', [ 'filters'=> ['ImportImports' => true]] ]
-    ),
+    '.css'          => array(['\Bonfire\Assets\Filters\CSSMin', [ 'filters'=> []] ] ),
     '.css.less'     => array(),
     '.css.scss'     => array(),
     '.less'         => array(),
     '.scss'         => array(),
     '.min.css'      => array(),
-    'html'          => array(
-        '\Bonfire\Assets\Filters\JSMinPlus'
-    )
+    'html'          => array('\Bonfire\Assets\Filters\JSMinPlus')
 );

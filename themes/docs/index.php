@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <title>Docs</title>
 
-    <link rel="stylesheet" href="/assets/docs.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/docs.css" />
 </head>
 <body style="padding-top: 70px;">
 
@@ -25,13 +25,13 @@
             <div class="collapse navbar-collapse" id="main-nav-collapse">
                 <ul class="nav navbar-nav navbar-left">
                     <?php if (config_item('docs.show_app_docs')) :?>
-                        <li <?= $this->uri(2, 'application', 'class="active"') ?>>
+                        <li <?= $this->uri(1, 'application', 'class="active"') ?>>
                         <a href="<?= site_url('docs/application'); ?>"><?= lang('docs_title_application') ?></a>
                     </li>
                     <?php endif; ?>
 
                     <?php if (config_item('docs.show_dev_docs')) : ?>
-                        <li <?= $this->uri(2, 'developer', 'class="active"') ?>>
+                        <li <?= $this->uri(1, 'developer', 'class="active"') ?>>
                         <a href="<?= site_url('docs/developer'); ?>"><?= lang('docs_title_bonfire') ?></a>
                     </li>
                     <?php endif; ?>
@@ -74,8 +74,8 @@
 
     </div>
 
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/<?= $jqueryVersion; ?>/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="<?= js_path(); ?>jquery-<?= $jqueryVersion; ?>.min.js"><\/script>')</script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="/assets/js/jquery-2.1.1.min.js"><\/script>')</script>
     <?php //echo Assets::js(); ?>
 </body>
 </html>
