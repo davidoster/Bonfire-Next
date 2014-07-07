@@ -170,6 +170,7 @@ class DocBuilder {
             // If it's a full external path, go on...
             if (strpos($href, 'http://') !== false || strpos($href, 'https://') !== false)
             {
+                $link['target'] = "_blank";
                 continue;
             }
 
