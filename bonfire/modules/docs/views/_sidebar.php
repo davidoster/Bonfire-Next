@@ -7,12 +7,12 @@
                         <div class="nav-header"><?php echo $file; ?></div>
                         <ul class="nav">
                             <?php foreach ($name as $line => $namer) : ?>
-                            <li><?php echo anchor($docsDir . '/' . str_replace($docsExt, '', $line), $namer); ?></li>
+                            <li><?php echo anchor($docsDir . str_replace($docsExt, '', $line), $namer); ?></li>
                             <?php endforeach; ?>
                         </ul>
                     </li>
                 <?php else : ?>
-                    <li><?php echo anchor($docsDir . '/' . str_replace($docsExt, '', $file), $name); ?></li>
+                    <li><?php echo anchor($docsDir . str_replace($docsExt, '', $file), $name); ?></li>
                 <?php endif ?>
             <?php endforeach ?>
         <?php else : ?>

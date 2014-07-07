@@ -77,7 +77,7 @@ class DocBuilderTest extends \Codeception\TestCase\Test
         $site_url = 'http://testsite.com';
 
         $start = '<a href="docs/developer/test">Test</a>';
-        $final = '<a href="'. $site_url .'/docs/developer/test">Test</a>';
+        $final = '<div><a href="'. $site_url .'/docs/developer/test">Test</a></div>';
 
         $this->assertEquals($final, $this->builder->postProcess($start, $site_url, $site_url));
     }
@@ -89,7 +89,7 @@ class DocBuilderTest extends \Codeception\TestCase\Test
         $site_url = 'http://testsite.com';
 
         $start = '<a name="test"></a>';
-        $final = '<a name="test" href=" "/>';
+        $final = '<div><a name="test" href=" "/></div>';
 
         $this->assertEquals($final, $this->builder->postProcess($start, $site_url, $site_url));
     }
@@ -102,7 +102,7 @@ class DocBuilderTest extends \Codeception\TestCase\Test
         $current_url = 'http://testsite.com/docs/test';
 
         $start = '<a href="#test">Test</a>';
-        $final = '<a href="'. $current_url .'#test">Test</a>';
+        $final = '<div><a href="'. $current_url .'#test">Test</a></div>';
 
         $this->assertEquals($final, $this->builder->postProcess($start, $site_url, $current_url));
     }
@@ -114,7 +114,7 @@ class DocBuilderTest extends \Codeception\TestCase\Test
         $site_url = 'http://testsite.com';
 
         $start = '<a href="http://testsite.com/docs/developer/test">Test</a>';
-        $final = '<a href="'. $site_url .'/docs/developer/test">Test</a>';
+        $final = '<div><a href="'. $site_url .'/docs/developer/test">Test</a></div>';
 
         $this->assertEquals($final, $this->builder->postProcess($start, $site_url, $site_url));
     }
@@ -129,7 +129,7 @@ class DocBuilderTest extends \Codeception\TestCase\Test
         $this->builder->setTableClasses($classes);
 
         $start = '<table><tbody></tbody></table>';
-        $final = '<table class="'. $classes .'"><tbody/></table>';
+        $final = '<div><table class="'. $classes .'"><tbody/></table></div>';
 
         $this->assertEquals($final, $this->builder->postProcess($start, $site_url, $site_url));
     }

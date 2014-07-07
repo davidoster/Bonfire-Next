@@ -124,7 +124,14 @@ class DocBuilder {
             return $content;
         }
 
-        $xml = new SimpleXMLElement('<?xml version="1.0" standalone="yes"?>' . $content);
+        try {
+            $xml = new SimpleXMLElement('<?xml version="1.0" standalone="yes"?><div>' . $content .'</div>');
+        }
+        catch (Exception $e)
+        {
+            // SimpleXML barfed on us, so send back the un-modified content
+            return $content;
+        }
 
         // Prepare some things and cleanup others
         $groups      = array_keys($this->doc_folders);
@@ -198,7 +205,7 @@ class DocBuilder {
             // Convert to full site_url
             if (strpos($href, 'http') !== 0)
             {
-                $href = $site_url .'docs' . $href;
+                $href = $site_url .'docs/' . ltrim($href, '/ ');
             }
 
             // Save the corrected href

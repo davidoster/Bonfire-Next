@@ -4,21 +4,15 @@ defined('BASEPATH') || exit('No direct script access allowed');
 
 class Docs extends Base_Controller
 {
-    protected $docsDir = 'docs';
-
-    protected $docsExt = '.md';
-
-    protected $docsGroup = NULL;
-
-    protected $docsTypeApp = 'application';
-
-    protected $docsTypeBf = 'developer';
-
-    protected $docsTypeMod = 'module';
-
     protected $ignoreFiles = array('_404.md');
 
     protected $tocFile;
+
+    protected $doc_folders = [];
+    
+    protected $current_group = null;
+
+    protected $current_path = null;
 
     private $showAppDocs;
 
@@ -38,7 +32,10 @@ class Docs extends Base_Controller
         $this->load->config('docs');
         $this->lang->load('docs');
 
-        $this->docsGroup = $this->uri->segment(2);
+        // Save our folders
+        $this->doc_folders = config_item('docs.folders');
+
+        list($this->current_group, $this->current_path) = $this->determineFromURL();
 
         // Is displaying docs permitted for this environment?
         if (config_item('docs.permitted_environments')
@@ -49,23 +46,17 @@ class Docs extends Base_Controller
             redirect();
         }
 
-        // Was a doc group provided?
-        if (! $this->docsGroup)
-        {
-            redirect('docs/' . config_item('docs.default_group'));
-        }
-
         $this->showAppDocs = config_item('docs.show_app_docs');
         $this->showDevDocs = config_item('docs.show_dev_docs');
         $this->tocFile     = config_item('docs.toc_file') ? : '_toc.ini';
 
         // Make sure we can still get to the search method.
-        if ($this->docsGroup == 'search')
+        if ($this->current_group == 'search')
         {
-            $this->docsGroup = FALSE;
+            $this->current_group = FALSE;
         }
         // Are we allowed to show developer docs in this environment?
-        elseif ($this->docsGroup == 'developer'
+        elseif ($this->current_group == 'developer'
                 && ! $this->showDevDocs
                 && ENVIRONMENT != 'development'
         )
@@ -83,6 +74,8 @@ class Docs extends Base_Controller
         $this->template->setTheme('docs');
 
         $this->load->helper('form');
+
+        $this->load->library('DocBuilder');
     }
 
     //--------------------------------------------------------------------
@@ -96,13 +89,13 @@ class Docs extends Base_Controller
     {
         $data = array();
 
-        $this->load->library('DocBuilder');
-
         // Make sure the builder knows where to look
-        $this->docbuilder->addDocFolder('app', APPPATH .'docs');
-        $this->docbuilder->addDocFolder('bonfire', BFPATH .'docs');
+        foreach ($this->doc_folders as $alias => $folder)
+        {
+            $this->docbuilder->addDocFolder($alias, $folder);
+        }
 
-        $content = $this->docbuilder->readPage($this->uri->segment_array());
+        $content = $this->docbuilder->readPage($this->current_path, $this->current_group);
         $content = $this->docbuilder->postProcess($content, site_url(), current_url());
 
         $data['sidebar'] = $this->buildSidebar();
@@ -155,6 +148,51 @@ class Docs extends Base_Controller
     //--------------------------------------------------------------------------
 
     /**
+     * Determines the current doc group and file path from the current URL.
+     *
+     * Returns an array with the group and file path in the 0 and 1 positions, respectively.
+     *
+     * @return array
+     */
+    private function determineFromURL ()
+    {
+        $return = [
+            '',     // Group
+            '',     // File Path
+        ];
+
+        $segments = $this->uri->segment_array();
+
+        // Remove the 'docs' from the array
+        // for now, we assume this is the first one
+        // since that is how Bonfire is setup to show docs
+        // @todo Make it so the path can be modified and this still works.
+        array_shift($segments);
+
+        // If nothing left, then assign the default group and get out of here...
+        if (! count($segments))
+        {
+            $return[0] = config_item('docs.default_group');
+            $return[1] = 'index';
+
+            return $return;
+        }
+
+        // Do we have a group specified? Bonfire Docs requires that a group
+        // be part of the URI so it should be the first element on the array.
+        $return[0] = array_shift($segments);
+
+        // If there's any more left, then join them together and they'll
+        // form the path to the file. This will allow for subfolders with the
+        // docs folder itself.
+        $return[1] = count($segments) ? implode('/', $segments) : 'index';
+
+        return $return;
+    }
+
+    //--------------------------------------------------------------------
+
+    /**
      * Builds a TOC for the sidebar out of files found in the following folders:
      *      - application/docs
      *      - bonfire/docs
@@ -166,25 +204,16 @@ class Docs extends Base_Controller
     {
         $data = array();
 
-        // Get the list of docs based on the current docs group
-        // (application-specific or developer docs)
-        if ($this->docsGroup == 'application')
-        {
-            $data['docs'] = $this->get_folder_files(APPPATH . $this->docsDir, $this->docsTypeApp);
-        }
-        elseif ($this->docsGroup == 'developer')
-        {
-            $data['docs'] = $this->get_folder_files(BFPATH . $this->docsDir, $this->docsTypeBf);
-        }
+        $data['docs'] = $this->get_folder_files( $this->doc_folders[ $this->current_group ] );
 
         // Get the docs for the modules
-        $data['module_docs'] = $this->get_module_docs();
+//        $data['module_docs'] = $this->get_module_docs();
 
         // Set the remaining data for the view
-        $data['docsDir'] = $this->docsDir;
-        $data['docsExt'] = $this->docsExt;
+        $data['docsDir'] = 'docs/'. $this->current_group .'/';
+        $data['docsExt'] = config_item('docs.extension');
 
-        return $this->post_process($this->load->view('docs/_sidebar', $data, TRUE));
+        return $this->docbuilder->postProcess($this->load->view('docs/_sidebar', $data, TRUE), site_url(), current_url());
     }
 
     //--------------------------------------------------------------------
@@ -194,20 +223,13 @@ class Docs extends Base_Controller
      * so it's ready for creating the HTML.
      *
      * @param  String $folder         The path to the folder to retrieve.
-     * @param  String $type           The type of documentation being retrieved
-     *                                ('application', 'bonfire', or the name of the module).
      * @param  Array  $ignoredFolders A list of sub-folders we should ignore.
      *
      * @return Array  An associative array @see parse_ini_file for format
      * details.
      */
-    private function get_folder_files ($folder, $type, $ignoredFolders = array())
+    private function get_folder_files ($folder, $ignoredFolders = array())
     {
-        if (! is_dir($folder))
-        {
-            return array();
-        }
-
         // If the toc file exists in the folder, use it to build the links.
         if (is_file("{$folder}/{$this->tocFile}"))
         {
@@ -227,10 +249,10 @@ class Docs extends Base_Controller
         }
 
         // If these docs are located in the /application/docs or /bonfire/docs
-        // directory, just use $this->docsGroup for the root.
-        // Module docs need $this->docsGroup and $type.
-        $tocRoot = $this->docsGroup;
-        if ($this->docsGroup != strtolower($type))
+        // directory, just use $this->current_group for the root.
+        // Module docs need $this->current_group and $type.
+        $tocRoot = $this->current_group;
+        if ($this->current_group != strtolower($type))
         {
             $tocRoot .= '/' . strtolower($type);
         }
@@ -295,7 +317,7 @@ class Docs extends Base_Controller
             $path            = \Bonfire\Modules::path($module) . $this->docsDir;
 
             // If these are developer docs, add the folder to the path.
-            if ($this->docsGroup == $this->docsTypeBf)
+            if ($this->current_group == $this->docsTypeBf)
             {
                 $path .= '/' . $this->docsTypeBf;
             }
