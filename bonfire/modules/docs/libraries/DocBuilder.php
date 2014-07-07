@@ -244,10 +244,13 @@ class DocBuilder {
      *
      * Note: Will ONLY use h2 and h3 to build the links from.
      *
+     * Note: The $content passed in WILL be modified by adding named anchors
+     * that match up with the locations.
+     *
      * @param string $content The HTML to analyse for headings.
      * @return string
      */
-    public function buildDocumentMap ($content)
+    public function buildDocumentMap (&$content)
     {
         if (empty($content))
         {
@@ -255,12 +258,12 @@ class DocBuilder {
         }
 
         try {
-            $xml = new SimpleXMLElement('<?xml version="1.0" standalone="yes"?><div>' . $content .'</div>');
+            $xml = new SimpleXMLElement('<?xml version="1.0" standalone="yes"?><div>' . $content .'</div>');;
         }
         catch (Exception $e)
         {
             // SimpleXML barfed on us, so send back the un-modified content
-            return $content;
+            return [];
         }
 
         $map = [];
@@ -289,6 +292,14 @@ class DocBuilder {
                 $current_obj['name'] = (string)$line;
                 $current_obj['link'] = '#'. strtolower( str_replace(' ', '_', (string)$line) );
                 $current_obj['items'] = [];
+
+                // Insert a named anchor into the $content
+                $link =  substr($current_obj['link'], 1);
+                $anchor = '<a name="'. $link .'" id="'. $link .'" />';
+
+                $search = "<h2>{$current_obj['name']}</h2>";
+
+                $content = str_replace($search, $anchor . $search, $content);
             }
 
             else if ($type == 'h3')
@@ -299,10 +310,20 @@ class DocBuilder {
                     $current_obj['items'] = [];
                 }
 
+                $link = strtolower( str_replace(' ', '_', (string)$line) );
+                $name = (string)$line;
+
                 $current_obj['items'][] = [
-                    'name'  => (string)$line,
-                    'link'  => '#'. strtolower( str_replace(' ', '_', (string)$line) )
+                    'name'  => $name,
+                    'link'  => '#'. $link
                 ];
+
+                // Insert a named anchor into the $content
+                $anchor = '<a name="'. $link .'" id="'. $link .'" />';
+
+                $search = "<h3>{$name}</h3>";
+
+                $content = str_replace($search, $anchor . $search, $content);
             }
 
             // Is this the last element? Then close out our current object.

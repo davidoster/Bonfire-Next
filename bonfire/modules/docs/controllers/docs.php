@@ -98,7 +98,7 @@ class Docs extends Base_Controller
         $content = $this->docbuilder->readPage($this->current_path, $this->current_group);
         $content = $this->docbuilder->postProcess($content, site_url(), current_url());
 
-        $data['sidebar'] = $this->buildSidebar();
+        $data['sidebar'] = $this->buildSidebar($content);
         $data['content'] = $content;
 
         $this->render($data);
@@ -196,22 +196,20 @@ class Docs extends Base_Controller
      *      - bonfire/docs
      *      - {module}/docs
      *
-     * @return string The HTML for the sidebar.
+     * @param $content  The HTML generated for the page content.
+     * @return string   The HTML for the sidebar.
      */
-    private function buildSidebar ()
+    private function buildSidebar ($content)
     {
-        $data = array();
-
-        $data['docs'] = $this->get_folder_files( $this->doc_folders[ $this->current_group ] );
-
-        // Get the docs for the modules
-//        $data['module_docs'] = $this->get_module_docs();
+        $data = [];
 
         // Set the remaining data for the view
         $data['docsDir'] = 'docs/'. $this->current_group .'/';
         $data['docsExt'] = config_item('docs.extension');
 
-        return $this->docbuilder->postProcess($this->load->view('docs/_sidebar', $data, TRUE), site_url(), current_url());
+        $data['docMap'] = $this->docbuilder->buildDocumentMap($content);
+
+        return $this->docbuilder->postProcess($this->load->view('docs/_document_map', $data, TRUE), site_url(), current_url());
     }
 
     //--------------------------------------------------------------------
