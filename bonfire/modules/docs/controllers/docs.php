@@ -169,13 +169,11 @@ class Docs extends Base_Controller
         // @todo Make it so the path can be modified and this still works.
         array_shift($segments);
 
-        // If nothing left, then assign the default group and get out of here...
+        // If nothing left, then assign the default group and redirect to
+        // a page we can do something with...
         if (! count($segments))
         {
-            $return[0] = config_item('docs.default_group');
-            $return[1] = 'index';
-
-            return $return;
+            redirect('docs/'. config_item('docs.default_group'));
         }
 
         // Do we have a group specified? Bonfire Docs requires that a group

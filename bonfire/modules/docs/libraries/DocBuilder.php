@@ -238,94 +238,88 @@ class DocBuilder {
 
     //--------------------------------------------------------------------
 
-//    public function readPage ($segments = [])
-//    {
-//        $content     = NULL;
-//        $defaultType = $this->docsTypeApp;
-//
-//        $ci =& get_instance();
-//
-//        // Strip the controller name
-//        if ($segments[1] == $ci->router->fetch_class())
-//        {
-//            array_shift($segments);
-//        }
-//
-//        // Is this core, app, or module?
-//        $type = array_shift($segments);
-//        if (empty($type))
-//        {
-//            $type = $defaultType;
-//        }
-//
-//        // For now, assume Markdown files are the only allowed format, with an
-//        // extension of '.md'
-//        if (count($segments))
-//        {
-//            $file = implode('/', $segments) . $this->docsExt;
-//        }
-//        else
-//        {
-//            $file = 'index' . $this->docsExt;
-//            if ($type != $this->docsTypeMod
-//                && ! is_file(APPPATH . $this->docsDir . '/' . $file)
-//            )
-//            {
-//                $type = $this->docsTypeBf;
-//            }
-//        }
-//
-//        // First try to load from Activities or Bonfire.
-//        switch ($type)
-//        {
-//            case $this->docsTypeBf:
-//                $content = is_file(BFPATH . $this->docsDir . '/' . $file) ?
-//                    file_get_contents(BFPATH . $this->docsDir . '/' . $file) : '';
-//                break;
-//
-//            case $this->docsTypeApp:
-//                $content = is_file(APPPATH . $this->docsDir . '/' . $file) ?
-//                    file_get_contents(APPPATH . $this->docsDir . '/' . $file) : '';
-//                break;
-//        }
-//
-//        // If the file wasn't found, try to find a module with the content.
-//        if (empty($content))
-//        {
-//            $module = array_shift($segments);
-//
-//            // If anything's left on $segments, it's probably a filename
-//            $fileName = count($segments) ? array_shift($segments) : 'index';
-//            $fileName .= '.md';
-//
-//            // Developer docs for modules should be found under the
-//            // '{module}/docs/developer' path.
-//            $addPath = $type == $this->docsTypeBf ? '/' . $this->docsTypeBf . '/' : '/';
-//
-//            // This time, try it based on the name of the segment brought in
-//            list($full_path, $file) = Modules::find($fileName, $module, $this->docsDir . $addPath);
-//            if ($full_path)
-//            {
-//                $content = file_get_contents($full_path . $file);
-//            }
-//        }
-//
-//        // If the content is still empty, load the application/docs/404 file
-//        // so that we have a customizable not found file.
-//        if (empty($content))
-//        {
-//            $content = is_file(APPPATH . $this->docsDir . '/_404.md') ?
-//                file_get_contents(APPPATH . $this->docsDir . '/_404.md') : '';
-//        }
-//
-//        // Parse the file
-//        $ci->load->helper('markdown_extended');
-//        $content = MarkdownExtended($content);
-//
-//        return trim($content);
-//    }
+    /**
+     * Given the contents to render, will build a list of links for the sidebar
+     * out of the headings in the file.
+     *
+     * Note: Will ONLY use h2 and h3 to build the links from.
+     *
+     * @param string $content The HTML to analyse for headings.
+     * @return string
+     */
+    public function buildDocumentMap ($content)
+    {
+        if (empty($content))
+        {
+            return $content;
+        }
+
+        try {
+            $xml = new SimpleXMLElement('<?xml version="1.0" standalone="yes"?><div>' . $content .'</div>');
+        }
+        catch (Exception $e)
+        {
+            // SimpleXML barfed on us, so send back the un-modified content
+            return $content;
+        }
+
+        $map = [];
+
+        // Holds the current h2 we're processing
+        $current_obj = [];
+
+        $i = 0;
+        foreach ($xml->children() as $type => $line )
+        {
+            $i++;
+
+            // Make sure that our current object is
+            // stored and reset.
+            if ($type == 'h1' || $type == 'h2')
+            {
+                if (count($current_obj))
+                {
+                    $map[] = $current_obj;
+                    $current_obj = [];
+                }
+            }
+
+            if ($type == 'h2')
+            {
+                $current_obj['name'] = (string)$line;
+                $current_obj['link'] = '#'. strtolower( str_replace(' ', '_', (string)$line) );
+                $current_obj['items'] = [];
+            }
+
+            else if ($type == 'h3')
+            {
+                // Make sure we have some place to store the items.
+                if (! isset($current_obj['items']))
+                {
+                    $current_obj['items'] = [];
+                }
+
+                $current_obj['items'][] = [
+                    'name'  => (string)$line,
+                    'link'  => '#'. strtolower( str_replace(' ', '_', (string)$line) )
+                ];
+            }
+
+            // Is this the last element? Then close out our current object.
+            if (count($xml) == $i)
+            {
+                if (count($current_obj))
+                {
+                    $map[] = $current_obj;
+                }
+            }
+        }
+
+        return $map;
+    }
 
     //--------------------------------------------------------------------
+
 
     //--------------------------------------------------------------------
     // Folder Methods

@@ -1,6 +1,7 @@
 <?php
 
 include 'bonfire/modules/docs/libraries/DocBuilder.php';
+include_once 'bonfire/helpers/markdown_extended_helper';
 
 define('BFPATH', 'bonfire/');
 define('APPPATH', 'application/');
@@ -135,4 +136,56 @@ class DocBuilderTest extends \Codeception\TestCase\Test
     }
 
     //--------------------------------------------------------------------
+
+    //--------------------------------------------------------------------
+    // Document maps
+    //--------------------------------------------------------------------
+
+    public function testBuildDocMapBasics ()
+    {
+        $start = "# First
+Some text goes here
+
+## Second
+Some more text
+
+### Third
+Third-level text
+
+#### Fourth
+
+## Another Second
+
+### Another Third";
+
+        $start = MarkdownExtended($start);
+
+        $final = [
+            [
+                'name'  => 'Second',
+                'link'  => '#second',
+                'items'     => [
+                    [
+                        'name'  => 'Third',
+                        'link'  => '#third'
+                    ]
+                ]
+            ],
+            [
+                'name'  => 'Another Second',
+                'link'  => '#another_second',
+                'items'     => [
+                    [
+                        'name'  => 'Another Third',
+                        'link'  => '#another_third'
+                    ]
+                ]
+            ],
+        ];
+
+        $this->assertEquals($final, $this->builder->buildDocumentMap($start));
+    }
+
+    //--------------------------------------------------------------------
+
 }
