@@ -199,7 +199,7 @@ class Docs extends Base_Controller
      * @param $content  The HTML generated for the page content.
      * @return string   The HTML for the sidebar.
      */
-    private function buildSidebar ($content)
+    private function buildSidebar (&$content)
     {
         $data = [];
 

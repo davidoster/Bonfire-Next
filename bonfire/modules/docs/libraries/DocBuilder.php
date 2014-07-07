@@ -272,7 +272,7 @@ class DocBuilder {
         $current_obj = [];
 
         $i = 0;
-        foreach ($xml->children() as $type => $line )
+        foreach ($xml->div->children() as $type => $line )
         {
             $i++;
 
@@ -289,15 +289,17 @@ class DocBuilder {
 
             if ($type == 'h2')
             {
-                $current_obj['name'] = (string)$line;
-                $current_obj['link'] = '#'. strtolower( str_replace(' ', '_', (string)$line) );
+                $name = (string)$line;
+                $link = strtolower( str_replace(' ', '_', (string)$line) );
+
+                $current_obj['name'] = $name;
+                $current_obj['link'] = '#'. $link;
                 $current_obj['items'] = [];
 
                 // Insert a named anchor into the $content
-                $link =  substr($current_obj['link'], 1);
-                $anchor = '<a name="'. $link .'" id="'. $link .'" />';
+                $anchor = '<a name="'. $link .'" id="'. $link .'" ></a>';
 
-                $search = "<h2>{$current_obj['name']}</h2>";
+                $search = "<h2>{$name}</h2>";
 
                 $content = str_replace($search, $anchor . $search, $content);
             }
@@ -319,7 +321,7 @@ class DocBuilder {
                 ];
 
                 // Insert a named anchor into the $content
-                $anchor = '<a name="'. $link .'" id="'. $link .'" />';
+                $anchor = '<a name="'. $link .'" id="'. $link .'" ></a>';
 
                 $search = "<h3>{$name}</h3>";
 

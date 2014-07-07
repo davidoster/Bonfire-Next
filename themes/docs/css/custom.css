@@ -37,6 +37,23 @@ ul, ol, dl {
 }
 
 /*
+    Document Map
+*/
+.doc-map .nav > li > a:link,
+.doc-map .nav > li > a:visited {
+    color: #999;
+    font-weight: 500;
+    font-size: 13px;
+}
+.doc-map .nav > li > .nav > li > a:link,
+.doc-map .nav > li > .nav > li > a:visited {
+    color: #999;
+    font-weight: 400;
+    font-size: 12px;
+    padding-left: 30px;
+}
+
+/*
     Help Formatting
  */
 .page {

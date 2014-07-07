@@ -6,7 +6,7 @@
 
     <link rel="stylesheet" type="text/css" href="/assets/docs.css" />
 </head>
-<body>
+<body data-spy="scroll" data-target=".doc-map">
 
     <!-- Navbar -->
     <header class="navbar navbar-inverse" role="banner">
@@ -83,7 +83,6 @@
 
     </div>
 
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="/assets/js/jquery-2.1.1.min.js"><\/script>')</script>
+    <script src="/assets/js/docs.js"></script>
 </body>
 </html>

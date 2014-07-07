@@ -188,4 +188,21 @@ Third-level text
 
     //--------------------------------------------------------------------
 
+    public function testBuildDocMapAddsAnchorsToContent ()
+    {
+        $start = "## Second
+### Third";
+
+        $start = MarkdownExtended($start);
+
+        $final = '<a name="second" id="second" />'. "<h2>Second</h2>\n\n".
+                 '<a name="third" id="third" />'. "<h3>Third</h3>\n";
+
+        $this->builder->buildDocumentMap($start);
+
+        $this->assertEquals($start, $final);
+    }
+    
+    //--------------------------------------------------------------------
+    
 }
