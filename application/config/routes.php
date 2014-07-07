@@ -84,7 +84,7 @@ $route['translate_uri_dashes'] = FALSE;
 
 // Work with the Assets Pipeline to change the path that
 // Assets are referenced at. By default, this is the '/assets' public folder.
-$routes->get(BF_ASSET_PATH .'/(:any)', 'pipeline/$1');
+$routes->get(BF_ASSET_PATH .'/(.+)', 'pipeline/$1');
 
 // Map all /admin/* methods to a module's 'admin' controller.
 // Can be changed in constants file.
