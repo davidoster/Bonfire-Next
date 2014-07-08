@@ -142,7 +142,7 @@ class DocBuilderTest extends \Codeception\TestCase\Test
         $site_url = 'http://testsite.com';
 
         $start = '<a href="http://anothertestsite.com/docs/developer/test">Test</a>';
-        $final = '<div><a href="http://anothertestsite.com/docs/developer/test">Test</a></div>';
+        $final = '<div><a href="http://anothertestsite.com/docs/developer/test" target="_blank">Test</a></div>';
 
         $this->assertEquals($final, $this->builder->postProcess($start, $site_url, $site_url));
     }
