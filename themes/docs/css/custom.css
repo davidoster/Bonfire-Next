@@ -54,6 +54,35 @@ ul, ol, dl {
 }
 
 /*
+    TOC
+*/
+.navbar {
+    margin-bottom: 0;
+    border-radius: 0;
+}
+.toc {
+    position: relative;
+    padding-bottom: 7px;
+    background: #77777c;
+    margin-bottom: 30px;
+}
+.toc .container {
+    position: relative;
+}
+#toc-btn {
+    position: absolute;
+    right: 2px;
+    padding: 4px 12px;
+    background: #77777c;
+    color: #fff;
+    font-weight: lighter;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    z-index: 99;
+}
+
+
+/*
     Help Formatting
  */
 .page {
@@ -122,6 +151,17 @@ tt {
 .page table tr:nth-child(2n) {
     background-color: #f8f8f8
 }
+
+.top-btn {
+    float: right;
+    position: relative;
+    margin-top: -3em;
+    color: #ddd;
+    text-decoration: none;
+    font-weight: lighter;
+}
+.top-btn:hover { color: #777; }
+
 
 code,
 pre {

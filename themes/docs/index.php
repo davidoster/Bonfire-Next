@@ -6,10 +6,12 @@
 
     <link rel="stylesheet" type="text/css" href="/assets/docs.css" />
 </head>
-<body data-spy="scroll" data-target=".doc-map">
+<body>
+
+    <a name="top"></a>
 
     <!-- Navbar -->
-    <header class="navbar navbar-inverse" role="banner">
+    <header class="navbar navbar-inverse navbar-static-top" role="banner">
         <div class="container">
 
             <div class="navbar-header">
@@ -49,6 +51,14 @@
         </div>
     </header>
 
+    <div class="toc">
+        <div class="container">
+
+            <a href="#" id="toc-btn" style="margin: 5px 10px 0 0"><?= lang('docs_toc') ?></a>
+        </div>
+    </div>
+
+
     <!-- Content Area -->
     <div class="container">
 
@@ -62,19 +72,13 @@
                     <?= $content; ?>
                 <?php else: ?>
                     <div class="alert">
-                        Unable to locate the file.
+                        <?= lang('docs_not_found') ?>
                     </div>
                 <?php endif; ?>
             </div>
 
             <div class="col-md-3 sidebar">
-                <?php if (isset($this->sections)) : ?>
-                    <h3>In This Chapter</h3>
-                    <?= $this->sections ?>
-                <?php endif; ?>
-
                 <?php if (isset($this->sidebar)) : ?>
-                    <h3>Chapter List</h3>
                     <?= $this->sidebar; ?>
                 <?php endif; ?>
             </div>

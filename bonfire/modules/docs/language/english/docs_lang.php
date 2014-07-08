@@ -13,3 +13,5 @@ $lang['docs_not_found']         = 'Unable to find the docs you were looking for.
 $lang['docs_no_results']        = 'No results found for <b>%s</b>';
 
 $lang['docs_search_results']    = 'Search Results';
+$lang['docs_toc']               = 'Table of Contents';
+$lang['docs_in_this_page']      = 'On This Page';
