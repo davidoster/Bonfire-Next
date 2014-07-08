@@ -264,8 +264,22 @@ class DocBuilder {
             return $content;
         }
 
+        // If $content already has a wrapping <div> and </div> tags, remove them,
+        // since we'll replace them just below.
+        if (strpos($content, '<div>') === 0)
+        {
+            $content = substr($content, 5);
+
+            // Trailing div also?
+            if (substr($content, -6) == '</div>')
+            {
+                $content = substr($content, 0, -6);
+            }
+        }
+
+
         try {
-            $xml = new SimpleXMLElement('<?xml version="1.0" standalone="yes"?><div>' . $content .'</div>');;
+            $xml = new SimpleXMLElement('<?xml version="1.0" standalone="yes"?><div>' . $content .'</div>');
         }
         catch (Exception $e)
         {
@@ -280,9 +294,9 @@ class DocBuilder {
 
         $i = 0;
 
-        $objs = count($xml->children() == 1) ? $xml->div->children() : $xml->children();
+//        $objs = count($xml->children() == 1) ? $xml->div->children() : $xml->children();
 
-        foreach ($objs as $type => $line )
+        foreach ($xml->children() as $type => $line )
         {
             $i++;
 

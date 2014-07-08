@@ -154,68 +154,68 @@ class DocBuilderTest extends \Codeception\TestCase\Test
     // Document maps
     //--------------------------------------------------------------------
 
-//    public function testBuildDocMapBasics ()
-//    {
-//        $start = "# First
-//Some text goes here
-//
-//## Second
-//Some more text
-//
-//### Third
-//Third-level text
-//
-//#### Fourth
-//
-//## Another Second
-//
-//### Another Third";
-//
-//        $start = MarkdownExtended($start);
-//
-//        $final = [
-//            [
-//                'name'  => 'Second',
-//                'link'  => '#second',
-//                'items'     => [
-//                    [
-//                        'name'  => 'Third',
-//                        'link'  => '#third'
-//                    ]
-//                ]
-//            ],
-//            [
-//                'name'  => 'Another Second',
-//                'link'  => '#another_second',
-//                'items'     => [
-//                    [
-//                        'name'  => 'Another Third',
-//                        'link'  => '#another_third'
-//                    ]
-//                ]
-//            ],
-//        ];
-//
-//        $this->assertEquals($final, $this->builder->buildDocumentMap($start));
-//    }
+    public function testBuildDocMapAddsAnchorsToContent ()
+    {
+        $start = "## Second
+### Third";
+
+        $start = MarkdownExtended($start);
+
+        $final = '<a name="second" id="second" ></a>'. "<h2>Second</h2>\n\n".
+                 '<a name="third" id="third" ></a>'. "<h3>Third</h3>\n";
+
+        $this->builder->buildDocumentMap($start);
+
+        $this->assertEquals($start, $final);
+    }
 
     //--------------------------------------------------------------------
 
-//    public function testBuildDocMapAddsAnchorsToContent ()
-//    {
-//        $start = "## Second
-//### Third";
-//
-//        $start = MarkdownExtended($start);
-//
-//        $final = '<a name="second" id="second" />'. "<h2>Second</h2>\n\n".
-//                 '<a name="third" id="third" />'. "<h3>Third</h3>\n";
-//
-//        $this->builder->buildDocumentMap($start);
-//
-//        $this->assertEquals($start, $final);
-//    }
-    
+    public function testBuildDocMapBasics ()
+    {
+        $start = "# First
+Some text goes here
+
+## Second
+Some more text
+
+### Third
+Third-level text
+
+#### Fourth
+
+## Another Second
+
+### Another Third";
+
+        $start = MarkdownExtended($start);
+
+        $final = [
+            [
+                'name'  => 'Second',
+                'link'  => '#second',
+                'items'     => [
+                    [
+                        'name'  => 'Third',
+                        'link'  => '#third'
+                    ]
+                ]
+            ],
+            [
+                'name'  => 'Another Second',
+                'link'  => '#another_second',
+                'items'     => [
+                    [
+                        'name'  => 'Another Third',
+                        'link'  => '#another_third'
+                    ]
+                ]
+            ],
+        ];
+
+        $this->assertEquals($final, $this->builder->buildDocumentMap($start));
+    }
+
     //--------------------------------------------------------------------
     
 }
