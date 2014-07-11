@@ -60,13 +60,13 @@ ul, ol, dl {
     margin-bottom: 0;
     border-radius: 0;
 }
-.toc {
+.toc-wrapper {
     position: relative;
     padding-bottom: 7px;
     background: #77777c;
     margin-bottom: 30px;
 }
-.toc .container {
+.toc-wrapper .container {
     position: relative;
 }
 #toc-btn {
