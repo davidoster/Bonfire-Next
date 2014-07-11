@@ -15,6 +15,7 @@
  * @copyright	Copyright (c) 2011 Wiredesignz
  * @version 	5.4
  * @modified	Sean Downey - Added Spark loading ability
+ * @modified    Lonnie Ezell - to work with CodeIgniter 3.0
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -133,18 +134,22 @@ class MX_Loader extends CI_Loader
     //--------------------------------------------------------------------
 
     /** Load a module language file **/
-    public function language($langfile, $lang = '', $return = FALSE)	{
-
+    public function language($langfile, $lang = '', $return = FALSE)
+    {
         if (is_array($langfile)) return $this->languages($langfile);
 
-        return CI::$APP->lang->load($langfile, $lang, $return, $this->_module);
+        return CI::$APP->lang->load($langfile, $lang, $return, TRUE, $this->_module);
     }
 
     //--------------------------------------------------------------------
 
     /** Load an array of languages **/
-    public function languages($languages) {
-        foreach ($languages as $_language) $this->language($_language);
+    public function languages($languages)
+    {
+        foreach ($languages as $_language)
+        {
+            $this->language($_language);
+        }
     }
 
     //--------------------------------------------------------------------

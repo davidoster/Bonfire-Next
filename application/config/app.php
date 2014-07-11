@@ -21,6 +21,8 @@ $config['di.templateEngine'] = 'Bonfire\PlatesTemplate';
  */
 $config['enable_activity_logging'] = TRUE;
 
+$config['show_profiler'] = TRUE;
+
 /*
 |---------------------------------------------------------------------
 | THEMES

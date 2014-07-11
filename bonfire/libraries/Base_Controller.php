@@ -62,6 +62,22 @@ class Base_Controller extends MX_Controller {
         parent::__construct();
 
         $this->init();
+
+        /*
+         * Auto-Migration Support
+         */
+
+        /*
+         * Profiler
+         */
+        if (config_item('show_profiler') &&
+            ! $this->input->is_cli_request() &&
+            ! $this->input->is_ajax_request())
+        {
+            $this->load->add_package_path(APPPATH .'third_party/codeigniter-forensics');
+//            $this->load->library('Console');
+            $this->output->enable_profiler(true);
+        }
     }
 
     //--------------------------------------------------------------------
