@@ -9,5 +9,6 @@ $(document).ready(function() {
     // Toggle our TOC display
     $('#toc-btn').click(function(e){
         $('.toc').slideToggle('fast');
+        $('.toc-wrapper').toggleClass('inner-shadow');
     });
 });
