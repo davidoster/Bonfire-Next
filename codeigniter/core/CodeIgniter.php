@@ -249,7 +249,7 @@ if ( ! is_php('5.4'))
 	require_once(BASEPATH.'core/compat/mbstring.php');
 	require_once(BASEPATH.'core/compat/hash.php');
 	require_once(BASEPATH.'core/compat/password.php');
-	require_once(BASEPATH.'core/compat/array.php');
+//	require_once(BASEPATH.'core/compat/array.php');
 
 /*
  * ------------------------------------------------------
@@ -264,6 +264,23 @@ if ( ! is_php('5.4'))
  * ------------------------------------------------------
  */
 	$URI =& load_class('URI', 'core');
+
+/*
+ * ------------------------------------------------------
+ *  Should we use a Composer autoloader?
+ * ------------------------------------------------------
+ */
+if (($composer_autoload = config_item('composer_autoload')) !== FALSE)
+{
+    if ($composer_autoload === TRUE && file_exists(APPPATH.'vendor/autoload.php'))
+    {
+        require_once(APPPATH.'vendor/autoload.php');
+    }
+    elseif (file_exists($composer_autoload))
+    {
+        require_once($composer_autoload);
+    }
+}
 
 /*
  * ------------------------------------------------------
