@@ -294,8 +294,6 @@ class DocBuilder {
 
         $i = 0;
 
-//        $objs = count($xml->children() == 1) ? $xml->div->children() : $xml->children();
-
         foreach ($xml->children() as $type => $line )
         {
             $i++;
@@ -367,6 +365,147 @@ class DocBuilder {
 
     //--------------------------------------------------------------------
 
+    //--------------------------------------------------------------------
+    // Table of Contents methods
+    //--------------------------------------------------------------------
+
+    /**
+     * Retrieves the list of files in a folder and preps the name and filename
+     * so it's ready for creating the HTML.
+     *
+     * @param  String $folder The path to the folder to retrieve.
+     *
+     * @return Array  An associative array @see parse_ini_file for format
+     * details.
+     */
+    public function buildTOC ($folder)
+    {
+        // If the toc file exists in the folder, use it to build the links.
+        if (is_file("{$folder}/_toc.ini"))
+        {
+            return $this->columnizeTOC( parse_ini_file("{$folder}/_toc.ini", TRUE) );
+        }
+
+        // If the toc file does not exist, build the links by listing the files
+        // in the directory (and any sub-directories)
+        $this->load->helper('directory');
+        $map = directory_map($folder);
+
+        // If directory_map can not open the directory or find any files inside
+        // the directory, return an empty array.
+        if (empty($map))
+        {
+            return array();
+        }
+
+        // If these docs are located in the /application/docs or /bonfire/docs
+        // directory, just use $this->current_group for the root.
+        // Module docs need $this->current_group and $type.
+        $tocRoot = $this->current_group;
+        if ($this->current_group != strtolower($type))
+        {
+            $tocRoot .= '/' . strtolower($type);
+        }
+
+        $toc = array();
+        foreach ($map as $new_folder => $files)
+        {
+            // If $files isn't an array, then make it one so that all situations
+            // may be dealt with cleanly.
+            if (! is_array($files))
+            {
+                $files = array($files);
+            }
+
+            foreach ($files as $file)
+            {
+                if (in_array($file, $this->ignoreFiles))
+                {
+                    continue;
+                }
+
+                // The title for the index is the passed $type. Otherwise,
+                // build the title from the file's name.
+                if (strpos($file, 'index') === FALSE)
+                {
+                    $title = str_replace($this->docsExt, '', $file);
+                    $title = str_replace('_', ' ', $title);
+                    $title = ucwords($title);
+
+                    $toc["{$tocRoot}/{$file}"] = $title;
+                }
+                else
+                {
+                    $toc[$tocRoot] = $type;
+                }
+            }
+        }
+
+        $toc = $this->columnizeTOC($toc);
+
+        return $toc;
+    }
+
+    //--------------------------------------------------------------------
+
+    /**
+     * Sorts the passed TOC array into columns of as close to equal length
+     * as we can get it.
+     *
+     * @param $toc
+     * @return array
+     */
+    protected function columnizeTOC($toc)
+    {
+        $section_count = count($toc);
+
+        // First - determine the size of each 'section'.
+        $sizes = [];
+
+        foreach ($toc as $section => $chapters)
+        {
+            $sizes[] = count($chapters);
+        }
+
+        $column_avg = (int)round( array_sum($sizes) / $section_count);
+
+        // Split things into 4 columns of approximately equal size.
+        // If we only have 4 columns (or less), then make sure to
+        // deal with that also.
+        $columns = [];
+
+        $current_column = 0;
+        $current_column_count = 0;
+        $keys = array_keys($toc);
+
+        for ($i=0; $i <= $section_count; $i++)
+        {
+            if (! isset($keys[$i]))
+            {
+                continue;
+            }
+
+            $section = array_shift($toc);
+
+            // Can we stay in this column?
+            if ($current_column_count <= $column_avg && $section_count > 4)
+            {
+                $current_column_count += count($section);
+
+            }
+            // Else - move to new column...
+            else {
+                $current_column_count = 0;
+                $current_column++;
+            }
+
+            $columns[ $current_column ][ $keys[$i] ] = $section;
+        }
+
+        return $columns;
+    }
+
+    //--------------------------------------------------------------------
 
     //--------------------------------------------------------------------
     // Folder Methods

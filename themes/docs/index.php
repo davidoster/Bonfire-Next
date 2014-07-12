@@ -55,7 +55,7 @@
         <div class="container">
 
             <div class="toc" style="display:none">
-                adsfa
+                <?= $this->toc ?>
             </div>
             <a href="#" id="toc-btn" style="margin: 5px 10px 0 0"><?= lang('docs_toc') ?></a>
         </div>

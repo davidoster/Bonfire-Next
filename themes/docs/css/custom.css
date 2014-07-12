@@ -162,6 +162,38 @@ tt {
 }
 .top-btn:hover { color: #777; }
 
+/*
+    Table of Contents
+*/
+.toc { font-size: 12px; font-weight: normal; }
+.toc > div {
+    padding-top: 1em;
+}
+.toc h3 {
+    font-size: 13px;
+    line-height: 2.5;
+    font-weight: bold;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+}
+.toc .nav {
+    margin-bottom: 1.5em;
+}
+.toc .nav > li {
+    margin: 0;
+    padding: 0 0 2px 0;
+}
+.toc .nav > li > a {
+    color: #eee;
+    padding: 0px 0px;
+    margin: 0px;
+    line-height: 1.4;
+}
+.toc .nav > li > a:hover {
+    background-color: transparent;
+    text-decoration: underline;
+}
 
 code,
 pre {
