@@ -32,8 +32,8 @@ $config['show_profiler'] = false;
 | a theme isn't found. Paths are relative to the FCPATH.
 */
 $config['template.theme_paths'] = [
-    'admin' => APPPATH .'../themes/admin',
-    'docs'  => APPPATH .'../themes/docs'
+    'admin' => APPPATH .'/views/themes/admin',
+    'docs'  => APPPATH .'/views/themes/docs'
 ];
 
 //--------------------------------------------------------------------
