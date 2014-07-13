@@ -56,12 +56,30 @@ interface TemplateInterface
     //--------------------------------------------------------------------
 
     /**
+     * Returns the current theme.
+     *
+     * @return mixed|string
+     */
+    public function theme ();
+
+    //--------------------------------------------------------------------
+
+    /**
      * Sets the current view file to render.
      *
      * @param $file
      * @return mixed
      */
     public function setView ($file);
+
+    //--------------------------------------------------------------------
+
+    /**
+     * Returns the current view.
+     *
+     * @return mixed|string
+     */
+    public function view ();
 
     //--------------------------------------------------------------------
 

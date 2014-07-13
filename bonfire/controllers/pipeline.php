@@ -34,7 +34,7 @@ class Pipeline extends Base_Controller {
             {
                 if (isset($matches[0]))
                 {
-                    $theme_path = APPPATH .'../themes/';
+                    $theme_path = APPPATH .'/views/themes/';
                     $theme = trim( str_replace('theme:', '', $matches[0]), '{} ');
 
                     return $theme_path . $theme .'/'. str_replace($matches[0] .'/', '', $str);

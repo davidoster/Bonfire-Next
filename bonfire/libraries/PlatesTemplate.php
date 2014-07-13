@@ -125,6 +125,18 @@ class PlatesTemplate implements TemplateInterface {
     //--------------------------------------------------------------------
 
     /**
+     * Returns the current theme.
+     *
+     * @return mixed|string
+     */
+    public function theme ()
+    {
+        return $this->theme;
+    }
+
+    //--------------------------------------------------------------------
+
+    /**
      * Sets the current view file to render.
      *
      * @param $file
@@ -133,6 +145,18 @@ class PlatesTemplate implements TemplateInterface {
     public function setView ($file)
     {
         $this->view = $file;
+    }
+
+    //--------------------------------------------------------------------
+
+    /**
+     * Returns the active view.
+     *
+     * @return string
+     */
+    public function view ()
+    {
+        return $this->view;
     }
 
     //--------------------------------------------------------------------

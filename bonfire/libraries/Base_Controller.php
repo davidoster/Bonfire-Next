@@ -100,7 +100,7 @@ class Base_Controller extends MX_Controller {
         $data = array_merge($data, $this->vars);
 
         // Build our notices from the theme's view file.
-        //$data['notice'] = $this->load->view('theme/notice', array('notice' => $this->message()), TRUE);
+        $data['notice'] = $this->load->view("themes/{$this->template->theme()}/notice", array('notice' => $this->message()), TRUE);
 
         $this->template->set($data);
 
