@@ -335,8 +335,12 @@ switch (ENVIRONMENT)
  *
  * And away we go...
  *
+ * Load the customized version of core/CodeIgniter, which has been tweaked
+ * to allow loading of controllers and modules from Bonfire folder, as well
+ * as had the composer autoloader loaded earlier in the process so that
+ * it's available during the route file reading.
  */
-require_once BASEPATH.'core/CodeIgniter.php';
+require_once BFPATH .'core/CodeIgniter.php';
 
 /* End of file index.php */
 /* Location: ./index.php */

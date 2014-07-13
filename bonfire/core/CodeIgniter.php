@@ -249,7 +249,7 @@ if ( ! is_php('5.4'))
 	require_once(BASEPATH.'core/compat/mbstring.php');
 	require_once(BASEPATH.'core/compat/hash.php');
 	require_once(BASEPATH.'core/compat/password.php');
-	require_once(BASEPATH.'core/compat/standard.php');
+	require_once(BASEPATH.'core/compat/array.php');
 
 /*
  * ------------------------------------------------------
@@ -264,6 +264,23 @@ if ( ! is_php('5.4'))
  * ------------------------------------------------------
  */
 	$URI =& load_class('URI', 'core');
+
+/*
+ * ------------------------------------------------------
+ *  Should we use a Composer autoloader?
+ * ------------------------------------------------------
+ */
+if (($composer_autoload = config_item('composer_autoload')) !== FALSE)
+{
+    if ($composer_autoload === TRUE && file_exists(APPPATH.'vendor/autoload.php'))
+    {
+        require_once(APPPATH.'vendor/autoload.php');
+    }
+    elseif (file_exists($composer_autoload))
+    {
+        require_once($composer_autoload);
+    }
+}
 
 /*
  * ------------------------------------------------------
@@ -364,13 +381,29 @@ if ( ! is_php('5.4'))
 	$class = ucfirst($RTR->class);
 	$method = $RTR->method;
 
-	if (empty($class) OR ! file_exists(APPPATH.'controllers/'.$RTR->directory.$class.'.php'))
+    /*
+     * Modified by the Bonfire Team to allow loading of controllers from
+     * modules within the Bonfire folder also.
+     */
+
+	if (empty($class) OR (! file_exists(APPPATH.'controllers/'.$RTR->directory.$class.'.php') AND ! file_exists($RTR->directory.$class.'.php') AND ! file_exists(BFPATH.'controllers/'.$RTR->directory.$class.'.php')) )
 	{
 		$e404 = TRUE;
 	}
 	else
 	{
-		require_once(APPPATH.'controllers/'.$RTR->directory.$class.'.php');
+        if (file_exists(APPPATH.'controllers/'.$RTR->directory.$class.'.php'))
+        {
+            require_once(APPPATH.'controllers/'.$RTR->directory.$class.'.php');
+        }
+        else if (file_exists(BFPATH.'controllers/'.$RTR->directory.$class.'.php'))
+        {
+            require_once(BFPATH.'controllers/'.$RTR->directory.$class.'.php');
+        }
+        else
+        {
+            require_once($RTR->directory.$class .'.php');
+        }
 
 		if ( ! class_exists($class, FALSE) OR $method[0] === '_' OR method_exists('CI_Controller', $method))
 		{
@@ -445,23 +478,6 @@ if ( ! is_php('5.4'))
 	if ($method !== '_remap')
 	{
 		$params = array_slice($URI->rsegments, 2);
-	}
-
-/*
- * ------------------------------------------------------
- *  Should we use a Composer autoloader?
- * ------------------------------------------------------
- */
-	if (($composer_autoload = config_item('composer_autoload')) !== FALSE)
-	{
-		if ($composer_autoload === TRUE && file_exists(APPPATH.'vendor/autoload.php'))
-		{
-			require_once(APPPATH.'vendor/autoload.php');
-		}
-		elseif (file_exists($composer_autoload))
-		{
-			require_once($composer_autoload);
-		}
 	}
 
 /*
