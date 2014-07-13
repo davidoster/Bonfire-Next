@@ -63,12 +63,18 @@ class Docs extends Base_Controller
             $this->docbuilder->addDocFolder($alias, $folder);
         }
 
-        $content = $this->docbuilder->readPage($this->current_path, $this->current_group);
-        $content = $this->docbuilder->postProcess($content, site_url(), current_url());
+        try {
+            $content = $this->docbuilder->readPage($this->current_path, $this->current_group);
+            $content = $this->docbuilder->postProcess($content, site_url(), current_url());
 
-        $data['sidebar'] = $this->buildSidebar($content);
-        $data['toc']     = $this->buildTOC();
-        $data['content'] = $content;
+            $data['sidebar'] = $this->buildSidebar($content);
+            $data['toc']     = $this->buildTOC();
+            $data['content'] = $content;
+        }
+        catch (Exception $e)
+        {
+            $this->set_message($e->getMessage(), 'warning');
+        }
 
         $this->render($data);
     }
