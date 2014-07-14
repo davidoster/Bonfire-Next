@@ -392,7 +392,8 @@ class DocBuilder {
         // If the toc file exists in the folder, use it to build the links.
         if (is_file("{$folder}/_toc.ini"))
         {
-            return $this->columnizeTOC( parse_ini_file("{$folder}/_toc.ini", TRUE) );
+            $toc = parse_ini_file("{$folder}/_toc.ini", TRUE);
+            return $this->columnizeTOC( $toc );
         }
 
         // If the toc file does not exist, build the links by listing the files
@@ -499,8 +500,8 @@ class DocBuilder {
             // Can we stay in this column?
             if ($current_column_count <= $column_avg && $section_count > 4)
             {
-                $current_column_count += count($section);
-
+                // Don't forget to account for the heading also.
+                $current_column_count += count($section) +1;
             }
             // Else - move to new column...
             else {
