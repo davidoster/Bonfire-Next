@@ -45,6 +45,7 @@
         </div>
     </header>
 
+    <?php if (get_instance()->uri->segment(2) !== 'search') : ?>
     <div class="toc-wrapper">
         <div class="container">
 
@@ -54,6 +55,7 @@
             <a href="#" id="toc-btn" style="margin: 5px 10px 0 0"><?= lang('docs_toc') ?></a>
         </div>
     </div>
+    <?php endif; ?>
 
 
     <!-- Content Area -->

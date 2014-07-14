@@ -1,3 +1,4 @@
+<br />
 <h1><?php echo lang('docs_search_results') ?></h1>
 
 <div class="well">
