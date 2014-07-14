@@ -1,4 +1,4 @@
-# Improved Routes
+# Enhanced Routes
 
 CodeIgniter's Router is showing it's age against the powerful solutions found in other PHP frameworks like Laravel. Bonfire's Routing is meant to help bring CodeIgniter into the modern age, or at least help it take a step in that direction.
 
