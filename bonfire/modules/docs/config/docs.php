@@ -18,7 +18,7 @@
 */
 $config['docs.folders'] = [
     'application'   => APPPATH .'docs',
-    'developer'     => BFPATH .'docs'
+    'bonfire'       => BFPATH .'docs'
 ];
 
 /*

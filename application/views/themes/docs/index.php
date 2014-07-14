@@ -26,17 +26,11 @@
 
             <div class="collapse navbar-collapse" id="main-nav-collapse">
                 <ul class="nav navbar-nav navbar-left">
-                    <?php if (config_item('docs.show_app_docs')) :?>
-                        <li <?= $this->uri(1, 'application', 'class="active"') ?>>
-                        <a href="<?= site_url('docs/application'); ?>"><?= lang('docs_title_application') ?></a>
-                    </li>
-                    <?php endif; ?>
-
-                    <?php if (config_item('docs.show_dev_docs')) : ?>
-                        <li <?= $this->uri(1, 'developer', 'class="active"') ?>>
-                        <a href="<?= site_url('docs/developer'); ?>"><?= lang('docs_title_bonfire') ?></a>
-                    </li>
-                    <?php endif; ?>
+                    <?php foreach (config_item('docs.folders') as $group => $path) : ?>
+                        <li <?= $this->uri(1, $group, 'class="active"') ?>>
+                            <a href="<?= site_url("docs/{$group}"); ?>"><?= ucwords($group) ?></a>
+                        </li>
+                    <?php endforeach; ?>
                 </ul>
 
                 <!-- Search Form -->
