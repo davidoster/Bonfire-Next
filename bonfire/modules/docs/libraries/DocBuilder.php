@@ -136,7 +136,13 @@ class DocBuilder {
         // Prepare some things and cleanup others
         $groups      = array_keys($this->doc_folders);
         $site_url    = rtrim($site_url, '/') .'/';
-        $current_url = rtrim($current_url, '/');
+        $current_url = rtrim($current_url, '#/');
+
+        // Try to determine the current_url if one isn't set.
+        if (empty($this->current_folder))
+        {
+            $this->current_folder = $this->detectCurrentFolder($current_url, $groups);
+        }
 
         /*
          * Rewrite the URLs
@@ -158,6 +164,9 @@ class DocBuilder {
 
                 continue;
             }
+
+            // Remove any trailing # signs
+            $href = rtrim($href, '# ');
 
             // If the href starts with #, then attach the current_url to it
             if ($href != '' && substr_compare($href, '#', 0, 1) === 0)
@@ -572,4 +581,45 @@ class DocBuilder {
 
     //--------------------------------------------------------------------
 
+    //--------------------------------------------------------------------
+    // Private Methods
+    //--------------------------------------------------------------------
+
+    /**
+     * Analyzes the passed in current url string and checks against
+     * a list of groups to determine what the current group is.
+     *
+     * @param $current_url
+     * @param $groups
+     * @return string
+     */
+    public function detectCurrentFolder ($current_url, $groups=[])
+    {
+        if (! is_array($groups))
+        {
+            return null;
+        }
+
+        $segments = explode('/', $current_url);
+
+        // We start from the back of the array since
+        // that's most likely to be close to the end.
+        $segments = array_reverse($segments);
+
+        foreach ($segments as $segment)
+        {
+            foreach ($groups as $group)
+            {
+                if (strtolower($group) == strtolower($segment))
+                {
+                    return $group;
+                }
+            }
+        }
+
+        // Nothing found?
+        return null;
+    }
+
+    //--------------------------------------------------------------------
 }

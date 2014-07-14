@@ -149,6 +149,21 @@ class DocBuilderTest extends \Codeception\TestCase\Test
 
     //--------------------------------------------------------------------
 
+    public function testPostProcessHandlesPoundSignsOnLink ()
+    {
+        $site_url = 'http://testsite.com';
+        $current_url = 'http://testsite.com/docs/developer#';
+
+        $this->builder->addDocFolder('application', APPPATH .'docs');
+        $this->builder->addDocFolder('developer', BFPATH .'docs');
+
+        $start = '<li><a href="index">Bonfire Docs Home</a></li>';
+        $final = '<div><li><a href="http://testsite.com/docs/developer/index">Bonfire Docs Home</a></li></div>';
+
+        $this->assertEquals($final, $this->builder->postProcess($start, $site_url, $current_url));
+    }
+
+    //--------------------------------------------------------------------
 
     //--------------------------------------------------------------------
     // Document maps
