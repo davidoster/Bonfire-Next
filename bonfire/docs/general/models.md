@@ -2,16 +2,12 @@
 
 Keeping with the MVC spirit, Bonfire uses Models to allow you interact with your database in a simple, consistent manner. By using the **BF_Model** as the base class for all of your models, you can very quickly setup a simple model capable of finding records, creating new and editing existing records, deleting records, checking if a key/value is unique in this table, counting the results, and more.
 
-BF_Model acts as a middleman layer between your models and CodeIgniter's standard Model class, working hand-in-hand with ActiveRecord query builder. If you don't need any special queries, your can have a working model in just a handful of lines.
+BF_Model acts as a middleman layer between your models and CodeIgniter's standard Model class, working hand-in-hand with ActiveRecord query builder. If you don't need any special queries, you can have a working model in just a handful of lines.
 
-## Is it an ORM?
-
-BF_Model is not an ORM. While ORM's have their place, Bonfire does not ship with one included.
 
 ## A Skeleton Model
 
 To get started with a new model, you can use the following skeleton file:
-
 
 
     class X_model extends BF_Model
