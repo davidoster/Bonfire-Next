@@ -7,7 +7,7 @@
     <?php echo form_close(); ?>
 </div>
 
-<p><?php echo isset($this->results) && isset($this->results) ? count($this->results) : 0; ?> results found in <?php echo $this->search_time ?> seconds.</p>
+<p><small><?php echo isset($this->results) && isset($this->results) ? count($this->results) : 0; ?> result<?= count($this->results) == 1 ? '' : 's'; ?> found in <?php echo $this->search_time ?> seconds.</small></p>
 
 <?php if (isset($this->results) && is_array($this->results) && count($this->results)) : ?>
 
@@ -18,7 +18,7 @@
         </p>
         <p class="result-url"><?php echo $result['url'] ?></p>
         <p class="result-excerpt">
-            <?php echo $result['extract']; ?>
+            <?php echo preg_replace("/({$this->search_terms})/", "<mark>$1</mark>", $result['extract']); ?>
         </p>
     </div>
     <?php endforeach; ?>

@@ -94,18 +94,10 @@ class Docs extends Base_Controller
         $data = array();
 
         $terms = $this->input->post('search_terms');
+
         if ($terms)
         {
-            $search_folders = array();
-            if ($this->showAppDocs)
-            {
-                $search_folders[] = APPPATH . $this->docsDir;
-            }
-
-            if ($this->showDevDocs)
-            {
-                $search_folders[] = BFPATH . $this->docsDir;
-            }
+            $search_folders = $this->doc_folders;
 
             $data['results'] = $this->docsearch->search($terms, $search_folders);
         }

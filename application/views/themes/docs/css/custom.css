@@ -251,3 +251,21 @@ pre code {
   overflow-y: scroll;
 }
 
+/*
+    Search Results
+*/
+.search-result {
+   padding-bottom: 1em;
+    margin-bottom: 1em;
+    border-bottom: 1px solid #eee;
+}
+.search-result .result-header{
+    font-weight: bold;
+    font-size: 120%;
+    margin-bottom: 0;
+}
+.search-result .result-url {
+    color: #ccc;
+    font-weight: 300;
+}
+
