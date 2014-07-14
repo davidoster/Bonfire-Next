@@ -416,6 +416,23 @@ class BF_Model extends CI_Model
 
 	//---------------------------------------------------------------
 
+    /**
+     * A simple way to grab the first result of a search only.
+     */
+    public function first()
+    {
+        $rows = $this->limit(1)->find_all();
+
+        if (is_array($rows) && count($rows) == 1)
+        {
+            return $rows[0];
+        }
+
+        return $rows;
+    }
+
+    //--------------------------------------------------------------------
+
 	/**
 	 * Search for a single row in the database.
 	 *
@@ -1802,6 +1819,8 @@ class BF_Model extends CI_Model
     public function limit($value, $offset = '') { $this->db->limit($value, $offset); return $this; }
     public function offset($offset) { $this->db->offset($offset); return $this; }
     public function set($key, $value = '', $escape = TRUE) { $this->db->set($key, $value, $escape); return $this; }
+    public function last_query() { return $this->db->last_query(); }
+    public function last_query_time() { return end($this->db->query_times); }
 
 }//end BF_model
 

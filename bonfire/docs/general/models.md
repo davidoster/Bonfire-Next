@@ -187,6 +187,13 @@ If you need to do additional processing, join tables, etc than you can do that i
 
 ## Selecting Data
 
+### first()
+A convenience method that returns the first row found that matches the criteria that you've set.
+
+	$user = $this->user_model->where('banned', false)
+													 ->order_by('created_on', 'desc')
+													 ->first();
+
 ### find()
 
 The `find()` method is used to locate a single record based on it's `id`.
@@ -508,6 +515,11 @@ The User Settings controller then uses the model's `prep_data` method to process
 
 	}//end save_user()
 
+### last_query_time()
+Returns the elapsed time for the last query. Simply provides a method to tap into CodeIgniter's stats. 
+
+	$time = $this->user_model->last_query_time();
+	// Returns 0.0034525
 
 ## Return Types
 
@@ -558,6 +570,7 @@ Bonfire's model supports chaining for most of the ActiveRecord methods available
 * limit
 * offset
 * set
+* last_query
 
 All of these methods accept the same parameters as their [CodeIgniter](http://ellislab.com/codeigniter/user-guide/database/active_record.html) counterparts. These are included for the sole reason of making your syntax more expressive. You can now do things like:
 
