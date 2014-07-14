@@ -37,7 +37,7 @@ $config['docs.theme'] = 'docs';
 | Sets the default group that the docs will redirect to if no area is
 | provided. Must match the alias of one of the paths in 'docs.folders'.
 */
-$config['docs.default_group'] = 'developer';
+$config['docs.default_group'] = 'bonfire';
 
 /*
 |--------------------------------------------------------------------
@@ -61,11 +61,6 @@ $config['docs.show_dev_docs'] = true;
  * If true, the 'application' specific documentation will be shown.
  */
 $config['docs.show_app_docs'] = true;
-
-/*
- * The name of the file containing the table of contents.
- */
-$config['docs.toc_file'] = '_toc.ini';
 
 /*
  * Environments in which displaying the docs is permitted. If the environment
