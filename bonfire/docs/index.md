@@ -1,6 +1,8 @@
 # Welcome to Bonfire
 Bonfire provides you with a jump-start to your web-application development by providing you the framework, tools, and methodology you need to build a great product for your company or client. 
 
+This documentation is included with every download of Bonfire. Please navigate within your site to `/docs` to view them. To learn about configuring docs or writing your own documentation, see our page on [Writing Documentation](writing_docs).
+
 ## Server Requirements
 Bonfire requires the following server setup, at minimum:
 
