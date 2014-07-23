@@ -231,6 +231,30 @@ class Route {
     //
 
     /**
+     * Specifies a single route to match for multiple HTTP Verbs.
+     *
+     * Example:
+     *  $route->match( ['get', 'post'], 'users/(:num)', 'users/$1);
+     *
+     * @param array $verbs
+     * @param       $from
+     * @param       $to
+     * @param array $options
+     */
+    public function match ($verbs=[], $from, $to, $options=[])
+    {
+        foreach ($verbs as $verb)
+        {
+            $verb = strtolower($verb);
+
+            $this->{$verb}($from, $to, $options);
+        }
+    }
+
+    //--------------------------------------------------------------------
+
+
+    /**
      * Specifies a route that is only available to GET requests.
      *
      * @param       $from

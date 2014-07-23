@@ -666,4 +666,50 @@ class RouteTest extends \Codeception\TestCase\Test
     }
 
     //--------------------------------------------------------------------
+
+    public function testMatchIncludesAllMethodsInGet ()
+    {
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+
+        $final = [
+            'users/(:num)'  => 'users/$1'
+        ];
+
+        $this->route->match(['GET', 'POST'], 'users/(:num)', 'users/$1');
+
+        $this->assertEquals($final, $this->route->map( [] ));
+    }
+
+    //--------------------------------------------------------------------
+
+    public function testMatchIncludesAllMethodsInPost ()
+    {
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+
+        $final = [
+            'users/(:num)'  => 'users/$1'
+        ];
+
+        $this->route->match(['GET', 'POST'], 'users/(:num)', 'users/$1');
+
+        $this->assertEquals($final, $this->route->map( [] ));
+    }
+
+    //--------------------------------------------------------------------
+
+    public function testMatchIncludesAllMethodsWithDifferentCase ()
+    {
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+
+        $final = [
+            'users/(:num)'  => 'users/$1'
+        ];
+
+        $this->route->match(['get', 'post'], 'users/(:num)', 'users/$1');
+
+        $this->assertEquals($final, $this->route->map( [] ));
+    }
+
+    //--------------------------------------------------------------------
+
 }

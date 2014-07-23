@@ -2,16 +2,14 @@
 
 CodeIgniter's Router is showing it's age against the powerful solutions found in other PHP frameworks like Laravel. Bonfire's Routing is meant to help bring CodeIgniter into the modern age, or at least help it take a step in that direction.
 
-## Route Library
-
 The Route library is the core of the new flexibility. It is inspired by Jamie Rumbelow's excellent [Pigeon](https://github.com/jamierumbelow/pigeon) class, as well as [Laravel's routing system](http://laravel.com/docs/routing).
 
-### Initializing the class
+## Initializing the class
 This class is automatically loaded for you in the router and you should not have need to do it yourself. If you do, though, it is found through the autoloader: 
 
 	$route = new \Bonfire\Route();
 
-### Basic Routes
+## Basic Routes
 When creating your routes file, you have the option of sticking with the standard CodeIgniter routes array, or using Bonfire's `Route` library. The Route library provides enhanced features, including named routes, grouping, creating `areas` (like Bonfire's old contexts), and more.
 
 When using the Route library, you use the `any()` method in place of adding to the `$routes` array.
@@ -24,24 +22,24 @@ This is identical to the old:
 	
 Optionally, you can pass in an array of options as the third paramater. Currently, there are 2 global options that can be used for nearly any of the Route libraries methods. 
 
-### Global Route Options
+## Global Route Options
 With the exception of the `group()` method, all of the route-generating methods can be passed an array of options as the last parameter. The available options are:
 
-#### Named Routes
+### Named Routes
 `as` saves this route under the name of your choice. This allows you to modify the route in your routes file, without breaking any code throughout your application.
 
 	$route->any('login', 'users/login', ['as' => 'simple_login']);
 	// Can then be used later with the `named` method
 	redirect( Route::named('simple_login') );
 
-#### Parameter Offsets
+### Parameter Offsets
  `offset` allows you to increment the numbered placeholders in the 'to' portion of the route by the amount you specify. This is occasionally handy when you are pulling a previous number out of the URL, but don't want it sent to your methods, such as in API versioning. Also handy when grouping routes or routing  a resource.
  
  	$route->get('users/(:num)', 'users/show/$1', ['offset' => 1]);
  	// Creates:
  	$route['users/(:num)'] = 'users/show/$2);
 
-### HTTP Verb Routing
+## HTTP Verb Routing
 
 To make building REST-based routing simpler and more consistent, you can use the
 
@@ -68,6 +66,7 @@ PUT         | /photos/{id}      | update    | update a specific photo
 DELETE      | /photos/{id}      | destroy   | delete a specific photo
 OPTIONS  | /photos 			| index			| Showing information about the API request.
 
+### Single Verbs
 
 You can also set a single verb-based routes with any of the route methods:
 
@@ -81,6 +80,10 @@ You can also set a single verb-based routes with any of the route methods:
 
 These routes will then only be available when the corresponding HTTP verb is used to initiate the call. Each of these methods accepts an options array as the third parameter. See Global Route Options, above.
 
+### Multiple Verbs
+If you need to match multiple verbs against a single route, you can use the `match()` method. This is just like the single verb usage (`get`, `post`, etc) but accepts an array of verbs to match as the first parameter.
+
+	$route->match( ['get', 'post'], 'from', 'to');
 
 ### Customizing Resourceful Routes
 
