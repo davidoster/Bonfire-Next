@@ -55,6 +55,20 @@ class Base_Controller extends MX_Controller {
     // For status messages
     protected $message;
 
+    /**
+     * Stores an array of methods in this class
+     * and the names of any filters that should be applied:
+     *
+     *  $filtered_methods = [
+     *      'index' => [
+     *          'before' => ['filter1', 'filter2'],
+     *          'after'  => ['filter3', 'filter4']
+     *      ]
+     *  ];
+     * @var array
+     */
+    protected $filtered_methods = [];
+
     //--------------------------------------------------------------------
 
     public function __construct ()
@@ -62,6 +76,11 @@ class Base_Controller extends MX_Controller {
         parent::__construct();
 
         $this->init();
+
+        /*
+         * Call any filters that may be active on this route.
+         */
+        $this->callFilters('before');
 
         /*
          * Auto-Migration Support
@@ -415,4 +434,43 @@ class Base_Controller extends MX_Controller {
     }
 
     //--------------------------------------------------------------------
+
+    /**
+     * Calls any filters that might exist on the route, as set in the
+     * routes config file (typically either 'before' or 'after'.
+     *
+     * @param $type
+     */
+    public function callFilters ($type)
+    {
+        $this->load->config('filters', true);
+
+        $method = $this->router->fetch_method();
+        $method_filters = isset($this->filtered_methods[$method][$type]) ? explode('|', $this->filtered_methods[$method][$type]) : [];
+
+        $params = $this->uri->segment_array();
+
+        $ci =& get_instance();
+
+        $available_filters = $this->config->item('filters');
+
+        try
+        {
+            foreach ($method_filters as $filter)
+            {
+                if (array_key_exists($filter, $available_filters))
+                {
+                    $action = $available_filters[$filter];
+                    $action($params, $ci);
+                }
+            }
+        }
+        catch (RuntimeException $e)
+        {
+            // @todo - log filter execution errors.
+        }
+    }
+
+    //--------------------------------------------------------------------
+
 }

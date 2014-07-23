@@ -38,5 +38,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 
 
+/**
+ * Handles the AFTER filters for a controller's route...
+ *
+ * Uses the controller's callFilter() method, if exists,
+ * to run any after filters.
+ *
+ * WARNING: Deleting this method (or turning off hooks)
+ * will disable the 'after' filters to be executed.
+ */
+$hook['post_controller'][] = function()
+{
+    global $CI;
+
+    if (method_exists($CI, 'callFilters'))
+    {
+        $CI->callFilters('after');
+    }
+};
+
 /* End of file hooks.php */
 /* Location: ./application/config/hooks.php */
