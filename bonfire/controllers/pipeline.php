@@ -1,6 +1,6 @@
 <?php
 
-class Pipeline extends Base_Controller {
+class Pipeline extends \Bonfire\Controllers\BaseController {
 
     /**
      * Simple funnel everything to the index method

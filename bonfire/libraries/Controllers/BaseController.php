@@ -14,6 +14,8 @@
  * @filesource
  */
 
+namespace Bonfire\Controllers;
+
 require_once BFPATH .'libraries/Pimple.php';
 
 /**
@@ -27,7 +29,7 @@ require_once BFPATH .'libraries/Pimple.php';
  * @author     Bonfire Dev Team
  * @link       http://cibonfire.com/docs/bonfire/bonfire_controllers
  */
-class Base_Controller extends MX_Controller {
+class BaseController extends \MX_Controller {
 
     /**
      * Autoload functionality specific to this single controller.
@@ -49,9 +51,6 @@ class Base_Controller extends MX_Controller {
      */
     protected $container;
 
-    // Stores data variables to be sent to the view.
-    protected $vars = array();
-
     // For status messages
     protected $message;
 
@@ -69,6 +68,14 @@ class Base_Controller extends MX_Controller {
      */
     protected $filtered_methods = [];
 
+    /**
+     * An array of method names that should be
+     * called during the init() method. Used
+     * by traits to allow them to be inserted
+     * into the DI container and made ready.
+     */
+    protected $init_methods = [];
+
     //--------------------------------------------------------------------
 
     public function __construct ()
@@ -76,11 +83,6 @@ class Base_Controller extends MX_Controller {
         parent::__construct();
 
         $this->init();
-
-        /*
-         * Call any filters that may be active on this route.
-         */
-        $this->callFilters('before');
 
         /*
          * Auto-Migration Support
@@ -97,56 +99,11 @@ class Base_Controller extends MX_Controller {
 //            $this->load->library('Console');
             $this->output->enable_profiler(true);
         }
-    }
 
-    //--------------------------------------------------------------------
-
-    //--------------------------------------------------------------------
-    // Output (Rendering) Methods
-    //--------------------------------------------------------------------
-
-    /**
-     * Provides a common interface with the other rendering methods to
-     * set the output of the method. Uses the current instance of $this->template.
-     * Ensures that any data we've stored through $this->set_var() are present
-     * and includes the status messages into the data.
-     *
-     * @param array $data
-     */
-    public function render ($data = array())
-    {
-        // Merge any saved vars into the data
-        $data = array_merge($data, $this->vars);
-
-        // Build our notices from the theme's view file.
-        $data['notice'] = $this->load->view("themes/{$this->template->theme()}/notice", array('notice' => $this->message()), TRUE);
-
-        $this->template->set($data);
-
-        $this->template->render();
-    }
-    
-    //--------------------------------------------------------------------
-
-    /**
-     * Sets a data variable to be sent to the view during the render() method.
-     *
-     * @param string $name
-     * @param mixed  $value
-     */
-    public function set_var ($name, $value = NULL)
-    {
-        if (is_array($name))
-        {
-            foreach ($name as $k => $v)
-            {
-                $this->vars[$k] = $v;
-            }
-        }
-        else
-        {
-            $this->vars[$name] = $value;
-        }
+        /*
+         * Call any filters that may be active on this route.
+         */
+        $this->callFilters('before');
     }
 
     //--------------------------------------------------------------------
@@ -234,7 +191,7 @@ class Base_Controller extends MX_Controller {
     //--------------------------------------------------------------------
 
     //--------------------------------------------------------------------
-    // Other Rendering Methods
+    // Basic Rendering Methods
     //--------------------------------------------------------------------
 
     /**
@@ -422,15 +379,15 @@ class Base_Controller extends MX_Controller {
     public function init ()
     {
         // Get our DI container up and running
-        $this->container = new Pimple();
+        $this->container = new \Pimple();
 
-        // Setup our Template Engine
-        $this->container['templateEngineName']  = config_item('di.templateEngine');
-        $this->container['templateEngine']      = function ($c) {
-            return new $c['templateEngineName']();
-        };
-
-        $this->template = $this->container['templateEngine'];
+        foreach ($this->init_methods as $method)
+        {
+            if (method_exists($this, $method))
+            {
+                $this->{$method}();
+            }
+        }
     }
 
     //--------------------------------------------------------------------

@@ -1,8 +1,6 @@
 <?php
 
-defined('BASEPATH') || exit('No direct script access allowed');
-
-class Docs extends Base_Controller
+class Docs extends \Bonfire\Controllers\ThemedController
 {
     protected $ignoreFiles = array('_404.md');
 
