@@ -40,6 +40,8 @@ class Route {
         'name'  => "([a-zA-Z']+)"
     ];
 
+    protected $current_subdomain = null;
+
     //--------------------------------------------------------------------
 
     /**
@@ -556,6 +558,17 @@ class Route {
 
         $from = $prefix . $from;
 
+        // Limiting to subdomains?
+        if (isset($options['subdomain']) && ! empty($options['subdomain']))
+        {
+            // If we don't match the current subdomain, then
+            // we don't need to add the route.
+            if (! $this->checkSubdomains($options['subdomain']))
+            {
+                return;
+            }
+        }
+
         // Are we saving the name for this one?
         if (isset($options['as']) && ! empty($options['as']))
         {
@@ -588,5 +601,68 @@ class Route {
     }
 
     //--------------------------------------------------------------------
+
+    /**
+     * Compares the subdomain(s) passed in against the current subdomain
+     * on this page request.
+     *
+     * @param $subdomains
+     * @return bool
+     */
+    private function checkSubdomains ($subdomains)
+    {
+        if (is_null($this->current_subdomain))
+        {
+            $this->determineCurrentSubdomain();
+        }
+
+        if (! is_array($subdomains))
+        {
+            $subdomains = array($subdomains);
+        }
+
+        $matched = false;
+
+        array_walk($subdomains, function ($subdomain) use (&$matched)
+        {
+            if ($subdomain == $this->current_subdomain || $subdomain == '*')
+            {
+                $matched = true;
+            }
+        });
+
+        return $matched;
+    }
+
+    //--------------------------------------------------------------------
+
+    /**
+     * Examines the HTTP_HOST to get a best match for the subdomain. It
+     * won't be perfect, but should work for our needs.
+     */
+    private function determineCurrentSubdomain ()
+    {
+        $parsedUrl = parse_url( $_SERVER['HTTP_HOST'] );
+
+        $host = explode('.', $parsedUrl['host']);
+
+        // If we only have 2 parts, then we don't have a subdomain.
+        // This won't be totally accurate, since URL's like example.co.uk
+        // would still pass, but it helps to separate the chaff...
+        if (! is_array($host) || count($host) == 2)
+        {
+            // Set it to false so we don't make it back here again.
+            $this->current_subdomain = false;
+            return;
+        }
+
+        // Now, we'll simply take the first element of the array. This should
+        // be fine even in cases like example.co.uk, since they won't be looking
+        // for 'example' when they try to match the subdomain, in most all cases.
+        $this->current_subdomain = array_shift($host);
+    }
+
+    //--------------------------------------------------------------------
+
 }
 // END Route class

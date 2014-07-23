@@ -667,6 +667,10 @@ class RouteTest extends \Codeception\TestCase\Test
 
     //--------------------------------------------------------------------
 
+    //--------------------------------------------------------------------
+    // Match
+    //--------------------------------------------------------------------
+
     public function testMatchIncludesAllMethodsInGet ()
     {
         $_SERVER['REQUEST_METHOD'] = 'GET';
@@ -712,4 +716,106 @@ class RouteTest extends \Codeception\TestCase\Test
 
     //--------------------------------------------------------------------
 
+    //--------------------------------------------------------------------
+    // Subdomains
+    //--------------------------------------------------------------------
+
+    public function testSubdomainMatchesASubdomain ()
+    {
+        $_SERVER['HTTP_HOST'] = 'http://en.example.com';
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+
+        $final = [
+            'users/(:num)'  => 'users/$1'
+        ];
+
+        $this->route->get('users/(:num)', 'users/$1', ['subdomain' => 'en']);
+        $this->route->get('users/(:any)', 'users/$1', ['subdomain' => 'fr']);
+
+        $this->assertEquals($final, $this->route->map( [] ));
+    }
+
+    //--------------------------------------------------------------------
+
+    public function testSubdomainDoesNotMatchWithoutValidSubdomain ()
+    {
+        $_SERVER['HTTP_HOST'] = 'http://en.example.com';
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+
+        $final = [
+            'users/(:num)'  => 'users/$1'
+        ];
+
+        $this->route->get('users/(:num)', 'users/$1', ['subdomain' => 'br']);
+        $this->route->get('users/(:any)', 'users/$1', ['subdomain' => 'fr']);
+
+        $this->assertEquals([], $this->route->map( [] ));
+    }
+
+    //--------------------------------------------------------------------
+
+    public function testSubdomainMatchesWithMultipleSubdomains ()
+    {
+        $_SERVER['HTTP_HOST'] = 'http://fr.example.com';
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+
+        $final = [
+            'users/(:num)'  => 'users/$1'
+        ];
+
+        $this->route->get('users/(:num)', 'users/$1', ['subdomain' => ['en', 'fr'] ]);
+
+        $this->assertEquals($final, $this->route->map( [] ));
+    }
+
+    //--------------------------------------------------------------------
+
+    public function testSubdomainMatchesFirstSubdomainWhenMultipleExist ()
+    {
+        $_SERVER['HTTP_HOST'] = 'http://en.example.co.uk';
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+
+        $final = [
+            'users/(:num)'  => 'users/$1'
+        ];
+
+        $this->route->get('users/(:num)', 'users/$1', ['subdomain' => 'en']);
+        $this->route->get('users/(:any)', 'users/$1', ['subdomain' => 'fr']);
+
+        $this->assertEquals($final, $this->route->map( [] ));
+    }
+
+    //--------------------------------------------------------------------
+
+    public function testSubdomainMatchesASubdomainWithWildcard ()
+    {
+        $_SERVER['HTTP_HOST'] = 'http://en.example.co.uk';
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+
+        $final = [
+            'users/(:num)'  => 'users/$1'
+        ];
+
+        $this->route->get('users/(:num)', 'users/$1', ['subdomain' => '*']);
+
+        $this->assertEquals($final, $this->route->map( [] ));
+    }
+
+    //--------------------------------------------------------------------
+
+    public function testSubdomainDoesNotMatchWhenNoSubdomainWithWildcard ()
+    {
+        $_SERVER['HTTP_HOST'] = 'http://example.com';
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+
+        $final = [
+            'users/(:num)'  => 'users/$1'
+        ];
+
+        $this->route->get('users/(:num)', 'users/$1', ['subdomain' => '*']);
+
+        $this->assertEquals($final, $this->route->map( [] ));
+    }
+
+    //--------------------------------------------------------------------
 }

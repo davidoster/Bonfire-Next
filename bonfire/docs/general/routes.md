@@ -39,6 +39,19 @@ With the exception of the `group()` method, all of the route-generating methods 
  	// Creates:
  	$route['users/(:num)'] = 'users/show/$2);
 
+### Subdomains
+`subdomain` allows to you restrict routes to one or more subdomains. This only references the FIRST subdomain, so that's something to watch out for if your site has multiple subdomains. Can be used for language detection (`en.example.com`) or detecting a mobile version of a site (`m.example.com`).
+
+	$route->get('users/(:num)', 'users/show/$1', ['subdomain' => 'en']);
+
+You can also pass an array of subdomains to allow that route on ANY of those subdomains. 
+
+	$route->get('users/(:num)', 'users/show/$1', ['subdomain' => ['en', 'fr'] ] );
+
+If you want to ensure that a route shows up on any subdomain, but NOT on a URI without a subdomain, pass in `'*'` as the subdomain to match. Note that this only works on domains with two parts, like `example.com`. This will return false positives when more parts exist, like `example.co.uk`.
+
+	$route->get('users/(:num)', 'users/show/$1', ['subdomain' => '*']);
+
 ## HTTP Verb Routing
 
 To make building REST-based routing simpler and more consistent, you can use the
