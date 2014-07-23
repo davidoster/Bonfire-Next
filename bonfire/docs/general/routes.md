@@ -20,7 +20,7 @@ This is identical to the old:
 
 	$routes['from'] = 'to';
 	
-Optionally, you can pass in an array of options as the third paramater. Currently, there are 2 global options that can be used for nearly any of the Route libraries methods. 
+Optionally, you can pass in an array of options as the third paramater. Currently, there are 3 global options that can be used for nearly any of the Route libraries methods. 
 
 ## Global Route Options
 With the exception of the `group()` method, all of the route-generating methods can be passed an array of options as the last parameter. The available options are:
@@ -51,6 +51,32 @@ You can also pass an array of subdomains to allow that route on ANY of those sub
 If you want to ensure that a route shows up on any subdomain, but NOT on a URI without a subdomain, pass in `'*'` as the subdomain to match. Note that this only works on domains with two parts, like `example.com`. This will return false positives when more parts exist, like `example.co.uk`.
 
 	$route->get('users/(:num)', 'users/show/$1', ['subdomain' => '*']);
+
+## Route Filters
+Filters provide a simple way of limiting access to a given route. This is useful for creating areas of your site that require authentication.
+
+### Defining a Filter
+Filters are defined by passing in a Closure to the `filter` method.  This is a static method to make accessing it from your own classes simple.
+
+	\Bonfire\Route::addFilter('old', function() 
+	{
+		if (get_instance()->input->get('age') > 200)
+		{
+			return redirect('home');
+		}
+	});
+
+### Attaching a Filter to Route
+You can attach a filter to a route by passing it in as one of the options for that method. This can be used across all methods, just like a Global Option. The key name may be either `before` or `after`.
+
+	$route->any('users/(:num)', 'users/$1', ['before' => 'old']);
+
+### Retrieving Route's Filters
+To grab the callback functions that should be executed for a specific route, use the `getFilters()` method. The first parameter is the route you want the callbacks for. The second parameter is the type, either `before` or `after`.
+
+	Route::getFilters('users/(:num)', 'before');
+
+This returns an array of Closures that can be executed. 
 
 ## HTTP Verb Routing
 

@@ -830,4 +830,40 @@ class RouteTest extends \Codeception\TestCase\Test
     }
 
     //--------------------------------------------------------------------
+
+    //--------------------------------------------------------------------
+    // Filters
+    //--------------------------------------------------------------------
+
+    public function testFilterStoresFilterAndIsRetrievableWithGetFilters ()
+    {
+        $testFunction = function() { return 'test'; };
+
+        Route::addFilter('myFilter', $testFunction);
+
+        $this->route->any('users/(:num)', 'users/$1', ['before' => 'myFilter']);
+
+        $filters = Route::getFilters('users/(:num)', 'before');
+
+        $this->assertEquals($testFunction, $filters);
+    }
+
+    //--------------------------------------------------------------------
+
+    public function testFilterOnlyReturnsAskedForFilters ()
+    {
+        $testFunction = function() { return 'test'; };
+        $testFunction2 = function() { return 'second'; };
+
+        Route::addFilter('myFilter', $testFunction);
+        Route::addFilter('thatFilter', $testFunction2);
+
+        $this->route->any('users/(:num)', 'users/$1', ['before' => 'myFilter', 'after' => 'thatFilter']);
+
+        $filters = Route::getFilters('users/(:num)', 'before');
+
+        $this->assertEquals($testFunction, $filters);
+    }
+
+    //--------------------------------------------------------------------
 }
