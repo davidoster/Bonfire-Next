@@ -576,7 +576,10 @@ class Route {
 
             foreach ($filter_names as $f)
             {
-                $filters = self::$_filters[$f];
+                if (array_key_exists($f, self::$_filters))
+                {
+                    $filters = self::$_filters[$f];
+                }
             }
 
             return $filters;
