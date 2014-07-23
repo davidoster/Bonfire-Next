@@ -52,32 +52,6 @@ If you want to ensure that a route shows up on any subdomain, but NOT on a URI w
 
 	$route->get('users/(:num)', 'users/show/$1', ['subdomain' => '*']);
 
-## Route Filters
-Filters provide a simple way of limiting access to a given route. This is useful for creating areas of your site that require authentication.
-
-### Defining a Filter
-Filters are defined by passing in a Closure to the `filter` method.  This is a static method to make accessing it from your own classes simple.
-
-	\Bonfire\Route::addFilter('old', function() 
-	{
-		if (get_instance()->input->get('age') > 200)
-		{
-			return redirect('home');
-		}
-	});
-
-### Attaching a Filter to Route
-You can attach a filter to a route by passing it in as one of the options for that method. This can be used across all methods, just like a Global Option. The key name may be either `before` or `after`.
-
-	$route->any('users/(:num)', 'users/$1', ['before' => 'old']);
-
-### Retrieving Route's Filters
-To grab the callback functions that should be executed for a specific route, use the `getFilters()` method. The first parameter is the route you want the callbacks for. The second parameter is the type, either `before` or `after`.
-
-	Route::getFilters('users/(:num)', 'before');
-
-This returns an array of Closures that can be executed. 
-
 ## HTTP Verb Routing
 
 To make building REST-based routing simpler and more consistent, you can use the

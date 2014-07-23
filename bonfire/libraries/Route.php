@@ -541,55 +541,6 @@ class Route {
 
     //--------------------------------------------------------------------
 
-    //--------------------------------------------------------------------
-    // Filters
-    //--------------------------------------------------------------------
-
-    /**
-     * Allows a new filter callback to be registered with the system
-     * and used in any other routing situation.
-     *
-     * @param          $name
-     * @param callable $callback
-     */
-    public function addFilter ($name, \Closure $callback)
-    {
-        self::$_filters[$name] = $callback;
-    }
-
-    //--------------------------------------------------------------------
-
-    /**
-     * Gets any filters attached to the current $route, of $type.
-     *
-     * @param        $route
-     * @param string $type
-     * @return array
-     */
-    public static function getFilters ($route, $type = 'before')
-    {
-        if (isset(self::$filtered_routes[$route][$type]))
-        {
-            $filters = [];
-
-            $filter_names = explode('|', ltrim( self::$filtered_routes[$route][$type], '|') );
-
-            foreach ($filter_names as $f)
-            {
-                if (array_key_exists($f, self::$_filters))
-                {
-                    $filters = self::$_filters[$f];
-                }
-            }
-
-            return $filters;
-        }
-
-        return [];
-    }
-
-    //--------------------------------------------------------------------
-
 
     //--------------------------------------------------------------------
     // Private Methods
@@ -663,32 +614,6 @@ class Route {
         }
 
         $this->routes[$from] = $to;
-    }
-
-    //--------------------------------------------------------------------
-
-    /**
-     * Assigns a filter (by name) to a specific route. This is stored as a pipe-
-     * delimited list of filters in self::$filtered_routes[$from][$type], where
-     * $type = 'before' or 'after';
-     *
-     * @param $filter
-     * @param $from
-     * @param $type
-     */
-    private function assignFilterToRoute ($filter, $from, $type)
-    {
-        if (! isset(self::$filtered_routes[$from]))
-        {
-            self::$filtered_routes[$from] = [];
-        }
-
-        if (! isset(self::$filtered_routes[$from][$type]))
-        {
-            self::$filtered_routes[$from][$type] = '';
-        }
-
-        self::$filtered_routes[$from][$type] .= '|'. $filter;
     }
 
     //--------------------------------------------------------------------
