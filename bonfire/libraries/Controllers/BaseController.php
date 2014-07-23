@@ -51,9 +51,6 @@ class BaseController extends \MX_Controller {
      */
     protected $container;
 
-    // For status messages
-    protected $message;
-
     /**
      * Stores an array of methods in this class
      * and the names of any filters that should be applied:
@@ -104,88 +101,6 @@ class BaseController extends \MX_Controller {
          * Call any filters that may be active on this route.
          */
         $this->callFilters('before');
-    }
-
-    //--------------------------------------------------------------------
-
-    //--------------------------------------------------------------------
-    // Status Messages
-    //--------------------------------------------------------------------
-
-    /**
-     * Sets a status message (for displaying small success/error messages).
-     * This is used in place of the session->flashdata functions since you
-     * don't always want to have to refresh the page to show the message.
-     *
-     * @param string $message The message to save.
-     * @param string $type    The string to be included as the CSS class of the containing div.
-     */
-    public function set_message ($message = '', $type = 'info')
-    {
-        if (! empty($message))
-        {
-            if (isset($this->session))
-            {
-                $this->session->set_flashdata('message', $type . '::' . $message);
-            }
-
-            $this->message = array(
-                'type'    => $type,
-                'message' => $message
-            );
-        }
-    }
-
-    //--------------------------------------------------------------------
-
-    /**
-     * Retrieves the status message to display (if any).
-     *
-     * @param  string $message [description]
-     * @param  string $type    [description]
-     * @return array
-     */
-    public function message ($message = '', $type = 'info')
-    {
-        $return = array(
-            'message' => $message,
-            'type'    => $type
-        );
-
-        // Does session data exist?
-        if (empty($message) && class_exists('CI_Session'))
-        {
-            $message = $this->session->flashdata('message');
-
-            if (! empty($message))
-            {
-                // Split out our message parts
-                $temp_message      = explode('::', $message);
-                $return['type']    = $temp_message[0];
-                $return['message'] = $temp_message[1];
-
-                unset($temp_message);
-            }
-        }
-
-        // If message is empty, we need to check our own storage.
-        if (empty($message))
-        {
-            if (empty($this->message['message']))
-            {
-                return '';
-            }
-
-            $return = $this->message;
-        }
-
-        // Clear our session data so we don't get extra messages on rare occasions.
-        if (class_exists('CI_Session'))
-        {
-            $this->session->set_flashdata('message', '');
-        }
-
-        return $return;
     }
 
     //--------------------------------------------------------------------
