@@ -818,4 +818,16 @@ class RouteTest extends \Codeception\TestCase\Test
     }
 
     //--------------------------------------------------------------------
+
+    public function testCanCallNamedRouteWhenSubdomainDoesNotMatch ()
+    {
+        $_SERVER['HTTP_HOST'] = 'http://en.example.com';
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+
+        $this->route->get('users/(:num)', 'users/$1', ['subdomain' => 'fr', 'as' => 'tester']);
+
+        $this->assertEquals(Route::named('tester'), 'users/(:num)');
+    }
+
+    //--------------------------------------------------------------------
 }

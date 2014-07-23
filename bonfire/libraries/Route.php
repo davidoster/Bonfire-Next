@@ -558,6 +558,12 @@ class Route {
 
         $from = $prefix . $from;
 
+        // Are we saving the name for this one?
+        if (isset($options['as']) && ! empty($options['as']))
+        {
+            self::$names[ $options['as'] ] = $from;
+        }
+
         // Limiting to subdomains?
         if (isset($options['subdomain']) && ! empty($options['subdomain']))
         {
@@ -567,12 +573,6 @@ class Route {
             {
                 return;
             }
-        }
-
-        // Are we saving the name for this one?
-        if (isset($options['as']) && ! empty($options['as']))
-        {
-            self::$names[ $options['as'] ] = $from;
         }
 
         // Are we offsetting the parameters?
