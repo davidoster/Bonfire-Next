@@ -18,35 +18,35 @@ nbactions.xml
 .properties
 
 # Ignore Bonfire app Specifics
-app/logs/*
-!app/logs/index.html
+application/logs/*
+!application/logs/index.html
 install/logs/*
-app/cache/*
-!app/cache/index.html
+application/cache/*
+!application/cache/index.html
 public/assets/cache/*
 !public/assets/cache/index.html
 
 # Ignore Custom config files
-app/config/development/*
-app/config/testing/*
-app/config/production/*
-app/config/installed.txt
+application/config/development/*
+application/config/testing/*
+application/config/production/*
+application/config/installed.txt
 
 # but leave the config folders there
-!app/config/development/index.html
-!app/config/testing/index.html
-!app/config/production/index.html
+!application/config/development/index.html
+!application/config/testing/index.html
+!application/config/production/index.html
 
 # Helping GUIs omiting subtree repos
 bonfire/modules/**/.git/*
 bonfire/modules/**/.hg/*
-app/modules/**/.git/*
-app/modules/**/.hg/*
-!app/modules/index.html
+application/modules/**/.git/*
+application/modules/**/.hg/*
+!application/modules/index.html
 
 
 # Ignore all custom modules.
-app/modules/*
+application/modules/*
 # Except the following modules:
 
 # Remove PHPStorm Project folders
@@ -61,3 +61,6 @@ vendor/*
 
 tests/_log/*
 tests/_output/*
+
+# Ignore PHPDoc phar
+phpDocumentor.phar
