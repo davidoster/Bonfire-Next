@@ -25,9 +25,10 @@
         "php": ">=5.3.14",
         "lonnieezell/codeigniter-forensics": "dev-master",
         "league/plates": "2.*",
-        "ci-bonfire/assets": "dev-develop",
         "cssmin/cssmin": "*",
-        "mrclay/minify": "*"
+        "mrclay/minify": "*",
+        "symfony/console": "2.6.*@dev",
+        "ci-bonfire/assets": "dev-develop"
     },
     "minimum-stability": "dev",
     "repositories": [

@@ -30,3 +30,4 @@ Bonfire also uses the following software packages:
 * [CSSMin](http://cssmin.googlecode.com/)
 * [MrClay's Minify](https://github.com/mrclay/minify)
 * [Plates PHP Template Engine](http://platesphp.com/)
+* [Symfony Console](http://symfony.com/doc/current/components/console/introduction.html)
