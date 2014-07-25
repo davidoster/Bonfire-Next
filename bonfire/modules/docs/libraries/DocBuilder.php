@@ -1,5 +1,29 @@
 <?php
+/**
+ * Bonfire
+ *
+ * An open source project to allow developers get a jumpstart their development of
+ * Web-based Applications.
+ *
+ * PHP Version 5.4
+ *
+ * @package   Bonfire
+ * @author    Lonnie Ezell <lonnie@newmythmedia.com>
+ * @copyright 2014 Lonnie Ezell
+ * @license   MIT http://opensource.org/licenses/MIT
+ * @link      http://cibonfire.com
+ * @since     Version 1.0
+ * @filesource
+ */
 
+/**
+ * Class DocBuilder
+ *
+ * Handles the brunt of building documentation from Markdown formatted files.
+ *
+ * @category Documentation
+ * @author   Lonnie Ezell <lonnie@newmythmedia.com>
+ */
 class DocBuilder
 {
 
@@ -28,8 +52,9 @@ class DocBuilder
      * search through all of the folders in the order they were given to the library,
      * until it finds the first one.
      *
-     * @param  string $path             The 'path' of the file (relative to the docs folder. Usually from the URI)
-     * @param  string $restrictToFolder (Optional) The nickname of one of the folders to restrict the search to.
+     * @param string $path             The 'path' of the file (relative to the docs
+     *                                 folder. Usually from the URI)
+     * @param string $restrictToFolder (Optional) The folder nickname
      *
      * @return string
      */
@@ -55,8 +80,10 @@ class DocBuilder
      * search through all of the folders in the order they were given to the library,
      * until it finds the first one.
      *
-     * @param  string $path             The 'path' of the file (relative to the docs folder. Usually from the URI)
-     * @param  string $restrictToFolder (Optional) The nickname of one of the folders to restrict the search to.
+     * @param string $path             The 'path' of the file (relative to the docs
+     *                                 folder. Usually from the URI)
+     * @param string $restrictToFolder (Optional) The nickname of one of the
+     *                                 folders to restrict the search to.
      *
      * @throws RuntimeException
      * @return null|string
@@ -65,13 +92,13 @@ class DocBuilder
     {
         $folders = $this->doc_folders;
 
-        if (!is_null($restrictToFolder)) {
+        if (! is_null($restrictToFolder)) {
             // Make sure the folder exists
-            if (!is_null($restrictToFolder) && !isset($this->doc_folders[$restrictToFolder])) {
+            if (! is_null($restrictToFolder) && ! isset($this->doc_folders[$restrictToFolder])) {
                 throw new RuntimeException('You must add the docs folder that you wish to find docs from.');
             }
 
-            $folders = array($this->doc_folders[$restrictToFolder]);
+            $folders = [$this->doc_folders[$restrictToFolder]];
         }
 
         foreach ($folders as $alias => $folder) {
@@ -140,75 +167,7 @@ class DocBuilder
          * Rewrite the URLs
          */
         foreach ($xml->xpath('//a') as $link) {
-            // Grab the href value.
-            $href = $link->attributes()->href;
-
-            // If the href is null, it's probably a named anchor with no content.
-            if (!$href) {
-                // Make sure it has an href, else the XML will not close this
-                // tag correctly.
-                $link['href'] = ' ';
-
-                // A title is needed so the XML will be built correctly.
-//                $link->title = '';
-
-                continue;
-            }
-
-            // Remove any trailing # signs
-            $href = rtrim($href, '# ');
-
-            // If the href starts with #, then attach the current_url to it
-            if ($href != '' && substr_compare($href, '#', 0, 1) === 0) {
-                $link['href'] = $current_url . $href;
-
-                continue;
-            }
-
-            // If it's a full external path, go on...
-            if ((strpos($href, 'http://') !== false || strpos($href, 'https://') !== false) &&
-                strpos($href, $site_url) === false
-            ) {
-                $link['target'] = "_blank";
-                continue;
-            }
-
-            // If it's a full local path, get rid of it.
-            if (strpos($href, $site_url) !== false) {
-                $href = str_replace($site_url, '', $href);
-            }
-
-            // Strip out some unnecessary items, just in case they're there.
-            if (substr($href, 0, strlen('docs/')) == 'docs/') {
-                $href = substr($href, strlen('docs/'));
-            }
-
-            // This includes 'bonfire/' if it was missed during the conversion.
-            if (substr($href, 0, strlen('bonfire/')) == 'bonfire/') {
-                $href = substr($href, strlen('bonfire/'));
-            }
-
-            // If another 'group' is not already defined at the head of the link
-            // then add the current group to it.
-            $group_found = false;
-
-            foreach ($groups as $group) {
-                if (strpos($href, $group) === 0) {
-                    $group_found = true;
-                }
-            }
-
-            if (!$group_found) {
-                $href = $this->current_folder . '/' . $href;
-            }
-
-            // Convert to full site_url
-            if (strpos($href, 'http') !== 0) {
-                $href = $site_url . 'docs/' . ltrim($href, '/ ');
-            }
-
-            // Save the corrected href
-            $link['href'] = $href;
+            $link = $this->reformatAnchor($link, $groups, $current_url, $site_url);
         }
 
         $content = $xml->asXML();
@@ -274,67 +233,7 @@ class DocBuilder
         }
 
         $map = [];
-
-        // Holds the current h2 we're processing
-        $current_obj = [];
-
-        $i = 0;
-
-        foreach ($xml->children() as $type => $line) {
-            $i ++;
-
-            // Make sure that our current object is
-            // stored and reset.
-            if ($type == 'h1' || $type == 'h2') {
-                if (count($current_obj)) {
-                    $map[]       = $current_obj;
-                    $current_obj = [];
-                }
-            }
-
-            if ($type == 'h2') {
-                $name = (string)$line;
-                $link = strtolower(str_replace(' ', '_', (string)$line));
-
-                $current_obj['name']  = $name;
-                $current_obj['link']  = '#' . $link;
-                $current_obj['items'] = [];
-
-                // Insert a named anchor into the $content
-                $anchor = '<a name="' . $link . '" id="' . $link . '" ></a>';
-
-                $search = "<h2>{$name}</h2>";
-
-                $content = str_replace($search, $anchor . $search, $content);
-            } else if ($type == 'h3') {
-                // Make sure we have some place to store the items.
-                if (!isset($current_obj['items'])) {
-                    $current_obj['items'] = [];
-                }
-
-                $link = strtolower(str_replace(' ', '_', (string)$line));
-                $name = (string)$line;
-
-                $current_obj['items'][] = [
-                    'name' => $name,
-                    'link' => '#' . $link
-                ];
-
-                // Insert a named anchor into the $content
-                $anchor = '<a name="' . $link . '" id="' . $link . '" ></a>';
-
-                $search = "<h3>{$name}</h3>";
-
-                $content = str_replace($search, $anchor . $search, $content);
-            }
-
-            // Is this the last element? Then close out our current object.
-            if (count($xml) == $i) {
-                if (count($current_obj)) {
-                    $map[] = $current_obj;
-                }
-            }
-        }
+        list($map, $content) = $this->extractDocMapAndAddAnchors($content, $xml, $map);
 
         return $map;
     }
@@ -370,7 +269,7 @@ class DocBuilder
         // If directory_map can not open the directory or find any files inside
         // the directory, return an empty array.
         if (empty($map)) {
-            return array();
+            return [];
         }
 
         // If these docs are located in the /application/docs or /bonfire/docs
@@ -381,12 +280,12 @@ class DocBuilder
             $tocRoot .= '/' . strtolower($type);
         }
 
-        $toc = array();
-        foreach ($map as $new_folder => $files) {
+        $toc = [];
+        foreach ($map as $files) {
             // If $files isn't an array, then make it one so that all situations
             // may be dealt with cleanly.
-            if (!is_array($files)) {
-                $files = array($files);
+            if (! is_array($files)) {
+                $files = [$files];
             }
 
             foreach ($files as $file) {
@@ -445,7 +344,7 @@ class DocBuilder
         $keys                 = array_keys($toc);
 
         for ($i = 0; $i <= $section_count; $i ++) {
-            if (!isset($keys[$i])) {
+            if (! isset($keys[$i])) {
                 continue;
             }
 
@@ -455,8 +354,7 @@ class DocBuilder
             if ($current_column_count <= $column_avg && $section_count > 4) {
                 // Don't forget to account for the heading also.
                 $current_column_count += count($section) + 1;
-            } // Else - move to new column...
-            else {
+            } else {
                 $current_column_count = 0;
                 $current_column ++;
             }
@@ -499,7 +397,7 @@ class DocBuilder
 
         // realpath will return FALSE if the path doesn't exist
         // or the script doesn't have access to it.
-        if (!$path || $path == '/') {
+        if (! $path || $path == '/') {
             return $this;
         }
 
@@ -546,7 +444,7 @@ class DocBuilder
      */
     public function detectCurrentFolder($current_url, $groups = [])
     {
-        if (!is_array($groups)) {
+        if (! is_array($groups)) {
             return null;
         }
 
@@ -566,6 +464,167 @@ class DocBuilder
 
         // Nothing found?
         return null;
+    }
+
+    //--------------------------------------------------------------------
+
+    //--------------------------------------------------------------------
+    // Private A-Tag Formatting
+    //--------------------------------------------------------------------
+
+    /**
+     * Re-formats the passed in link.
+     *
+     * @param $link
+     * @param $current_url
+     * @param $site_url
+     * @return mixed
+     */
+    private function reformatAnchor($link, $groups, $current_url, $site_url)
+    {
+        // Grab the href value.
+        $href = $link->attributes()->href;
+
+        // If the href is null, it's probably a named anchor with no content.
+        if (! $href) {
+            // Make sure it has an href, else the XML will not close this
+            // tag correctly.
+            $link['href'] = ' ';
+
+            return $link;
+        }
+
+        // Remove any trailing # signs
+        $href = rtrim($href, '# ');
+
+        // If the href starts with #, then attach the current_url to it
+        if ($href != '' && substr_compare($href, '#', 0, 1) === 0) {
+            $link['href'] = $current_url . $href;
+
+            return $link;
+        }
+
+        // If it's a full external path, go on...
+        if ((strpos($href, 'http://') !== false || strpos($href, 'https://') !== false) &&
+            strpos($href, $site_url) === false
+        ) {
+            $link['target'] = "_blank";
+            return $link;
+        }
+
+        // If it's a full local path, get rid of it.
+        if (strpos($href, $site_url) !== false) {
+            $href = str_replace($site_url, '', $href);
+        }
+
+        // Strip out some unnecessary items, just in case they're there.
+        if (substr($href, 0, strlen('docs/')) == 'docs/') {
+            $href = substr($href, strlen('docs/'));
+        }
+
+        // This includes 'bonfire/' if it was missed during the conversion.
+        if (substr($href, 0, strlen('bonfire/')) == 'bonfire/') {
+            $href = substr($href, strlen('bonfire/'));
+        }
+
+        // If another 'group' is not already defined at the head of the link
+        // then add the current group to it.
+        $group_found = false;
+
+        foreach ($groups as $group) {
+            if (strpos($href, $group) === 0) {
+                $group_found = true;
+            }
+        }
+
+        if (! $group_found) {
+            $href = $this->current_folder . '/' . $href;
+        }
+
+        // Convert to full site_url
+        if (strpos($href, 'http') !== 0) {
+            $href = $site_url . 'docs/' . ltrim($href, '/ ');
+        }
+
+        // Save the corrected href
+        $link['href'] = $href;
+
+        return $link;
+    }
+
+    /**
+     * Creates a Document Map based on <h2> and <h3> tags.
+     * Also adds named anchors into the $content so the map
+     * can link to the content properly.
+     *
+     * @param $content
+     * @param $xml
+     * @param $map
+     * @return array
+     */
+    protected function extractDocMapAndAddAnchors(&$content, $xml, $map)
+    {
+        // Holds the current h2 we're processing
+        $current_obj = [];
+
+        $currentChild = 0;
+
+        foreach ($xml->children() as $childType => $line) {
+            $currentChild ++;
+
+            // Make sure that our current object is
+            // stored and reset.
+            if ($childType == 'h1' || $childType == 'h2') {
+                if (count($current_obj)) {
+                    $map[]       = $current_obj;
+                    $current_obj = [];
+                }
+            }
+
+            if ($childType == 'h2') {
+                $name = (string)$line;
+                $link = strtolower(str_replace(' ', '_', (string)$line));
+
+                $current_obj['name']  = $name;
+                $current_obj['link']  = '#' . $link;
+                $current_obj['items'] = [];
+
+                // Insert a named anchor into the $content
+                $anchor = '<a name="' . $link . '" id="' . $link . '" ></a>';
+
+                $search = "<h2>{$name}</h2>";
+
+                $content = str_replace($search, $anchor . $search, $content);
+            } elseif ($childType == 'h3') {
+                // Make sure we have some place to store the items.
+                if (! isset($current_obj['items'])) {
+                    $current_obj['items'] = [];
+                }
+
+                $link = strtolower(str_replace(' ', '_', (string)$line));
+                $name = (string)$line;
+
+                $current_obj['items'][] = [
+                    'name' => $name,
+                    'link' => '#' . $link
+                ];
+
+                // Insert a named anchor into the $content
+                $anchor = '<a name="' . $link . '" id="' . $link . '" ></a>';
+
+                $search = "<h3>{$name}</h3>";
+
+                $content = str_replace($search, $anchor . $search, $content);
+            }
+
+            // Is this the last element? Then close out our current object.
+            if (count($xml) == $currentChild) {
+                if (count($current_obj)) {
+                    $map[] = $current_obj;
+                }
+            }
+        }
+        return [$map, $content];
     }
     //--------------------------------------------------------------------
 }
