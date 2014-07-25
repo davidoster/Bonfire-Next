@@ -32,11 +32,17 @@
  */
 class Pimple implements ArrayAccess
 {
+
     private $values = array();
+
     private $factories;
+
     private $protected;
+
     private $frozen = array();
+
     private $raw = array();
+
     private $keys = array();
 
     /**
@@ -65,8 +71,8 @@ class Pimple implements ArrayAccess
      * as function names (strings) are callable (creating a function with
      * the same name as an existing parameter would break your container).
      *
-     * @param  string           $id    The unique identifier for the parameter or object
-     * @param  mixed            $value The value of the parameter or a closure to define an object
+     * @param  string $id    The unique identifier for the parameter or object
+     * @param  mixed  $value The value of the parameter or a closure to define an object
      * @throws RuntimeException Prevent override of a frozen service
      */
     public function offsetSet($id, $value)
@@ -76,7 +82,7 @@ class Pimple implements ArrayAccess
         }
 
         $this->values[$id] = $value;
-        $this->keys[$id] = true;
+        $this->keys[$id]   = true;
     }
 
     /**
@@ -108,7 +114,7 @@ class Pimple implements ArrayAccess
         }
 
         $this->frozen[$id] = true;
-        $this->raw[$id] = $this->values[$id];
+        $this->raw[$id]    = $this->values[$id];
 
         return $this->values[$id] = $this->values[$id]($this);
     }

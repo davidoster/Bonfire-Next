@@ -10,34 +10,35 @@ namespace Bonfire;
  * ideas for teh HTTP Verb-based routing in use here.
  *
  * @package Bonfire
- * @since  1.0
+ * @since   1.0
  */
-class Route {
+class Route
+{
 
     // Our routes, ripe for the picking.
-    public $routes 	= array();
+    public $routes = array();
 
     // Holds key/value pairs of named routes
-    public static $names 	= array();
+    public static $names = array();
 
     // Used for grouping routes together.
-    public $group 	= null;
+    public $group = null;
 
     // Holds the 'areas' of the site.
-    public static $areas	= array();
+    public static $areas = array();
 
     // The default controller to use in case
     // 'default_controller' is not in the routes file.
-    protected $default_home  = 'home';
+    protected $default_home = 'home';
 
     // The default constraint to use in route building
-    protected $default_constraint   = 'any';
+    protected $default_constraint = 'any';
 
     protected $constraints = [
-        'any'   => '(:any)',
-        'num'   => '(:num)',
-        'id'    => '(:num)',
-        'name'  => "([a-zA-Z']+)"
+        'any'  => '(:any)',
+        'num'  => '(:num)',
+        'id'   => '(:num)',
+        'name' => "([a-zA-Z']+)"
     ];
 
     protected $current_subdomain = null;
@@ -62,14 +63,13 @@ class Route {
      * @internal param array $route The array to merge
      * @return array         The merge route array.
      */
-    public function map($routes=array())
+    public function map($routes = array())
     {
         $controller = isset($routes['default_controller']) ? $routes['default_controller'] : $this->default_home;
 
         $routes = array_merge($routes, $this->routes);
 
-        foreach ($routes as $from => $to)
-        {
+        foreach ($routes as $from => $to) {
             $routes[$from] = str_ireplace('{default_controller}', $controller, $to);
         }
 
@@ -95,7 +95,7 @@ class Route {
      * @param array  $options
      * @return void
      */
-    public function any($from, $to, $options=array())
+    public function any($from, $to, $options = array())
     {
         $this->create($from, $to, $options);
     }
@@ -108,10 +108,9 @@ class Route {
      *
      * @param $constraint
      */
-    public function setDefaultConstraint ($constraint)
+    public function setDefaultConstraint($constraint)
     {
-        if (array_key_exists($constraint, $this->constraints))
-        {
+        if (array_key_exists($constraint, $this->constraints)) {
             $this->default_constraint = $constraint;
         }
     }
@@ -135,29 +134,26 @@ class Route {
      * @param      $pattern
      * @param bool $overwrite
      */
-    public function registerConstraint ($name, $pattern, $overwrite = false)
+    public function registerConstraint($name, $pattern, $overwrite = false)
     {
         // Ensure consistency
-        $name = trim($name, '{} ');
-        $pattern = '('. trim($pattern, '() ') .')';
+        $name    = trim($name, '{} ');
+        $pattern = '(' . trim($pattern, '() ') . ')';
 
         // Not here? Add it and leave...
-        if (! array_key_exists($name, $this->constraints))
-        {
+        if (!array_key_exists($name, $this->constraints)) {
             $this->constraints[$name] = $pattern;
 
             return;
         }
 
         // Here? Then it exists. Should we overwrite it?
-        if ($overwrite)
-        {
+        if ($overwrite) {
             $this->constraints[$name] = $pattern;
         }
     }
 
     //--------------------------------------------------------------------
-
 
     //--------------------------------------------------------------------
     // Named Routes
@@ -179,8 +175,7 @@ class Route {
      */
     public static function named($name)
     {
-        if (isset(self::$names[$name]))
-        {
+        if (isset(self::$names[$name])) {
             return self::$names[$name];
         }
 
@@ -212,7 +207,7 @@ class Route {
 
         // To register a route, we'll set a flag so that our router
         // so it will see the groupname.
-        $this->group = ltrim($old_group .'/'. $name, '/');
+        $this->group = ltrim($old_group . '/' . $name, '/');
 
         call_user_func($callback);
 
@@ -222,7 +217,6 @@ class Route {
     }
 
     //--------------------------------------------------------------------
-
 
     //--------------------------------------------------------------------
     // HTTP Verb-based routing
@@ -247,10 +241,9 @@ class Route {
      * @param       $to
      * @param array $options
      */
-    public function match ($verbs=[], $from, $to, $options=[])
+    public function match($verbs = [], $from, $to, $options = [])
     {
-        foreach ($verbs as $verb)
-        {
+        foreach ($verbs as $verb) {
             $verb = strtolower($verb);
 
             $this->{$verb}($from, $to, $options);
@@ -259,7 +252,6 @@ class Route {
 
     //--------------------------------------------------------------------
 
-
     /**
      * Specifies a route that is only available to GET requests.
      *
@@ -267,10 +259,9 @@ class Route {
      * @param       $to
      * @param array $options
      */
-    public function get($from, $to, $options=[])
+    public function get($from, $to, $options = [])
     {
-        if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'GET')
-        {
+        if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'GET') {
             $this->create($from, $to, $options);
         }
     }
@@ -284,10 +275,9 @@ class Route {
      * @param       $to
      * @param array $options
      */
-    public function post($from, $to, $options=[])
+    public function post($from, $to, $options = [])
     {
-        if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST')
-        {
+        if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
             $this->create($from, $to, $options);
         }
     }
@@ -301,10 +291,9 @@ class Route {
      * @param       $to
      * @param array $options
      */
-    public function put($from, $to, $options=[])
+    public function put($from, $to, $options = [])
     {
-        if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'PUT')
-        {
+        if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'PUT') {
             $this->create($from, $to, $options);
         }
     }
@@ -318,10 +307,9 @@ class Route {
      * @param       $to
      * @param array $options
      */
-    public function delete($from, $to, $options=[])
+    public function delete($from, $to, $options = [])
     {
-        if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'DELETE')
-        {
+        if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'DELETE') {
             $this->create($from, $to, $options);
         }
     }
@@ -335,10 +323,9 @@ class Route {
      * @param       $to
      * @param array $options
      */
-    public function head($from, $to, $options=[])
+    public function head($from, $to, $options = [])
     {
-        if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'HEAD')
-        {
+        if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'HEAD') {
             $this->create($from, $to, $options);
         }
     }
@@ -352,10 +339,9 @@ class Route {
      * @param       $to
      * @param array $options
      */
-    public function patch($from, $to, $options=[])
+    public function patch($from, $to, $options = [])
     {
-        if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'PATCH')
-        {
+        if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'PATCH') {
             $this->create($from, $to, $options);
         }
     }
@@ -369,10 +355,9 @@ class Route {
      * @param       $to
      * @param array $options
      */
-    public function options($from, $to, $options=[])
+    public function options($from, $to, $options = [])
     {
-        if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'OPTIONS')
-        {
+        if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
             $this->create($from, $to, $options);
         }
     }
@@ -406,8 +391,7 @@ class Route {
      */
     public function resources($name, $options = [])
     {
-        if (empty($name))
-        {
+        if (empty($name)) {
             return;
         }
 
@@ -418,35 +402,33 @@ class Route {
 
         // If a new controller is specified, then we replace the
         // $name value with the name of the new controller.
-        if (isset($options['controller']))
-        {
+        if (isset($options['controller'])) {
             $new_name = $options['controller'];
         }
 
         // If a new module was specified, simply put that path
         // in front of the controller.
-        if (isset($options['module']))
-        {
-            $new_name = $options['module'] .'/'. $new_name;
+        if (isset($options['module'])) {
+            $new_name = $options['module'] . '/' . $new_name;
         }
 
         // In order to allow customization of allowed id values
         // we need someplace to store them.
-        $id = isset($this->constraints[ $this->default_constraint ]) ? $this->constraints[ $this->default_constraint ] : '(:any)';
+        $id = isset($this->constraints[$this->default_constraint]) ? $this->constraints[$this->default_constraint] :
+            '(:any)';
 
-        if (isset($options['constraint']))
-        {
+        if (isset($options['constraint'])) {
             $id = $options['constraint'];
         }
 
-        $this->get($name,                    $new_name .'/list_all',         $options);
-        $this->get($name .'/new',            $new_name .'/creation_form',    $options);
-        $this->get($name .'/'. $id .'/edit', $new_name .'/editing_form/$1',  $options);
-        $this->get($name .'/'. $id,          $new_name .'/show/$1',          $options);
-        $this->post($name,                   $new_name .'/create',           $options);
-        $this->put($name .'/'. $id,          $new_name .'/update/$1',        $options);
-        $this->delete($name .'/'. $id,       $new_name .'/delete/$1',        $options);
-        $this->options($name,                $new_name .'/index',            $options);
+        $this->get($name, $new_name . '/list_all', $options);
+        $this->get($name . '/new', $new_name . '/creation_form', $options);
+        $this->get($name . '/' . $id . '/edit', $new_name . '/editing_form/$1', $options);
+        $this->get($name . '/' . $id, $new_name . '/show/$1', $options);
+        $this->post($name, $new_name . '/create', $options);
+        $this->put($name . '/' . $id, $new_name . '/update/$1', $options);
+        $this->delete($name . '/' . $id, $new_name . '/delete/$1', $options);
+        $this->options($name, $new_name . '/index', $options);
     }
 
     //--------------------------------------------------------------------
@@ -459,7 +441,7 @@ class Route {
      * @param  string $controller The controller name to look for.
      * @param         $options
      */
-    public function area($area, $controller=null, $options=[])
+    public function area($area, $controller = null, $options = [])
     {
         // No controller? Match the area name.
         $controller = is_null($controller) ? $area : $controller;
@@ -468,11 +450,11 @@ class Route {
         self::$areas[$area] = $controller;
 
         // Create routes for this area.
-        $this->create($area .'/(:any)/(:any)/(:any)/(:any)/(:any)', '$1/'. $controller .'/$2/$3/$4/$5', $options);
-        $this->create($area .'/(:any)/(:any)/(:any)/(:any)',        '$1/'. $controller .'/$2/$3/$4', $options);
-        $this->create($area .'/(:any)/(:any)/(:any)',               '$1/'. $controller .'/$2/$3', $options);
-        $this->create($area .'/(:any)/(:any)',                      '$1/'. $controller .'/$2', $options);
-        $this->create($area .'/(:any)',                             '$1/'. $controller, $options);
+        $this->create($area . '/(:any)/(:any)/(:any)/(:any)/(:any)', '$1/' . $controller . '/$2/$3/$4/$5', $options);
+        $this->create($area . '/(:any)/(:any)/(:any)/(:any)', '$1/' . $controller . '/$2/$3/$4', $options);
+        $this->create($area . '/(:any)/(:any)/(:any)', '$1/' . $controller . '/$2/$3', $options);
+        $this->create($area . '/(:any)/(:any)', '$1/' . $controller . '/$2', $options);
+        $this->create($area . '/(:any)', '$1/' . $controller, $options);
     }
 
     //--------------------------------------------------------------------
@@ -485,15 +467,13 @@ class Route {
      */
     public static function getAreaName($controller)
     {
-        foreach (self::$areas as $area => $cont)
-        {
-            if ($controller == $cont)
-            {
+        foreach (self::$areas as $area => $cont) {
+            if ($controller == $cont) {
                 return $area;
             }
         }
 
-        return NULL;
+        return null;
     }
 
     //--------------------------------------------------------------------
@@ -513,13 +493,11 @@ class Route {
     {
         $paths = func_get_args();
 
-        if ( ! is_array($paths))
-        {
+        if (!is_array($paths)) {
             return;
         }
 
-        foreach ($paths as $path)
-        {
+        foreach ($paths as $path) {
             $this->create($path, '');
         }
     }
@@ -533,14 +511,13 @@ class Route {
      */
     public function reset()
     {
-        $this->routes 	= array();
-        $this->names 	= array();
-        $this->group 	= null;
-        $this->areas 	= array();
+        $this->routes = array();
+        $this->names  = array();
+        $this->group  = null;
+        $this->areas  = array();
     }
 
     //--------------------------------------------------------------------
-
 
     //--------------------------------------------------------------------
     // Private Methods
@@ -557,60 +534,57 @@ class Route {
      *
      * @return array          The built route.
      */
-    private function create($from, $to, $options=array())
+    private function create($from, $to, $options = array())
     {
-        $prefix = is_null($this->group) ? '' : $this->group .'/';
+        $prefix = is_null($this->group) ? '' : $this->group . '/';
 
         $from = $prefix . $from;
 
         // Are we saving the name for this one?
-        if (isset($options['as']) && ! empty($options['as']))
-        {
-            self::$names[ $options['as'] ] = $from;
+        if (isset($options['as']) && !empty($options['as'])) {
+            self::$names[$options['as']] = $from;
         }
 
         // Limiting to subdomains?
-        if (isset($options['subdomain']) && ! empty($options['subdomain']))
-        {
+        if (isset($options['subdomain']) && !empty($options['subdomain'])) {
             // If we don't match the current subdomain, then
             // we don't need to add the route.
-            if (! $this->checkSubdomains($options['subdomain']))
-            {
+            if (!$this->checkSubdomains($options['subdomain'])) {
                 return;
             }
         }
 
         // Save the route's filters...
-        if (isset($options['before']))
-        {
+        if (isset($options['before'])) {
             $this->assignFilterToRoute($options['before'], $from, 'before');
         }
 
-        if (isset($options['after']))
-        {
+        if (isset($options['after'])) {
             $this->assignFilterToRoute($options['after'], $from, 'after');
         }
 
         // Are we offsetting the parameters?
         // If so, take care of them here in one
         // fell swoop.
-        if (isset($options['offset']))
-        {
+        if (isset($options['offset'])) {
             // Get a constant string to work with.
             $to = preg_replace('/(\$\d+)/', '$X', $to);
 
-            for ($i = (int)$options['offset'] + 1; $i < (int)$options['offset'] + 7; $i++)
-            {
-                $to = preg_replace_callback('/\$X/', function($m) use ($i) {
-                    return '$'. $i;
-                }, $to, 1);
+            for ($i = (int)$options['offset'] + 1; $i < (int)$options['offset'] + 7; $i ++) {
+                $to = preg_replace_callback(
+                    '/\$X/',
+                    function ($m) use ($i) {
+                        return '$' . $i;
+                    },
+                    $to,
+                    1
+                );
             }
         }
 
         // Convert any custom constraints to the CI/pattern equivalent
-        foreach ($this->constraints as $name => $pattern)
-        {
-            $from = str_replace('{'. $name .'}', $pattern, $from);
+        foreach ($this->constraints as $name => $pattern) {
+            $from = str_replace('{' . $name . '}', $pattern, $from);
         }
 
         $this->routes[$from] = $to;
@@ -625,27 +599,26 @@ class Route {
      * @param $subdomains
      * @return bool
      */
-    private function checkSubdomains ($subdomains)
+    private function checkSubdomains($subdomains)
     {
-        if (is_null($this->current_subdomain))
-        {
+        if (is_null($this->current_subdomain)) {
             $this->determineCurrentSubdomain();
         }
 
-        if (! is_array($subdomains))
-        {
+        if (!is_array($subdomains)) {
             $subdomains = array($subdomains);
         }
 
         $matched = false;
 
-        array_walk($subdomains, function ($subdomain) use (&$matched)
-        {
-            if ($subdomain == $this->current_subdomain || $subdomain == '*')
-            {
-                $matched = true;
+        array_walk(
+            $subdomains,
+            function ($subdomain) use (&$matched) {
+                if ($subdomain == $this->current_subdomain || $subdomain == '*') {
+                    $matched = true;
+                }
             }
-        });
+        );
 
         return $matched;
     }
@@ -656,17 +629,16 @@ class Route {
      * Examines the HTTP_HOST to get a best match for the subdomain. It
      * won't be perfect, but should work for our needs.
      */
-    private function determineCurrentSubdomain ()
+    private function determineCurrentSubdomain()
     {
-        $parsedUrl = parse_url( $_SERVER['HTTP_HOST'] );
+        $parsedUrl = parse_url($_SERVER['HTTP_HOST']);
 
         $host = explode('.', $parsedUrl['host']);
 
         // If we only have 2 parts, then we don't have a subdomain.
         // This won't be totally accurate, since URL's like example.co.uk
         // would still pass, but it helps to separate the chaff...
-        if (! is_array($host) || count($host) == 2)
-        {
+        if (!is_array($host) || count($host) == 2) {
             // Set it to false so we don't make it back here again.
             $this->current_subdomain = false;
             return;
@@ -677,7 +649,6 @@ class Route {
         // for 'example' when they try to match the subdomain, in most all cases.
         $this->current_subdomain = array_shift($host);
     }
-
     //--------------------------------------------------------------------
 
 }

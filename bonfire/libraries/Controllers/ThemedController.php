@@ -2,7 +2,8 @@
 
 namespace Bonfire\Controllers;
 
-class ThemedController extends BaseController {
+class ThemedController extends BaseController
+{
 
     // Stores data variables to be sent to the view.
     protected $vars = array();
@@ -12,13 +13,13 @@ class ThemedController extends BaseController {
 
     //--------------------------------------------------------------------
 
-    public function __construct ()
+    public function __construct()
     {
         parent::__construct();
 
         // Setup our Template Engine
-        $this->container['templateEngineName']  = config_item('di.templateEngine');
-        $this->container['templateEngine']      = function ($c) {
+        $this->container['templateEngineName'] = config_item('di.templateEngine');
+        $this->container['templateEngine']     = function ($c) {
             return new $c['templateEngineName']();
         };
 
@@ -35,13 +36,17 @@ class ThemedController extends BaseController {
      *
      * @param array $data
      */
-    public function render ($data = array())
+    public function render($data = array())
     {
         // Merge any saved vars into the data
         $data = array_merge($data, $this->vars);
 
         // Build our notices from the theme's view file.
-        $data['notice'] = $this->load->view("themes/{$this->template->theme()}/notice", array('notice' => $this->message()), TRUE);
+        $data['notice'] = $this->load->view(
+            "themes/{$this->template->theme()}/notice",
+            array('notice' => $this->message()),
+            true
+        );
 
         $this->template->set($data);
 
@@ -56,17 +61,13 @@ class ThemedController extends BaseController {
      * @param string $name
      * @param mixed  $value
      */
-    public function set_var ($name, $value = NULL)
+    public function set_var($name, $value = null)
     {
-        if (is_array($name))
-        {
-            foreach ($name as $k => $v)
-            {
+        if (is_array($name)) {
+            foreach ($name as $k => $v) {
                 $this->vars[$k] = $v;
             }
-        }
-        else
-        {
+        } else {
             $this->vars[$name] = $value;
         }
     }
@@ -85,12 +86,10 @@ class ThemedController extends BaseController {
      * @param string $message The message to save.
      * @param string $type    The string to be included as the CSS class of the containing div.
      */
-    public function set_message ($message = '', $type = 'info')
+    public function set_message($message = '', $type = 'info')
     {
-        if (! empty($message))
-        {
-            if (isset($this->session))
-            {
+        if (!empty($message)) {
+            if (isset($this->session)) {
                 $this->session->set_flashdata('message', $type . '::' . $message);
             }
 
@@ -110,7 +109,7 @@ class ThemedController extends BaseController {
      * @param  string $type    [description]
      * @return array
      */
-    public function message ($message = '', $type = 'info')
+    public function message($message = '', $type = 'info')
     {
         $return = array(
             'message' => $message,
@@ -118,12 +117,10 @@ class ThemedController extends BaseController {
         );
 
         // Does session data exist?
-        if (empty($message) && class_exists('CI_Session'))
-        {
+        if (empty($message) && class_exists('CI_Session')) {
             $message = $this->session->flashdata('message');
 
-            if (! empty($message))
-            {
+            if (!empty($message)) {
                 // Split out our message parts
                 $temp_message      = explode('::', $message);
                 $return['type']    = $temp_message[0];
@@ -134,10 +131,8 @@ class ThemedController extends BaseController {
         }
 
         // If message is empty, we need to check our own storage.
-        if (empty($message))
-        {
-            if (empty($this->message['message']))
-            {
+        if (empty($message)) {
+            if (empty($this->message['message'])) {
                 return '';
             }
 
@@ -145,14 +140,12 @@ class ThemedController extends BaseController {
         }
 
         // Clear our session data so we don't get extra messages on rare occasions.
-        if (class_exists('CI_Session'))
-        {
+        if (class_exists('CI_Session')) {
             $this->session->set_flashdata('message', '');
         }
 
         return $return;
     }
-
     //--------------------------------------------------------------------
 
 }

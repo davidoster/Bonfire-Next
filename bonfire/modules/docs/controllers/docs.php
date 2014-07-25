@@ -2,12 +2,13 @@
 
 class Docs extends \Bonfire\Controllers\ThemedController
 {
+
     protected $ignoreFiles = array('_404.md');
 
     protected $tocFile;
 
     protected $doc_folders = [];
-    
+
     protected $current_group = null;
 
     protected $current_path = null;
@@ -23,7 +24,7 @@ class Docs extends \Bonfire\Controllers\ThemedController
      *
      * @return \Docs
      */
-    public function __construct ()
+    public function __construct()
     {
         parent::__construct();
 
@@ -51,13 +52,12 @@ class Docs extends \Bonfire\Controllers\ThemedController
      *
      * @return void
      */
-    public function index ()
+    public function index()
     {
         $data = array();
 
         // Make sure the builder knows where to look
-        foreach ($this->doc_folders as $alias => $folder)
-        {
+        foreach ($this->doc_folders as $alias => $folder) {
             $this->docbuilder->addDocFolder($alias, $folder);
         }
 
@@ -68,9 +68,7 @@ class Docs extends \Bonfire\Controllers\ThemedController
             $data['sidebar'] = $this->buildSidebar($content);
             $data['toc']     = $this->buildTOC();
             $data['content'] = $content;
-        }
-        catch (Exception $e)
-        {
+        } catch (Exception $e) {
             $this->set_message($e->getMessage(), 'warning');
         }
 
@@ -84,7 +82,7 @@ class Docs extends \Bonfire\Controllers\ThemedController
      *
      * @return void
      */
-    public function search ()
+    public function search()
     {
         $this->benchmark->mark('search_start');
         $this->load->library('docs/docsearch');
@@ -93,8 +91,7 @@ class Docs extends \Bonfire\Controllers\ThemedController
 
         $terms = $this->input->post('search_terms');
 
-        if ($terms)
-        {
+        if ($terms) {
             $search_folders = $this->doc_folders;
 
             $data['results'] = $this->docsearch->search($terms, $search_folders);
@@ -116,34 +113,29 @@ class Docs extends \Bonfire\Controllers\ThemedController
      * Determines which groups are allowed to be viewed by the current system
      * and the user/environment.
      */
-    private function determineVisibleGroups ($current_group, $current_path)
+    private function determineVisibleGroups($current_group, $current_path)
     {
         // Is displaying docs permitted for this environment?
         if (config_item('docs.permitted_environments')
-            && ! in_array(ENVIRONMENT, config_item('docs.permitted_environments'))
-        )
-        {
+            && !in_array(ENVIRONMENT, config_item('docs.permitted_environments'))
+        ) {
             $this->set_message(lang('docs_env_disabled'), 'error');
             redirect();
         }
 
         $this->showAppDocs = config_item('docs.show_app_docs');
         $this->showDevDocs = config_item('docs.show_dev_docs');
-        $this->tocFile     = config_item('docs.toc_file') ? : '_toc.ini';
+        $this->tocFile     = config_item('docs.toc_file') ?: '_toc.ini';
 
         // Make sure we can still get to the search method.
-        if ($current_group == 'search')
-        {
-            $this->current_group = FALSE;
-        }
-        // Are we allowed to show developer docs in this environment?
+        if ($current_group == 'search') {
+            $this->current_group = false;
+        } // Are we allowed to show developer docs in this environment?
         elseif ($current_group == 'developer'
-                && ! $this->showDevDocs
+                && !$this->showDevDocs
                 && ENVIRONMENT != 'development'
-        )
-        {
-            if ($this->showAppDocs)
-            {
+        ) {
+            if ($this->showAppDocs) {
                 $this->set_message(lang('docs_not_allowed_dev'), 'warning');
 
                 redirect('docs/application');
@@ -162,11 +154,11 @@ class Docs extends \Bonfire\Controllers\ThemedController
      *
      * @return array
      */
-    private function determineFromURL ()
+    private function determineFromURL()
     {
         $return = [
-            '',     // Group
-            '',     // File Path
+            '', // Group
+            '', // File Path
         ];
 
         $segments = $this->uri->segment_array();
@@ -179,9 +171,8 @@ class Docs extends \Bonfire\Controllers\ThemedController
 
         // If nothing left, then assign the default group and redirect to
         // a page we can do something with...
-        if (! count($segments))
-        {
-            redirect('docs/'. config_item('docs.default_group'));
+        if (!count($segments)) {
+            redirect('docs/' . config_item('docs.default_group'));
         }
 
         // Do we have a group specified? Bonfire Docs requires that a group
@@ -207,17 +198,21 @@ class Docs extends \Bonfire\Controllers\ThemedController
      * @param $content  The HTML generated for the page content.
      * @return string   The HTML for the sidebar.
      */
-    private function buildSidebar (&$content)
+    private function buildSidebar(&$content)
     {
         $data = [];
 
         // Set the remaining data for the view
-        $data['docsDir'] = 'docs/'. $this->current_group .'/';
+        $data['docsDir'] = 'docs/' . $this->current_group . '/';
         $data['docsExt'] = config_item('docs.extension');
 
         $data['docMap'] = $this->docbuilder->buildDocumentMap($content);
 
-        return $this->docbuilder->postProcess($this->load->view('docs/_document_map', $data, TRUE), site_url(), current_url());
+        return $this->docbuilder->postProcess(
+            $this->load->view('docs/_document_map', $data, true),
+            site_url(),
+            current_url()
+        );
     }
 
     //--------------------------------------------------------------------
@@ -225,13 +220,17 @@ class Docs extends \Bonfire\Controllers\ThemedController
     /**
      * Builds out the nested lists of items that are needed
      */
-    private function buildTOC ()
+    private function buildTOC()
     {
-        $folder = $this->doc_folders[ $this->current_group ] .'/';
+        $folder = $this->doc_folders[$this->current_group] . '/';
 
         $map = $this->docbuilder->buildTOC($folder);
 
-        return $this->docbuilder->postProcess( $this->load->view('docs/_toc', ['map' => $map], true), site_url(), current_url());
+        return $this->docbuilder->postProcess(
+            $this->load->view('docs/_toc', ['map' => $map], true),
+            site_url(),
+            current_url()
+        );
     }
 
     //--------------------------------------------------------------------
@@ -242,30 +241,24 @@ class Docs extends \Bonfire\Controllers\ThemedController
      *
      * @return array
      */
-    private function get_module_docs ()
+    private function get_module_docs()
     {
         $docs_modules = array();
-        foreach (\Bonfire\Modules::list_modules() as $module)
-        {
+        foreach (\Bonfire\Modules::list_modules() as $module) {
             $ignored_folders = array();
             $path            = \Bonfire\Modules::path($module) . $this->docsDir;
 
             // If these are developer docs, add the folder to the path.
-            if ($this->current_group == $this->docsTypeBf)
-            {
+            if ($this->current_group == $this->docsTypeBf) {
                 $path .= '/' . $this->docsTypeBf;
-            }
-            // For Application docs, ignore the 'developers' folder.
-            else
-            {
+            } // For Application docs, ignore the 'developers' folder.
+            else {
                 $ignored_folders[] = $this->docsTypeBf;
             }
 
-            if (is_dir($path))
-            {
+            if (is_dir($path)) {
                 $files = $this->get_folder_files($path, $module, $ignored_folders);
-                if (is_array($files) && count($files))
-                {
+                if (is_array($files) && count($files)) {
                     $docs_modules[$module] = $files;
                 }
             }
@@ -273,9 +266,6 @@ class Docs extends \Bonfire\Controllers\ThemedController
 
         return $docs_modules;
     }
-
     //--------------------------------------------------------------------
-
-
 
 }

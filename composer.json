@@ -7,7 +7,7 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Bonfire\\": ["bonfire/libraries/", "bonfire/interfaces/", "bonfire/traits/" ]
+            "Bonfire\\": "bonfire"
         }
     },
     "authors": [

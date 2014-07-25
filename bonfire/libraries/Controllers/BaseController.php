@@ -16,7 +16,7 @@
 
 namespace Bonfire\Controllers;
 
-require_once BFPATH .'libraries/Pimple.php';
+require_once BFPATH . 'libraries/Pimple.php';
 
 /**
  * Base Controller
@@ -29,11 +29,13 @@ require_once BFPATH .'libraries/Pimple.php';
  * @author     Bonfire Dev Team
  * @link       http://cibonfire.com/docs/bonfire/bonfire_controllers
  */
-class BaseController extends \MX_Controller {
+class BaseController extends \MX_Controller
+{
 
     /**
      * Autoload functionality specific to this single controller.
      * Provided by HMVC. See the MX/Loader class, _autoloader() method.
+     *
      * @var array
      */
     public $autoload = array(
@@ -47,6 +49,7 @@ class BaseController extends \MX_Controller {
 
     /**
      * DI Container
+     *
      * @var
      */
     protected $container;
@@ -61,6 +64,7 @@ class BaseController extends \MX_Controller {
      *          'after'  => ['filter3', 'filter4']
      *      ]
      *  ];
+     *
      * @var array
      */
     protected $filtered_methods = [];
@@ -75,7 +79,7 @@ class BaseController extends \MX_Controller {
 
     //--------------------------------------------------------------------
 
-    public function __construct ()
+    public function __construct()
     {
         parent::__construct();
 
@@ -89,10 +93,10 @@ class BaseController extends \MX_Controller {
          * Profiler
          */
         if (config_item('show_profiler') &&
-            ! $this->input->is_cli_request() &&
-            ! $this->input->is_ajax_request())
-        {
-            $this->load->add_package_path(APPPATH .'third_party/codeigniter-forensics');
+            !$this->input->is_cli_request() &&
+            !$this->input->is_ajax_request()
+        ) {
+            $this->load->add_package_path(APPPATH . 'third_party/codeigniter-forensics');
 //            $this->load->library('Console');
             $this->output->enable_profiler(true);
         }
@@ -122,19 +126,18 @@ class BaseController extends \MX_Controller {
      *
      * @return void
      */
-    public function renderText ($text, $typography = FALSE)
+    public function renderText($text, $typography = false)
     {
         // Note that, for now anyway, we don't do any cleaning of the text
         // and leave that up to the client to take care of.
 
         // However, we can auto_typography the text if we're asked nicely.
-        if ($typography === TRUE)
-        {
+        if ($typography === true) {
             $this->load->helper('typography');
             $text = auto_typography($text);
         }
 
-        $this->output->enable_profiler(FALSE)
+        $this->output->enable_profiler(false)
                      ->set_content_type('text/plain')
                      ->set_output($text);
     }
@@ -150,10 +153,9 @@ class BaseController extends \MX_Controller {
      * @param  mixed $json The data to be converted to JSON.
      * @return [type]       [description]
      */
-    public function renderJson ($json)
+    public function renderJson($json)
     {
-        if (is_resource($json))
-        {
+        if (is_resource($json)) {
             throw new \LogicException('Resources can not be converted to JSON data.');
         }
 
@@ -161,8 +163,7 @@ class BaseController extends \MX_Controller {
         // then we need to add the profile results to the fragments
         // array so it will be updated on the site, since we disable
         // all profiling below to keep the results clean.
-        if (is_array($json))
-        {
+        if (is_array($json)) {
             /*
              * This section MAY come back during initial development
              * so it's being left here.
@@ -186,7 +187,7 @@ class BaseController extends \MX_Controller {
             */
         }
 
-        $this->output->enable_profiler(FALSE)
+        $this->output->enable_profiler(false)
                      ->set_content_type('application/json')
                      ->set_output(json_encode($json));
     }
@@ -203,14 +204,13 @@ class BaseController extends \MX_Controller {
      * @throws \LogicException
      * @return void
      */
-    public function renderJS ($js = NULL)
+    public function renderJS($js = null)
     {
-        if (! is_string($js))
-        {
+        if (!is_string($js)) {
             throw new \LogicException('No javascript passed to the render_js() method.');
         }
 
-        $this->output->enable_profiler(FALSE)
+        $this->output->enable_profiler(false)
                      ->set_content_type('application/x-javascript')
                      ->set_output($js);
     }
@@ -225,13 +225,12 @@ class BaseController extends \MX_Controller {
      *
      * @return void
      */
-    public function renderRealtime ()
+    public function renderRealtime()
     {
-        if (ob_get_level() > 0)
-        {
+        if (ob_get_level() > 0) {
             end_end_flush();
         }
-        ob_implicit_flush(TRUE);
+        ob_implicit_flush(true);
     }
 
     //--------------------------------------------------------------------
@@ -245,14 +244,12 @@ class BaseController extends \MX_Controller {
      *
      * @param  string $location [description]
      */
-    public function ajaxRedirect ($location = '')
+    public function ajaxRedirect($location = '')
     {
         $location = empty($location) ? '/' : $location;
 
-        if (strpos($location, '/') !== 0 || strpos($location, '://') !== FALSE)
-        {
-            if (! function_exists('site_url'))
-            {
+        if (strpos($location, '/') !== 0 || strpos($location, '://') !== false) {
+            if (!function_exists('site_url')) {
                 $this->load->helper('url');
             }
 
@@ -270,13 +267,13 @@ class BaseController extends \MX_Controller {
      * to the application.
      *
      * @param  string $format The type of element to return, either 'object' or 'array'
-     * @param  int           $depth  The number of levels deep to decode
+     * @param  int    $depth  The number of levels deep to decode
      *
      * @return mixed    The formatted JSON data, or NULL.
      */
-    public function getJson ($format = 'object', $depth = 512)
+    public function getJson($format = 'object', $depth = 512)
     {
-        $as_array = $format == 'array' ? TRUE : FALSE;
+        $as_array = $format == 'array' ? true : false;
 
         return json_decode(file_get_contents('php://input'), $as_array, $depth);
     }
@@ -286,20 +283,18 @@ class BaseController extends \MX_Controller {
     //--------------------------------------------------------------------
     // Utility Methods
     //--------------------------------------------------------------------
-    
+
     /**
      * Handles setting up our DI container and other core setup tasks.
      * Placed here to get out of the way of application requirements.
      */
-    public function init ()
+    public function init()
     {
         // Get our DI container up and running
         $this->container = new \Pimple();
 
-        foreach ($this->init_methods as $method)
-        {
-            if (method_exists($this, $method))
-            {
+        foreach ($this->init_methods as $method) {
+            if (method_exists($this, $method)) {
                 $this->{$method}();
             }
         }
@@ -313,12 +308,13 @@ class BaseController extends \MX_Controller {
      *
      * @param $type
      */
-    public function callFilters ($type)
+    public function callFilters($type)
     {
         $this->load->config('filters', true);
 
-        $method = $this->router->fetch_method();
-        $method_filters = isset($this->filtered_methods[$method][$type]) ? explode('|', $this->filtered_methods[$method][$type]) : [];
+        $method         = $this->router->fetch_method();
+        $method_filters = isset($this->filtered_methods[$method][$type]) ?
+            explode('|', $this->filtered_methods[$method][$type]) : [];
 
         $params = $this->uri->segment_array();
 
@@ -326,23 +322,17 @@ class BaseController extends \MX_Controller {
 
         $available_filters = $this->config->item('filters');
 
-        try
-        {
-            foreach ($method_filters as $filter)
-            {
-                if (array_key_exists($filter, $available_filters))
-                {
+        try {
+            foreach ($method_filters as $filter) {
+                if (array_key_exists($filter, $available_filters)) {
                     $action = $available_filters[$filter];
                     $action($params, $ci);
                 }
             }
-        }
-        catch (RuntimeException $e)
-        {
+        } catch (RuntimeException $e) {
             // @todo - log filter execution errors.
         }
     }
-
     //--------------------------------------------------------------------
 
 }

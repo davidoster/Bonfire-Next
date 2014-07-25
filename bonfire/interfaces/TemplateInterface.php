@@ -33,7 +33,7 @@ interface TemplateInterface
      *
      * @param string $layout If provided, will override the default layout.
      */
-    public function render ($layout = NULL);
+    public function render($layout = null);
 
     //--------------------------------------------------------------------
 
@@ -41,7 +41,7 @@ interface TemplateInterface
      * Used within the template layout file to render the current content.
      * This content is typically used to display the current view.
      */
-    public function content ();
+    public function content();
 
     //--------------------------------------------------------------------
 
@@ -51,7 +51,7 @@ interface TemplateInterface
      *
      * @param $theme
      */
-    public function setTheme ($theme);
+    public function setTheme($theme);
 
     //--------------------------------------------------------------------
 
@@ -60,7 +60,7 @@ interface TemplateInterface
      *
      * @return mixed|string
      */
-    public function theme ();
+    public function theme();
 
     //--------------------------------------------------------------------
 
@@ -70,7 +70,7 @@ interface TemplateInterface
      * @param $file
      * @return mixed
      */
-    public function setView ($file);
+    public function setView($file);
 
     //--------------------------------------------------------------------
 
@@ -79,7 +79,7 @@ interface TemplateInterface
      *
      * @return mixed|string
      */
-    public function view ();
+    public function view();
 
     //--------------------------------------------------------------------
 
@@ -95,7 +95,7 @@ interface TemplateInterface
      * @param string|array $key
      * @param mixed        $value
      */
-    public function set ($key, $value = NULL);
+    public function set($key, $value = null);
 
     //--------------------------------------------------------------------
 
@@ -105,7 +105,7 @@ interface TemplateInterface
      * @param $key
      * @return mixed
      */
-    public function get ($key);
+    public function get($key);
 
     //--------------------------------------------------------------------
 
@@ -116,7 +116,7 @@ interface TemplateInterface
      * @param bool $parse
      * @return mixed
      */
-    public function parseViews ($parse = FALSE);
+    public function parseViews($parse = false);
 
     //--------------------------------------------------------------------
 
@@ -126,11 +126,11 @@ interface TemplateInterface
      * applications, or a core theme and user-submitted themes.
      *
      * @param $alias The name the theme can be referenced by
-     * @param $path A new path where themes can be found.
+     * @param $path  A new path where themes can be found.
      *
      * @return mixed
      */
-    public function addThemePath ($alias, $path);
+    public function addThemePath($alias, $path);
 
     //--------------------------------------------------------------------
 
@@ -139,7 +139,7 @@ interface TemplateInterface
      *
      * @param $alias
      */
-    public function removeThemePath ($alias);
+    public function removeThemePath($alias);
     //--------------------------------------------------------------------
 
 }

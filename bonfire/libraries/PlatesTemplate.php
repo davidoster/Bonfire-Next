@@ -5,7 +5,8 @@ namespace Bonfire;
 use League\Plates\Template;
 use League\Plates\Engine;
 
-class PlatesTemplate implements TemplateInterface {
+class PlatesTemplate implements TemplateInterface
+{
 
     protected $engine;
 
@@ -24,7 +25,7 @@ class PlatesTemplate implements TemplateInterface {
     /**
      * Sets up our paths, gets our template and engine instances in place.
      */
-    public function __construct ()
+    public function __construct()
     {
         $this->ci =& get_instance();
 
@@ -32,8 +33,7 @@ class PlatesTemplate implements TemplateInterface {
 
         $paths = config_item('template.theme_paths');
 
-        foreach ($paths as $key => $path)
-        {
+        foreach ($paths as $key => $path) {
             $this->engine->addFolder($key, $path);
         }
 
@@ -46,7 +46,7 @@ class PlatesTemplate implements TemplateInterface {
          */
 
         // URI Extension
-        $this->engine->loadExtension(new \League\Plates\Extension\URI( uri_string() ));
+        $this->engine->loadExtension(new \League\Plates\Extension\URI(uri_string()));
     }
 
     //--------------------------------------------------------------------
@@ -57,34 +57,30 @@ class PlatesTemplate implements TemplateInterface {
      *
      * @param string $layout If provided, will override the default layout.
      */
-    public function render ($layout = NULL)
+    public function render($layout = null)
     {
         // Use the default layout (index) if nothing is specified.
-        $layout = ! empty($layout) ? $layout : $this->layout;
-        $this->template->layout($this->theme .'::'. $layout);
+        $layout = !empty($layout) ? $layout : $this->layout;
+        $this->template->layout($this->theme . '::' . $layout);
 
         // Give us some helper paths in the views...
         $this->template->tpl_theme = $this->theme;
 
         // Determine which view to show.
-        $view = ! empty($this->view) ? $this->view :
-            $this->ci->router->fetch_class() .'/'. $this->ci->router->fetch_method();
+        $view = !empty($this->view) ? $this->view :
+            $this->ci->router->fetch_class() . '/' . $this->ci->router->fetch_method();
 
         $module = $this->ci->router->fetch_module();
 
         // Make sure the engine can find our views folder...
-        if (! empty($module))
-        {
+        if (!empty($module)) {
             // Strip the module name from the view path...
-            $view = str_replace($module .'/', '', $view);
+            $view = str_replace($module . '/', '', $view);
 
-            $this->engine->setDirectory(\Bonfire\Modules::path( $module, 'views' ));
+            $this->engine->setDirectory(\Bonfire\Modules::path($module, 'views'));
+        } else {
+            $this->engine->setDirectory(APPPATH . 'views');
         }
-        else
-        {
-            $this->engine->setDirectory(APPPATH .'views');
-        }
-
 
         // Render the output!
         $output = $this->template->render($view);
@@ -97,7 +93,7 @@ class PlatesTemplate implements TemplateInterface {
      * Used within the template layout file to render the current content.
      * This content is typically used to display the current view.
      */
-    public function content ()
+    public function content()
     {
         // Not needed for this template engine. It provides it's own call.
     }
@@ -117,7 +113,7 @@ class PlatesTemplate implements TemplateInterface {
      *
      * @param $theme
      */
-    public function setTheme ($theme)
+    public function setTheme($theme)
     {
         $this->theme = $theme;
     }
@@ -129,7 +125,7 @@ class PlatesTemplate implements TemplateInterface {
      *
      * @return mixed|string
      */
-    public function theme ()
+    public function theme()
     {
         return $this->theme;
     }
@@ -142,7 +138,7 @@ class PlatesTemplate implements TemplateInterface {
      * @param $file
      * @return mixed
      */
-    public function setView ($file)
+    public function setView($file)
     {
         $this->view = $file;
     }
@@ -154,7 +150,7 @@ class PlatesTemplate implements TemplateInterface {
      *
      * @return string
      */
-    public function view ()
+    public function view()
     {
         return $this->view;
     }
@@ -173,12 +169,10 @@ class PlatesTemplate implements TemplateInterface {
      * @param string|array $key
      * @param mixed        $value
      */
-    public function set ($key, $value = NULL)
+    public function set($key, $value = null)
     {
-        if (is_array($key))
-        {
-            foreach ($key as $k => $v)
-            {
+        if (is_array($key)) {
+            foreach ($key as $k => $v) {
                 $this->template->{$k} = $v;
             }
 
@@ -196,7 +190,7 @@ class PlatesTemplate implements TemplateInterface {
      * @param $key
      * @return mixed
      */
-    public function get ($key)
+    public function get($key)
     {
         return isset($this->template->$key) ? $this->template->$key : null;
     }
@@ -210,9 +204,8 @@ class PlatesTemplate implements TemplateInterface {
      * @param bool $parse
      * @return mixed
      */
-    public function parseViews ($parse = FALSE)
+    public function parseViews($parse = false)
     {
-
     }
 
     //--------------------------------------------------------------------
@@ -223,11 +216,11 @@ class PlatesTemplate implements TemplateInterface {
      * applications, or a core theme and user-submitted themes.
      *
      * @param $alias The name the theme can be referenced by
-     * @param $path A new path where themes can be found.
+     * @param $path  A new path where themes can be found.
      *
      * @return mixed
      */
-    public function addThemePath ($alias, $path)
+    public function addThemePath($alias, $path)
     {
         return $this->engine->addFolder($alias, $path);
     }
@@ -239,11 +232,9 @@ class PlatesTemplate implements TemplateInterface {
      *
      * @param $path
      */
-    public function removeThemePath ($path)
+    public function removeThemePath($path)
     {
-
     }
-
     //--------------------------------------------------------------------
 
 }

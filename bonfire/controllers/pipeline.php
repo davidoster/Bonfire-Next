@@ -1,6 +1,7 @@
 <?php
 
-class Pipeline extends \Bonfire\Controllers\BaseController {
+class Pipeline extends \Bonfire\Controllers\BaseController
+{
 
     /**
      * Simple funnel everything to the index method
@@ -8,49 +9,49 @@ class Pipeline extends \Bonfire\Controllers\BaseController {
      *
      * @param $method
      */
-    public function _remap ($method)
+    public function _remap($method)
     {
         $method = $this->uri->uri_string();
-        $method = ltrim( str_ireplace(BF_ASSET_PATH, '', $method), '/ ');
+        $method = ltrim(str_ireplace(BF_ASSET_PATH, '', $method), '/ ');
 
         $this->index($method);
     }
 
     //--------------------------------------------------------------------
 
-    public function index ($asset=null)
+    public function index($asset = null)
     {
         $this->config->load('assets', true);
 
-        $config = config_item('assets');
+        $config  = config_item('assets');
         $filters = $config['filters'];
         unset($config['filters']);
 
         $pipeline = new \Bonfire\Assets\AssetPipeline($asset, $config, $filters);
 
         // Allow theme replacement for directives
-        $pipeline->registerTag('themed', function ($str) {
-            if (preg_match('/{theme:[a-zA-Z]+}/', $str, $matches) !== false)
-            {
-                if (isset($matches[0]))
-                {
-                    $theme_path = APPPATH .'/views/themes/';
-                    $theme = trim( str_replace('theme:', '', $matches[0]), '{} ');
+        $pipeline->registerTag(
+            'themed',
+            function ($str) {
+                if (preg_match('/{theme:[a-zA-Z]+}/', $str, $matches) !== false) {
+                    if (isset($matches[0])) {
+                        $theme_path = APPPATH . '/views/themes/';
+                        $theme      = trim(str_replace('theme:', '', $matches[0]), '{} ');
 
-                    return $theme_path . $theme .'/'. str_replace($matches[0] .'/', '', $str);
+                        return $theme_path . $theme . '/' . str_replace($matches[0] . '/', '', $str);
+                    }
                 }
+
+                return $str;
             }
+        );
 
-            return $str;
-        });
+        $output = $pipeline->process();
 
-        $output = $pipeline->process( );
-
-        $this->output->enable_profiler(FALSE)
+        $this->output->enable_profiler(false)
                      ->set_content_type('text/css')
                      ->set_output($output);
     }
-
     //--------------------------------------------------------------------
 
 }
