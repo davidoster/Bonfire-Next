@@ -1,4 +1,4 @@
-<?php if (empty($this->content)) : ?>
+<?php if (empty($content)) : ?>
     <div class="alert alert-info" style="margin-top: 40px;">
         <?php if (isset($notice)) : ?>
             <?= $notice; ?>
@@ -10,7 +10,7 @@
 <?php else: ?>
 
     <div class="page">
-        <?php echo $this->content; ?>
+        <?php echo $content; ?>
     </div>
 
 <?php endif; ?>

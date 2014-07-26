@@ -27,7 +27,7 @@
             <div class="collapse navbar-collapse" id="main-nav-collapse">
                 <ul class="nav navbar-nav navbar-left">
                     <?php foreach (config_item('docs.folders') as $group => $path) : ?>
-                        <li <?= $this->uri(1, $group, 'class="active"') ?>>
+                        <li <?php //$this->uri->(1, $group, 'class="active"') ?>>
                             <a href="<?= site_url("docs/{$group}"); ?>"><?= ucwords($group) ?></a>
                         </li>
                     <?php endforeach; ?>
@@ -45,12 +45,12 @@
         </div>
     </header>
 
-    <?php if (get_instance()->uri->segment(2) !== 'search') : ?>
+    <?php if (CI::$APP->uri->segment(2) !== 'search') : ?>
     <div class="toc-wrapper">
         <div class="container">
 
             <div class="toc" style="display:none">
-                <?= $this->toc ?>
+                <?= $toc ?>
             </div>
             <a href="#" id="toc-btn" style="margin: 5px 10px 0 0"><?= lang('docs_toc') ?></a>
         </div>
@@ -61,14 +61,13 @@
     <!-- Content Area -->
     <div class="container">
 
-        <?= isset($this->notice) ? $this->notice : ''; ?>
+        <?= isset($notice) ? $notice : ''; ?>
 
         <div class="row">
 
             <div class="col-md-9 main">
-                <?php $content = $this->content();  ?>
-                <?php if (! empty($content)) : ?>
-                    <?= $content; ?>
+                <?php if (! empty($view_content)) : ?>
+                    <?= $view_content; ?>
                 <?php else: ?>
                     <div class="alert">
                         <?= lang('docs_not_found') ?>
@@ -77,8 +76,8 @@
             </div>
 
             <div class="col-md-3 sidebar">
-                <?php if (isset($this->sidebar)) : ?>
-                    <?= $this->sidebar; ?>
+                <?php if (isset($sidebar)) : ?>
+                    <?= $sidebar; ?>
                 <?php endif; ?>
             </div>
 

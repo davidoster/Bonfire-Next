@@ -7,7 +7,7 @@
 | Any classes that are instantiated into the Base_Controller's DI container
 | must be listed here so they can be easily swapped out per application.
 */
-$config['di.templateEngine'] = 'Bonfire\PlatesTemplate';
+$config['di.templateEngine'] = 'Bonfire\Libraries\ViewTemplate';
 
 
 //--------------------------------------------------------------------
@@ -32,8 +32,8 @@ $config['show_profiler'] = false;
 | a theme isn't found. Paths are relative to the FCPATH.
 */
 $config['template.theme_paths'] = [
-    'admin' => APPPATH .'/views/themes/admin',
-    'docs'  => APPPATH .'/views/themes/docs'
+    'admin' => APPPATH .'views/themes/admin',
+    'docs'  => APPPATH .'views/themes/docs'
 ];
 
 //--------------------------------------------------------------------
