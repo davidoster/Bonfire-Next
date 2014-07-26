@@ -247,18 +247,18 @@ class Modules
 
                 if (is_file($fullpath . $file_ext))
                 {
-                    return array(
+                    return [
                         $fullpath,
                         $file
-                    );
+                    ];
                 }
 
                 if ($base == 'libraries/' AND is_file($fullpath . ucfirst($file_ext)))
                 {
-                    return array(
+                    return [
                         $fullpath,
                         ucfirst($file)
-                    );
+                    ];
                 }
             }
         }
@@ -266,20 +266,31 @@ class Modules
         /* is the file in an application directory? */
         if ($base == 'views/' OR $base == 'plugins/')
         {
+            // In application views folder?
             if (is_file(APPPATH . $base . $path . $file_ext))
             {
-                return array(
+                return [
                     APPPATH . $base . $path,
                     $file
-                );
+                ];
             }
+            // Is it a full path?
+            if (is_file('/'. $path . $file_ext))
+            {
+                return [
+                    '/'. $path,
+                    $file
+                ];
+            }
+            // Or is it a Bonfire views file?
             if (is_file(BFPATH . $base . $path . $file_ext))
             {
-                return array(
+                return [
                     BFPATH . $base . $path,
                     $file
-                );
+                ];
             }
+
             show_error("Unable to locate the file: {$path}{$file_ext}");
         }
 

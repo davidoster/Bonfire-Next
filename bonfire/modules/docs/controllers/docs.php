@@ -1,6 +1,6 @@
 <?php
 
-class Docs extends \Bonfire\Controllers\ThemedController
+class Docs extends \Bonfire\Libraries\Controllers\ThemedController
 {
 
     protected $ignoreFiles = array('_404.md');
@@ -69,7 +69,7 @@ class Docs extends \Bonfire\Controllers\ThemedController
             $data['toc']     = $this->buildTOC();
             $data['content'] = $content;
         } catch (Exception $e) {
-            $this->set_message($e->getMessage(), 'warning');
+            $this->setMessage($e->getMessage(), 'warning');
         }
 
         $this->render($data);
@@ -119,7 +119,7 @@ class Docs extends \Bonfire\Controllers\ThemedController
         if (config_item('docs.permitted_environments')
             && !in_array(ENVIRONMENT, config_item('docs.permitted_environments'))
         ) {
-            $this->set_message(lang('docs_env_disabled'), 'error');
+            $this->setMessage(lang('docs_env_disabled'), 'error');
             redirect();
         }
 
@@ -136,7 +136,7 @@ class Docs extends \Bonfire\Controllers\ThemedController
                 && ENVIRONMENT != 'development'
         ) {
             if ($this->showAppDocs) {
-                $this->set_message(lang('docs_not_allowed_dev'), 'warning');
+                $this->setMessage(lang('docs_not_allowed_dev'), 'warning');
 
                 redirect('docs/application');
             }

@@ -1,6 +1,6 @@
 <?php
 
-class Pipeline extends \Bonfire\Controllers\BaseController
+class Pipeline extends \Bonfire\Libraries\Controllers\BaseController
 {
 
     /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace Bonfire\Controllers;
+namespace Bonfire\Libraries\Controllers;
 
 class ThemedController extends BaseController
 {
@@ -31,7 +31,7 @@ class ThemedController extends BaseController
     /**
      * Provides a common interface with the other rendering methods to
      * set the output of the method. Uses the current instance of $this->template.
-     * Ensures that any data we've stored through $this->set_var() are present
+     * Ensures that any data we've stored through $this->setVar() are present
      * and includes the status messages into the data.
      *
      * @param array $data
@@ -44,7 +44,7 @@ class ThemedController extends BaseController
         // Build our notices from the theme's view file.
         $data['notice'] = $this->load->view(
             "themes/{$this->template->theme()}/notice",
-            array('notice' => $this->message()),
+            ['notice' => $this->message()],
             true
         );
 
@@ -61,7 +61,7 @@ class ThemedController extends BaseController
      * @param string $name
      * @param mixed  $value
      */
-    public function set_var($name, $value = null)
+    public function setVar($name, $value = null)
     {
         if (is_array($name)) {
             foreach ($name as $k => $v) {
@@ -86,7 +86,7 @@ class ThemedController extends BaseController
      * @param string $message The message to save.
      * @param string $type    The string to be included as the CSS class of the containing div.
      */
-    public function set_message($message = '', $type = 'info')
+    public function setMessage($message = '', $type = 'info')
     {
         if (!empty($message)) {
             if (isset($this->session)) {

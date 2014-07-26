@@ -1,7 +1,8 @@
 <?php
 
-namespace Bonfire;
+namespace Bonfire\Libraries;
 
+use Bonfire\Interfaces\TemplateInterface;
 use League\Plates\Template;
 use League\Plates\Engine;
 
@@ -37,9 +38,9 @@ class PlatesTemplate implements TemplateInterface
             $this->engine->addFolder($key, $path);
         }
 
-        $this->template = new Template($this->engine);
+        $this->template = new Template($this->engine, config_item('template.default_theme'));
 
-        $this->theme = config_item('template.default_theme');
+//        $this->theme = config_item('template.default_theme');
 
         /*
          * Load Extensions
@@ -172,14 +173,11 @@ class PlatesTemplate implements TemplateInterface
     public function set($key, $value = null)
     {
         if (is_array($key)) {
-            foreach ($key as $k => $v) {
-                $this->template->{$k} = $v;
-            }
-
+            $this->template->data($key);
             return;
         }
 
-        $this->template->$key = $value;
+        $this->template->data([$key, $value]);
     }
 
     //--------------------------------------------------------------------

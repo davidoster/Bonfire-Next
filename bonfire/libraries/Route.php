@@ -1,6 +1,6 @@
 <?php
 
-namespace Bonfire;
+namespace Bonfire\Libraries;
 
 /**
  * Route class provides methods to be used within the routes config file

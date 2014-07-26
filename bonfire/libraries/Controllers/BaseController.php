@@ -14,7 +14,7 @@
  * @filesource
  */
 
-namespace Bonfire\Controllers;
+namespace Bonfire\Libraries\Controllers;
 
 require_once BFPATH . 'libraries/Pimple.php';
 

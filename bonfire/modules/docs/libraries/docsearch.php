@@ -1,6 +1,4 @@
-<?php if (!defined('BASEPATH')) {
-    exit('No direct script access allowed');
-}
+<?php
 
 /**
  * Class docSearch
@@ -8,7 +6,7 @@
  * Implements basic search capabilities for Bonfire docs. Includes application,
  * core bonfire, and module docs.
  */
-class docSearch
+class DocSearch
 {
 
     protected $ci;
@@ -39,7 +37,7 @@ class docSearch
      *
      * @var array
      */
-    protected $skip_files = array('.', '..', '_404.md', '_toc.ini');
+    protected $skip_files = ['.', '..', '_404.md', '_toc.ini'];
 
     /**
      * How much of each file should we read.
@@ -84,7 +82,7 @@ class docSearch
      *
      * @return array|null
      */
-    public function search($terms = null, $folders = array())
+    public function search($terms = null, $folders = [])
     {
         if (empty($terms) || empty($folders)) {
             return null;
@@ -92,10 +90,10 @@ class docSearch
 
         $this->ci->load->helper('directory');
 
-        $results = array();
+        $results = [];
 
         foreach ($folders as $folder) {
-            $results = array_merge($results, $this->search_folder($terms, $folder));
+            $results = array_merge($results, $this->searchFolder($terms, $folder));
         }
 
         return $results;
@@ -111,15 +109,15 @@ class docSearch
      *
      * @return array The results.
      */
-    private function search_folder($term, $folder)
+    private function searchFolder($term, $folder)
     {
-        $results = array();
+        $results = [];
 
         $map = directory_map($folder, 2);
 
         // Make sure we have something to work with.
-        if (!is_array($map) || (is_array($map) && !count($map))) {
-            return array();
+        if (! is_array($map) || (is_array($map) && ! count($map))) {
+            return [];
         }
 
         // Loop over each file and search the contents for our term.
@@ -132,12 +130,12 @@ class docSearch
 
             // Is it a folder?
             if (is_array($dir) && count($dir)) {
-                $results = array_merge($results, $this->search_folder($terms, $folder . '/' . $dir));
+                $results = array_merge($results, $this->searchFolder($term, $folder . '/' . $dir));
                 continue;
             }
 
             // Make sure it's the right file type...
-            if (!preg_match("/({$this->allowed_file_types})/i", $file)) {
+            if (! preg_match("/({$this->allowed_file_types})/i", $file)) {
                 continue;
             }
 
@@ -151,7 +149,7 @@ class docSearch
             // Do we have a match in here somewhere?
             $found = stristr($text, $term) || stristr($text, $term_html);
 
-            if (!$found) {
+            if (! $found) {
                 continue;
             }
 
@@ -178,12 +176,12 @@ class docSearch
                     $result_url = str_replace(BFPATH, 'developer/', $result_url);
                     $result_url = str_replace(APPPATH, 'application/', $result_url);
 
-                    $results[] = array(
-                        'title'   => $this->extract_title($excerpt, $file),
+                    $results[] = [
+                        'title'   => $this->extractTitle($excerpt, $file),
                         'file'    => $folder . '/' . $file,
                         'url'     => $result_url,
-                        'extract' => $this->build_extract($excerpt, $term, $match[0][0])
-                    );
+                        'extract' => $this->buildExtract($excerpt, $term, $match[0][0])
+                    ];
 
                     $file_count ++;
                 }
@@ -204,7 +202,7 @@ class docSearch
      *
      * @return string
      */
-    private function build_extract($excerpt, $term, $match_string)
+    private function buildExtract($excerpt, $term, $match_string)
     {
         // Find the character positions within the string that our match was found at.
         // That way we'll know from what positions before and after this we want to grab it in.
@@ -241,7 +239,7 @@ class docSearch
      * @param $file
      * @return string
      */
-    private function extract_title($excerpt, $file)
+    private function extractTitle($excerpt, $file)
     {
         $title = '';
 
@@ -266,6 +264,6 @@ class docSearch
 
         return $title;
     }
-    //--------------------------------------------------------------------
 
+    //--------------------------------------------------------------------
 }

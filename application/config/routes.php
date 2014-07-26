@@ -26,7 +26,7 @@
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-use \Bonfire\Route as Route;
+use \Bonfire\libraries\Route as Route;
 
 $routes = new Route();
 

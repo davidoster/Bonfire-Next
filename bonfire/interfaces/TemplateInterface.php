@@ -16,7 +16,7 @@
 
 // ------------------------------------------------------------------------
 
-namespace Bonfire;
+namespace Bonfire\Interfaces;
 
 /**
  * Template Interface
