@@ -36,6 +36,31 @@ $config['template.theme_paths'] = [
     'docs'  => APPPATH .'views/themes/docs'
 ];
 
+
+/*
+|---------------------------------------------------------------------
+| VARIANTS
+|---------------------------------------------------------------------
+| Variants are different versions of the view files that can be used.
+| These are used with system agents to serve up different versions of
+| the view files based on the device type that is looking at the page.
+|
+| The key is the name the variant is referenced by.
+| The value is the string the is added to the view name.
+*/
+$config['template.variants'] = [
+    'phone' => '+phone',
+    'table' => '+tablet'
+];
+
+/*
+    If TRUE, The ThemedController (and children) will automatically
+    attempt to determine whether the user is using a desktop,
+    mobile phone, or tablet to browse the site. This is then set
+    in the template engine so it will attempt to use variant files.
+ */
+$config['autodetect_variant'] = true;
+
 //--------------------------------------------------------------------
 // Migrations
 //--------------------------------------------------------------------

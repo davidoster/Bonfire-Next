@@ -158,4 +158,44 @@ interface TemplateInterface
 
     //--------------------------------------------------------------------
 
+    /**
+     * Sets the variant used when creating view names. These variants can
+     * be anything, but by default are used to render specific templates
+     * for desktop, tablet, and phone. The name of the variant is added
+     * to the view name, joined by a "+" symbol.
+     *
+     * Example:
+     *      $this->setVariant('phone');
+     *      $this->display('header');
+     *
+     *      Tries to display "views/header+phone.php"
+     *
+     * @param $variant
+     * @return mixed
+     */
+    public function setVariant($variant);
+
+    //--------------------------------------------------------------------
+
+    /**
+     * Adds a new variant to the system.
+     *
+     * @param $name
+     * @param $postfix
+     * @return mixed
+     */
+    public function addVariant($name, $postfix);
+
+    //--------------------------------------------------------------------
+
+    /**
+     * Removes a variant from the system.
+     *
+     * @param $name
+     * @param $postfix
+     * @return mixed
+     */
+    public function removeVariant($name);
+
+    //--------------------------------------------------------------------
 }

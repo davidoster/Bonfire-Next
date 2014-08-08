@@ -17,6 +17,10 @@ class ViewTemplate implements TemplateInterface
 
     protected $folders = [];
 
+    protected $variants = [];
+
+    protected $current_variant = '';
+
     protected $ci;
 
     //--------------------------------------------------------------------
@@ -25,10 +29,18 @@ class ViewTemplate implements TemplateInterface
     {
         $this->ci =& get_instance();
 
+        // Register our paths with the engin
         $paths = config_item('template.theme_paths');
 
         foreach ($paths as $key => $path) {
             $this->addThemePath($key, $path);
+        }
+
+        // Register our variants with the engine.
+        $variants = config_item('template.variants');
+
+        foreach ($variants as $key => $value) {
+            $this->addVariant($key, $value);
         }
     }
 
@@ -50,15 +62,14 @@ class ViewTemplate implements TemplateInterface
         // Render our current view content
         $data['view_content'] = $this->content();
 
-        if (! isset($this->folders[$this->theme]))
-        {
+        if (! isset($this->folders[$this->theme])) {
             throw new \LogicException("No folder found for theme: {$this->theme}.");
         }
 
         // Make the path available within views.
         $data['theme_path'] = $this->folders[$this->theme];
 
-        $this->ci->load->view($this->folders[$this->theme] .'/'. $this->layout, $data);
+        echo $this->display($this->folders[$this->theme] . '/' . $this->layout, $data);
     }
 
     //--------------------------------------------------------------------
@@ -84,7 +95,7 @@ class ViewTemplate implements TemplateInterface
         $view = ! empty($this->view) ? $this->view :
             $dir . $this->ci->router->fetch_class() . '/' . $this->ci->router->fetch_method();
 
-        return $this->ci->load->view($view, $this->vars, true);
+        return $this->display($view);
     }
 
     //--------------------------------------------------------------------
@@ -98,25 +109,43 @@ class ViewTemplate implements TemplateInterface
      * "admin:header" would try to display the "header.php" file within
      * the "admin" theme.
      *
+     * If a variant has been specified, it will be added to the end
+     * of the view name before looking for the file.
+     *
      * @param $view
      * @return mixed
      */
-    public function display($view)
+    public function display($view, $data=null)
     {
         $theme = null;
+        $variant_view = null;
 
-        if (strpos($view, ':') !== false)
-        {
+        // Pull out the theme from the view, if given.
+        if (strpos($view, ':') !== false) {
             list($theme, $view) = explode(':', $view);
         }
 
-        if (! empty($theme) && isset($this->folders[$theme]))
-        {
-            $view = rtrim($this->folders[$theme], '/') .'/'. $view;
+        if (! empty($theme) && isset($this->folders[$theme])) {
+            $view = rtrim($this->folders[$theme], '/') . '/' . $view;
         }
 
-        return $this->ci->load->view($view, $this->vars, true);
+        $data = is_array($data) ? $data : $this->vars;
 
+        // if using a variant, add it to the view name.
+        if (! empty($this->current_variant))
+        {
+            $variant_view = $this->variants[ $this->current_variant ];
+
+            $output = $this->ci->load->view($variant_view, $data, true);
+        }
+
+        // If that didn't find anything, then try it without a variant
+        if (empty($output))
+        {
+            $output = $this->ci->load->view($view, $data, true);
+        }
+
+        return $output;
     }
 
     //--------------------------------------------------------------------
@@ -256,5 +285,64 @@ class ViewTemplate implements TemplateInterface
 
         return $this;
     }
+
     //--------------------------------------------------------------------
+    // Variants
+    //--------------------------------------------------------------------
+
+    /**
+     * Sets the variant used when creating view names. These variants can
+     * be anything, but by default are used to render specific templates
+     * for desktop, tablet, and phone. The name of the variant is added
+     * to the view name, joined by a "+" symbol.
+     *
+     * Example:
+     *      $this->setVariant('phone');
+     *      $this->display('header');
+     *
+     *      Tries to display "views/header+phone.php"
+     *
+     * @param $variant
+     * @return $this
+     */
+    public function setVariant($variant)
+    {
+        if (isset($this->variants[$variant])) {
+            $this->current_variant = $variant;
+        }
+
+        return $this;
+    }
+    //--------------------------------------------------------------------
+
+    /**
+     * Adds a new variant to the system.
+     *
+     * @param $name
+     * @param $postfix
+     * @return $this|mixed
+     */
+    public function addVariant($name, $postfix)
+    {
+        $this->variants[$name] = $postfix;
+
+        return $this;
+    }
+
+    //--------------------------------------------------------------------
+
+    /**
+     * Removes a variant from the system.
+     *
+     * @param $name
+     * @return $this|mixed
+     */
+    public function removeVariant($name)
+    {
+        if (isset($this->variants[$name])) {
+            unset($this->variants[$name]);
+        }
+
+        return $this;
+    }
 }

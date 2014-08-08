@@ -24,6 +24,20 @@ class ThemedController extends BaseController
         };
 
         $this->template = $this->container['templateEngine'];
+
+        // Variant Detection and setup
+        if (config_item('autodetect_variant') === true) {
+            $detect = new \Mobile_Detect();
+
+            if ($detect->isMobile())
+            {
+                $this->template->setVariant('phone');
+            }
+            else if ($detect->isTablet())
+            {
+                $this->template->setVariant('tablet');
+            }
+        }
     }
 
     //--------------------------------------------------------------------
@@ -88,7 +102,7 @@ class ThemedController extends BaseController
      */
     public function setMessage($message = '', $type = 'info')
     {
-        if (!empty($message)) {
+        if (! empty($message)) {
             if (isset($this->session)) {
                 $this->session->set_flashdata('message', $type . '::' . $message);
             }
@@ -120,7 +134,7 @@ class ThemedController extends BaseController
         if (empty($message) && class_exists('CI_Session')) {
             $message = $this->session->flashdata('message');
 
-            if (!empty($message)) {
+            if (! empty($message)) {
                 // Split out our message parts
                 $temp_message      = explode('::', $message);
                 $return['type']    = $temp_message[0];
