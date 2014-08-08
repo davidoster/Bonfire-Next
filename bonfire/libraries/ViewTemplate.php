@@ -44,6 +44,9 @@ class ViewTemplate implements TemplateInterface
     {
         $data = $this->vars;
 
+        // Make the template engine available within the views.
+        $data['template'] = $this;
+
         // Render our current view content
         $data['view_content'] = $this->content();
 
@@ -82,6 +85,38 @@ class ViewTemplate implements TemplateInterface
             $dir . $this->ci->router->fetch_class() . '/' . $this->ci->router->fetch_method();
 
         return $this->ci->load->view($view, $this->vars, true);
+    }
+
+    //--------------------------------------------------------------------
+
+    /**
+     * Loads a view file. Useful to control caching. Intended for use
+     * from within view files.
+     *
+     * You can specify that a view should belong to a theme by prefixing
+     * the name of the theme and a colon to the view name. For example,
+     * "admin:header" would try to display the "header.php" file within
+     * the "admin" theme.
+     *
+     * @param $view
+     * @return mixed
+     */
+    public function display($view)
+    {
+        $theme = null;
+
+        if (strpos($view, ':') !== false)
+        {
+            list($theme, $view) = explode(':', $view);
+        }
+
+        if (! empty($theme) && isset($this->folders[$theme]))
+        {
+            $view = rtrim($this->folders[$theme], '/') .'/'. $view;
+        }
+
+        return $this->ci->load->view($view, $this->vars, true);
+
     }
 
     //--------------------------------------------------------------------

@@ -142,4 +142,20 @@ interface TemplateInterface
     public function removeThemePath($alias);
     //--------------------------------------------------------------------
 
+    /**
+     * Loads a view file. Useful to control caching. Intended for use
+     * from within view files.
+     *
+     * You can specify that a view should belong to a theme by prefixing
+     * the name of the theme and a colon to the view name. For example,
+     * "admin:header" would try to display the "header.php" file within
+     * the "admin" theme.
+     *
+     * @param $view
+     * @return mixed
+     */
+    public function display($view);
+
+    //--------------------------------------------------------------------
+
 }
