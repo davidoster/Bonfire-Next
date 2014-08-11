@@ -28,7 +28,11 @@
         "cssmin/cssmin": "*",
         "mrclay/minify": "*",
         "symfony/console": "2.6.*@dev",
+        "mobiledetect/mobiledetectlib": "dev-master",
         "ci-bonfire/assets": "dev-develop"
+    },
+    "require-dev": {
+        "codeception/aspect-mock": "*"
     },
     "minimum-stability": "dev",
     "repositories": [

@@ -5,7 +5,25 @@ include 'bonfire/modules/docs/libraries/DocSearch.php';
 define('BFPATH', 'bonfire/');
 define('APPPATH', 'application/');
 
-class DocSearchTest extends \Codeception\TestCase\Test {
+if (! function_exists('get_instance')) {
+    function get_instance()
+    {
+        $ci = new stdClass();
+
+        $ci->load         = new stdClass();
+        $ci->load->helper = function ($name) {
+
+            return $name;
+        };
+
+        return $ci;
+    }
+}
+
+//--------------------------------------------------------------------
+
+class DocSearchTest extends \Codeception\TestCase\Test
+{
 
     protected $searcher;
 
@@ -26,6 +44,5 @@ class DocSearchTest extends \Codeception\TestCase\Test {
         $this->assertTrue(gettype($this->searcher) == 'object');
         $this->assertEquals(get_class($this->searcher), 'DocSearch');
     }
-
     //--------------------------------------------------------------------
 }

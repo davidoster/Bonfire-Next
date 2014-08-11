@@ -1,4 +1,4 @@
-# Views and Themes
+# Views
 
 Bonfire uses CodeIgniter's standard views to form the basis of its Template system. The documentation in here only applies when using the default `ViewTemplate` engine. See [Custom Template Engines](template_engines.md) for more information about using other template systems with Bonfire.
 
@@ -7,9 +7,9 @@ In order to use the view and template methods in this document, your controller 
 
 	class SuperHeroController extends \Bonfire\Libraries\Controllers\ThemedController
 	{
-		. . .
+	    . . .
 	}
-	
+
 ## Views
 The system expects your views to be follow some conventions to simplify organizing your view files and make the system a little easier and cleaner to use.  The following conventions are used when trying to determine the view file we should render: 
 
@@ -30,8 +30,34 @@ If your controller is in a sub-folder, the views should follow that same structu
 If you need to use a view that is named differently than the conventions above you can tell it which view to use with the `setView` method.
 
 	$this->template->setView('alternate/path/to/my_view');
-	
+ 
 Your view must be relative the `application/views` folder, a `module views` folder, or a full system path to anywhere on your server that your script can access.
+
+### Displaying The View
+When using ThemedController you should use the new `render()` method to display your views in place of the traditional `$this->load->view()` that you’re used to. This will automatically detect the correct view (as described above) and hooks into the Theme system (described below).
+
+	$this->render();
+
+You can optionally pass in custom data to display, like with the traditional method, as the first parameter. This makes the key/value pairs available in the view for you to use. 
+
+	$data = ['user' => $user];
+	$this->render($data);
+
+### View Data
+While you can collect data into a single variable to pass into the render method, it is often convenient to prepare data for the view from different methods. You can do this with the `setVar()` method.
+
+The first parameter is the name that you want the value to be called in the view itself. The second parameter is the value itself.
+
+	$this->setVar('user', $user);
+
+If the first parameter is an array, the $value parameter will be ignored and all of the values in the $name array will be treated key/value pairs to make available in the view. 
+
+	$data = [
+			'user' => $user,
+			'location' => $location
+	];
+	$this->setVar($data);
+
 
 ## Variants
 Variants are different versions of a single view that must be presented at different times. This is most commonly done to provide customized layouts or views for mobile phones or tablets. 
@@ -49,21 +75,15 @@ Out of the box, that's all that variants are used for. However, don't let that s
 If you would like to add additional variants for the system to recognize, you can modify the `application/config/app.php` file as needed. The key in the `template.variants` setting is a name it can be referenced by. The value in the array is the postfix to add to the end of the file (but before the file extension).
 
 	$config['template.variants'] = [
-    	'phone' => '+phone',
-    	'table' => '+tablet'
+	    'phone' => '+phone',
+	    'table' => '+tablet'
 	];
 
 ### Auto-Detecting Variant
 If you would like Bonfire to attempt to automatically determine which variant to use (between desktop, phone or tablet only) modify the `autodetect_variant` config setting in the same file.
 
 	$config['autodetect_variant'] = true;
-	
-If TRUE, this will use the [Mobile Detect](http://mobiledetect.net/) library to determine. This library is built buy the gang at [BrowserStack](http://www.browserstack.com/) and kept up to date.
+ 
+If TRUE, this will use the [Mobile Detect](http://mobiledetect.net/) library to determine. This library is built buy the gang at [BrowserStack](http://www.browserstack.com/) and kept up to date. 
 
 If you need to modify how this works (by adding browser or OS detection, for example) you will need to modify the `__construct()` method of the `ThemedController` file. Or you can turn of autodetection and do your own detection routine in `MY_Controller`. 
-
-## Themes
-
-Themes provide a simple, yet very flexible, way of providing consistent interfaces to your web pages. Instead of specifying all of the generic HTML for every type of page on your site, you can create a layout that then pulls in the proper parts to create a single page. All of this then wraps around your page content.
-
-### Theme Locations

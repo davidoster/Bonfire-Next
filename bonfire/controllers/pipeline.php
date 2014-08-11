@@ -35,7 +35,7 @@ class Pipeline extends \Bonfire\Libraries\Controllers\BaseController
             function ($str) {
                 if (preg_match('/{theme:[a-zA-Z]+}/', $str, $matches) !== false) {
                     if (isset($matches[0])) {
-                        $theme_path = APPPATH . '/views/themes/';
+                        $theme_path = APPPATH . '../themes/';
                         $theme      = trim(str_replace('theme:', '', $matches[0]), '{} ');
 
                         return $theme_path . $theme . '/' . str_replace($matches[0] . '/', '', $str);

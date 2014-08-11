@@ -2,6 +2,11 @@
 
 namespace Bonfire\Libraries\Controllers;
 
+/**
+ * Class ThemedController
+ *
+ * @package Bonfire\Libraries\Controllers
+ */
 class ThemedController extends BaseController
 {
 
@@ -13,6 +18,11 @@ class ThemedController extends BaseController
 
     //--------------------------------------------------------------------
 
+    /**
+     * Constructor takes care of getting the template engine up and running
+     * and bound to our DI object, as well as any other preliminary needs,
+     * like detecting the variant to use, etc.
+     */
     public function __construct()
     {
         parent::__construct();
@@ -25,19 +35,7 @@ class ThemedController extends BaseController
 
         $this->template = $this->container['templateEngine'];
 
-        // Variant Detection and setup
-        if (config_item('autodetect_variant') === true) {
-            $detect = new \Mobile_Detect();
-
-            if ($detect->isMobile())
-            {
-                $this->template->setVariant('phone');
-            }
-            else if ($detect->isTablet())
-            {
-                $this->template->setVariant('tablet');
-            }
-        }
+        $this->detectVariant();
     }
 
     //--------------------------------------------------------------------
@@ -56,11 +54,14 @@ class ThemedController extends BaseController
         $data = array_merge($data, $this->vars);
 
         // Build our notices from the theme's view file.
-        $data['notice'] = $this->load->view(
-            "themes/{$this->template->theme()}/notice",
-            ['notice' => $this->message()],
-            true
-        );
+
+        $data['notice'] = $this->template->display($this->template->theme() .':notice', ["notice" => $this->message()]);
+
+//        $data['notice'] = $this->load->view(
+//            "themes/{$this->template->theme()}/notice",
+//            ['notice' => $this->message()],
+//            true
+//        );
 
         $this->template->set($data);
 
@@ -160,6 +161,23 @@ class ThemedController extends BaseController
 
         return $return;
     }
+
+    //--------------------------------------------------------------------
+
+    protected function detectVariant()
+    {
+// Variant Detection and setup
+        if (config_item('autodetect_variant') === true) {
+            $detect = new \Mobile_Detect();
+
+            if ($detect->isMobile()) {
+                $this->template->setVariant('phone');
+            } else if ($detect->isTablet()) {
+                $this->template->setVariant('tablet');
+            }
+        }
+    }
+
     //--------------------------------------------------------------------
 
 }

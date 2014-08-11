@@ -8,12 +8,12 @@ The `MY_Controller` file is currently not used by Bonfire and is left alone so t
 Each controller is stored in its own file in the `application/libraries/Controllers` folder and the file is named the same as the class name. They are all namespaced in `\Bonfire\Controllers\{controller_name}`. To use the controller as a base class, you should extend your controller from the appropriate Bonfire Controller.
 
 	class SomeController extends \Bonfire\Controllers\ThemedController {
-		. . .
+	    . . .
 	}
 
 ## BaseController
 
-All of the custom controllers extend from the `Base_Controller`.  This class extends the MX_Controller which gives you all of the power of WireDesign’s [HMVC](https://bitbucket.org/wiredesignz/codeigniter-modular-extensions-hmvc/wiki/Home) available to all of your classes.  That allows for a different way of working, but also a very powerful one, and one that is not necessary to use.
+All of the custom controllers extend from the `Base_Controller`.  This class extends the MX\_Controller which gives you all of the power of WireDesign’s [HMVC](https://bitbucket.org/wiredesignz/codeigniter-modular-extensions-hmvc/wiki/Home) available to all of your classes.  That allows for a different way of working, but also a very powerful one, and one that is not necessary to use.
 
 This controller provides common functionality to all of the other controllers and should be the minimal class you extend if you want to take advantage of Bonfire's capabilities.
 
@@ -23,32 +23,32 @@ This controller provides common functionality to all of the other controllers an
 This array provides a simple means of loading various libraries, helpers and models automatically within your application. 
 
 	protected $autoload = array(
-		'helper'    => array(),
-		'language'  => array(),
-        'libraries' => array('settings/settings_lib'),
-        'model'     => array(),
-        'modules'	=> array(),
-        'sparks'    => array()
-    );
+	    'helper'    => array(),
+	    'language'  => array(),
+	    'libraries' => array('settings/settings_lib'),
+	    'model'     => array(),
+	    'modules'   => array(),
+	    'sparks'    => array()
+	);
 
 You will not, however, want to extend this directly since you will override parent class autoload needs. Instead, set the value in your class' constructor prior to calling the parent's constructor.
 
 	public function __construct()
 	{
-		$this->autoload['helpers'][] = 'my_new_helper';
-		
-		parent::__construct();
+	    $this->autoload['helpers'][] = 'my_new_helper';
+	
+	    parent::__construct();
 	}
 
-##### $init_methods
+##### $init\_methods
 This is an array of method names that will be called during the initial `init()` method call in the constructor. This is intended for use by Traits. If your class uses a Trait then you'll need to put it's init method in here. This is already handled for you by the child Controller classes.
 
 	class ThemedController extends BaseController {
-		use ThemeableTrait;
-		
-		protected $init_methods = [
-			'init_themes'
-		];
+	    use ThemeableTrait;
+	
+	    protected $init_methods = [
+	        'init_themes'
+	    ];
 	}
 
 #### Class Methods
@@ -96,7 +96,7 @@ This is used by the [Filters](#filters) system. Can be called from, for example,
 The only parameter is the `type` or name of the filters group to run, like `before` or `after`.
 
 	$this->callFilters('before');
-	
+ 
 ## ThemedController
 This controller provides theming functions into the controller with several convenience methods. Makes integrating full-featured templates into your application a breeze. It extends from [BaseController](#basecontroller).
 
@@ -117,7 +117,7 @@ This controller currently...
 
 * Loads in all of the authentication library
 * Restricts access to only logged in users
-* Gets form_validation setup and working correctly with HMVC.
+* Gets form\_validation setup and working correctly with HMVC.
 
 
 ## AdminController
@@ -127,7 +127,7 @@ The final controller sets things up even more for use within the Admin area of y
 * Sets the pagination settings for a consistent user experience.
 * Gets the admin theme loaded and makes sure that some consistent CSS files are loaded so we don’t have to worry about it later.
 
-	
+	 
 ## Filters
 Filters allow methods to be called at certain points during a controller's execution. They are typically used to filter access to a method, or perform cleanup actions after a method. 
 
@@ -136,7 +136,7 @@ Filters are defined globally in a config located at `application/config/filters.
 
 	$config['auth'] = function ($params, &$ci)
 	{
-		. . .
+	    . . .
 	}
 
 The first parameter is an array of params, typically provided when you assign the filter in your controller. The second is an instance of the CodeIgniter superglobal object. This ensures that all functions share the same instance of $ci and aids in testing functions.
@@ -149,17 +149,17 @@ During the execution of the filter, a successful check within the filter require
 To assign filters to specific methods within your controller you must fill out the `$filtered_methods` class variable with the `before` and `after` arrays filled with the names of the filters to call.
 
 	class Users extends Base_Controller {
-		protected $filtered_methods = [
-			'method_name'	=> [
-				'before'	=> 'auth',
-				'after'		=> 'someFilter'
-			]
-		]
+	    protected $filtered_methods = [
+	        'method_name'   => [
+	            'before'    => 'auth',
+	            'after'     => 'someFilter'
+	        ]
+	    ]
 	}
 
 To specify multiple filters on a method, separate each with a pipe (`|`).
  
- 	'before'	=> 'auth|anotherFilter',
+	'before'    => 'auth|anotherFilter',
  
 ### Filter Execution
  Bonfire has two times that the filters are executed.
@@ -167,10 +167,9 @@ To specify multiple filters on a method, separate each with a pipe (`|`).
  * `before` - executed during the controller's instantiation, but before the method has been called. This means that all classes, helpers, libraries, etc, have been loaded and are available for you use. 
  * `after` - called in the `post_controller` hook.
 
-You can also call the `callFilters` method at any time with your own name, and then add those into the $filtered_methods array just like a before or after call.
+You can also call the `callFilters` method at any time with your own name, and then add those into the $filtered\_methods array just like a before or after call.
 
 ### Pre-defined Filters
 Bonfire provides several pre-defined filters ready for your use. 
 
-* `debug` - Checks for the presence of the $_GET variable `?debug` and defines the constant 'DEBUG_MODE' to TRUE, if the current environment is 'development'. This allows you to build in additional debug code to your modules and simply add a URL flag to turn it on.
-
+* `debug` - Checks for the presence of the $\_GET variable `?debug` and defines the constant 'DEBUG\_MODE' to TRUE, if the current environment is 'development'. This allows you to build in additional debug code to your modules and simply add a URL flag to turn it on.

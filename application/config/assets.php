@@ -1,6 +1,6 @@
 <?php
 
-$config = array(
+$config = [
 
     /*
      * The environment impacts the way that files are handled
@@ -33,9 +33,9 @@ $config = array(
      * be served by the system.
      *
      */
-    'asset_folders'         => array (
+    'asset_folders'         => [
         APPPATH .'assets/'
-    ),
+    ],
 
     /*
      * The path to be added to the site's domain that is where
@@ -50,14 +50,14 @@ $config = array(
      * folder that files should be stored in. Customize these to the
      * folder  names that match what you typically use on your projects.
      */
-    'asset_type_folders'    => array(
+    'asset_type_folders'    => [
         'stylesheet'        => 'css',
         'javascript'        => 'js',
         'images'            => 'img',
         'audio'             => 'audio',
         'video'             => 'video',
         'flash'             => 'flash'
-    ),
+    ],
 
     //--------------------------------------------------------------------
     // End Basic Customization Options
@@ -74,11 +74,11 @@ $config = array(
      * Note that common video and image formats will automatically be given
      * the appropriate mime type based on the Config/Mimes file in this app.
      */
-    'mime_types' => array(
-        'stylesheet'    => array('.css', '.css.less', '.css.scss', '.less', '.scss', 'min.css'),
-        'javascript'    => array('.js', '.js.coffee', '.coffee', '.min.js')
-    ),
-);
+    'mime_types' => [
+        'stylesheet'    => ['.css', '.css.less', '.css.scss', '.less', '.scss', 'min.css'],
+        'javascript'    => ['.js', '.js.coffee', '.coffee', '.min.js']
+    ],
+];
 
 
 //--------------------------------------------------------------------
@@ -94,17 +94,17 @@ $config = array(
  * If no data is provided for a specific mime type, no action will be taken
  * and the file will be served as-is.
  */
-$config['filters'] = array(
-    '.min.js'       => array('\Bonfire\Assets\Filters\JSMinPlus'),
-    '.min.css'      => array('\Bonfire\Assets\Filters\CSSMin'),
-    '.js'           => array('\Bonfire\Assets\Filters\JSMinPlus'),
-    '.js.coffee'    => array(),
-    '.coffee'       => array(),
-    '.css'          => array(['\Bonfire\Assets\Filters\CSSMin', [ 'filters'=> []] ] ),
-    '.css.less'     => array(),
-    '.css.scss'     => array(),
-    '.less'         => array(),
-    '.scss'         => array(),
-    '.min.css'      => array(),
-    'html'          => array('\Bonfire\Assets\Filters\JSMinPlus')
-);
+$config['filters'] = [
+    '.min.js'       => ['\Bonfire\Assets\Filters\JSMinPlus'],
+    '.min.css'      => ['\Bonfire\Assets\Filters\CSSMin'],
+    '.js'           => ['\Bonfire\Assets\Filters\JSMinPlus'],
+    '.js.coffee'    => [],
+    '.coffee'       => [],
+    '.css'          => [['\Bonfire\Assets\Filters\CSSMin', [ 'filters'=> []] ] ],
+    '.css.less'     => [],
+    '.css.scss'     => [],
+    '.less'         => [],
+    '.scss'         => [],
+    '.min.css'      => [],
+    'html'          => ['\Bonfire\Assets\Filters\JSMinPlus']
+];
