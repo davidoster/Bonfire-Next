@@ -1,18 +1,7 @@
 <ul class="nav nav-sidebar">
-    <li class="active"><a href="#">Overview</a></li>
-    <li><a href="#">Reports</a></li>
-    <li><a href="#">Analytics</a></li>
-    <li><a href="#">Export</a></li>
-</ul>
-<ul class="nav nav-sidebar">
-    <li><a href="">Nav item</a></li>
-    <li><a href="">Nav item again</a></li>
-    <li><a href="">One more nav</a></li>
-    <li><a href="">Another nav item</a></li>
-    <li><a href="">More navigation</a></li>
-</ul>
-<ul class="nav nav-sidebar">
-    <li><a href="">Nav item again</a></li>
-    <li><a href="">One more nav</a></li>
-    <li><a href="">Another nav item</a></li>
+    <li class="active"><a href="<?= site_url(ADMIN_PATH) ?>"><i class="fa fa-dashboard fa-lg fa-fw"></i> Dashboard</a></li>
+    <li><a href="#"><i class="fa fa-book fa-lg fa-fw"></i> Content</a></li>
+    <li><a href="#"><i class="fa fa-file-text-o fa-lg fa-fw"></i> Reports</a></li>
+    <li><a href="#"><i class="fa fa-gear fa-lg fa-fw"></i> Settings</a></li>
+    <li><a href="#"><i class="fa fa-th fa-lg fa-fw"></i> Developer Tools</a></li>
 </ul>
