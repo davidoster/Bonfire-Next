@@ -386,7 +386,10 @@ if (($composer_autoload = config_item('composer_autoload')) !== FALSE)
      * modules within the Bonfire folder also.
      */
 
-	if (empty($class) OR (! file_exists(APPPATH.'controllers/'.$RTR->directory.$class.'.php') AND ! file_exists($RTR->directory.$class.'.php') AND ! file_exists(BFPATH.'controllers/'.$RTR->directory.$class.'.php')) )
+	if (empty($class) OR (! file_exists(APPPATH.'controllers/'.$RTR->directory.$class.'.php') AND
+                          ! file_exists($RTR->directory.$class.'.php') AND
+                          ! file_exists(BFPATH.'controllers/'.$RTR->directory.$class.'.php')) AND
+                          ! file_exists(BFPATH.'controllers/'.$RTR->directory. strtolower($class) .'/'. $method .'.php'))
 	{
 		$e404 = TRUE;
 	}
@@ -399,6 +402,14 @@ if (($composer_autoload = config_item('composer_autoload')) !== FALSE)
         else if (file_exists(BFPATH.'controllers/'.$RTR->directory.$class.'.php'))
         {
             require_once(BFPATH.'controllers/'.$RTR->directory.$class.'.php');
+        }
+        else if (file_exists(BFPATH.'controllers/'.$RTR->directory. strtolower($class) .'/'. $method .'.php'))
+        {
+            require_once(BFPATH.'controllers/'.$RTR->directory. strtolower($class) .'/'. $method .'.php');
+
+            // If we're here, then it's mis-named things for us in MX stuff, so get us some usable names here...
+            $class = $method;
+            $method = 'index';
         }
         else
         {
