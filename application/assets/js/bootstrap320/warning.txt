@@ -1,0 +1,4 @@
+DO NOT REMOVE THIS FOLDER
+
+The bootstrap320 folder contains the CSS files for Bootstrap 3.2.0. These are used for the admin theme
+ and should not be removed. Removing them will result in the breaking of the admin area. 
