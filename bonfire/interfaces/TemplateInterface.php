@@ -26,7 +26,6 @@ namespace Bonfire\Interfaces;
  */
 interface TemplateInterface
 {
-
     /**
      * The main entryway into rendering a view. This is called from the
      * controller and is generally the last method called.

@@ -34,6 +34,16 @@ em, i {
 .sidebar {
     display: none;
 }
+@media (max-width: 991px) {
+    .nav-sidebar li span {
+        display: none;
+    }
+    .nav-sidebar i.fa {
+        text-align: center;
+        display: inline-block;
+        width: 100%;
+    }
+}
 @media (min-width: 768px) {
     .sidebar {
         position: fixed;
@@ -50,6 +60,7 @@ em, i {
         border-right: 1px solid #eee;
     }
 }
+
 
 /* Sidebar navigation */
 .nav-sidebar {
