@@ -16,6 +16,12 @@ class ThemedController extends BaseController
     // For status messages
     protected $message;
 
+    /**
+     * The UIKit to make available to the template views.
+     * @var string
+     */
+    protected $uikit = '';
+
     //--------------------------------------------------------------------
 
     /**
@@ -35,6 +41,13 @@ class ThemedController extends BaseController
 
         $this->template = $this->container['templateEngine'];
 
+        // Set our UIKit if we're using one.
+        if (! empty($this->uikit))
+        {
+            $kit_name = "\\Bonfire\\Libaries\\UIKits\\{$this->uikit}UIKit";
+            $this->uikit = new $kit_name();
+        }
+
         $this->detectVariant();
     }
 
@@ -53,8 +66,10 @@ class ThemedController extends BaseController
         // Merge any saved vars into the data
         $data = array_merge($data, $this->vars);
 
-        // Build our notices from the theme's view file.
+        // Include our UIKit so views can use it
+        $data['uikit'] = $this->uikit;
 
+        // Build our notices from the theme's view file.
         $data['notice'] = $this->template->display($this->template->theme() .':notice', ["notice" => $this->message()]);
 
 //        $data['notice'] = $this->load->view(
