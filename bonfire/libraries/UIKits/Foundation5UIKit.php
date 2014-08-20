@@ -345,6 +345,23 @@ class Foundation5UIKit implements UIInterface {
 
     //--------------------------------------------------------------------
 
+    public function sideNav($options=[], \Closure $c)
+    {
+        $classes = $this->buildClassString('side-nav', $options, true);
+
+        $id = $this->buildIdFromOptions($options);
+
+        $output = "<ul {$classes} {$id}>\n";
+
+        $output .= $this->runClosure($c);
+
+        $output .= "</ul>\n";
+
+        return $output;
+    }
+
+    //--------------------------------------------------------------------
+
 
 
 

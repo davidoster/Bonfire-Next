@@ -35,112 +35,136 @@
         });
     }); ?>
 
-    <div style="margin: 20px 40px; position: relative">
-        <h1>UIKit Demo</h1>
+    <?= $uikit->row([], function() use($uikit) {
 
-        <p>This page provides a demonstration of all of the features of the UIKit Library and allows you to see how
-        they look in the CSS Frameworks that we support.</p>
+            // Sidebar
+            echo $uikit->column(['sizes' => ['l'=>3]], function() use($uikit) {
 
-        <br />
+                echo $uikit->sideNav([], function() use($uikit){
+                        echo $uikit->navItem('Grid System', '#grids');
+                        echo $uikit->navItem('Offset Grids', '#offset-grids');
+                        echo $uikit->navItem('Tables', '#tables');
+                    });
 
+                }); // End SideNav Column
 
-        <h2>Grid System</h2>
+            // Main Content
+            echo $uikit->column(['sizes' => ['l'=>9]], function() use($uikit) { ?>
 
-        <?= $uikit->row(['class'=>'bordered'], function() use($uikit) {
-            echo $uikit->column(['sizes' => ['s'=>2, 'l'=>4], 'class'=>'light1'], function(){ echo '1a'; });
-            echo $uikit->column(['sizes' => ['s'=>4, 'l'=>4], 'class'=>'light2'], function(){ echo '1b'; });
-            echo $uikit->column(['sizes' => ['s'=>6, 'l'=>4], 'class'=>'light1'], function(){ echo '1c'; });
-            }); ?>
+                    <div style="margin: 20px 40px; position: relative">
+                        <h1>UIKit Demo</h1>
 
-        <?= $uikit->row(['class'=>'bordered'], function() use($uikit) {
-                echo $uikit->column(['sizes' => ['l'=>3], 'class'=>'light1'], function(){ echo '2a'; });
-                echo $uikit->column(['sizes' => ['l'=>6], 'class'=>'light2'], function(){ echo '2b'; });
-                echo $uikit->column(['sizes' => ['l'=>3], 'class'=>'light1'], function(){ echo '2c'; });
-            }); ?>
+                        <p>This page provides a demonstration of all of the features of the UIKit Library and allows you to see how
+                        they look in the CSS Frameworks that we support.</p>
 
-        <?= $uikit->row(['class'=>'bordered'], function() use($uikit) {
-                echo $uikit->column(['sizes' => ['s'=>6, 'l'=>2], 'class'=>'light1'], function(){ echo '3a'; });
-                echo $uikit->column(['sizes' => ['s'=>6, 'l'=>8], 'class'=>'light2'], function(){ echo '3b'; });
-                echo $uikit->column(['sizes' => ['s'=>12, 'l'=>2], 'class'=>'light1'], function(){ echo '3c'; });
-            }); ?>
-
-        <?= $uikit->row(['class'=>'bordered'], function() use($uikit) {
-                echo $uikit->column(['sizes' => ['s'=>3], 'class'=>'light1'], function(){ echo '4a'; });
-                echo $uikit->column(['sizes' => ['s'=>9], 'class'=>'light2'], function(){ echo '4b'; });
-            }); ?>
-
-        <?= $uikit->row(['class'=>'bordered'], function() use($uikit) {
-                echo $uikit->column(['sizes' => ['l'=>4], 'class'=>'light1'], function(){ echo '5a'; });
-                echo $uikit->column(['sizes' => ['l'=>8], 'class'=>'light2'], function(){ echo '5b'; });
-            }); ?>
+                        <br />
 
 
+                        <a name="grids"></a>
+                        <h2>Grid System</h2>
 
-        <h3>Offset Grids</h3>
+                        <?= $uikit->row(['class'=>'bordered'], function() use($uikit) {
+                                echo $uikit->column(['sizes' => ['s'=>2, 'l'=>4], 'class'=>'light1'], function(){ echo '1a'; });
+                                echo $uikit->column(['sizes' => ['s'=>4, 'l'=>4], 'class'=>'light2'], function(){ echo '1b'; });
+                                echo $uikit->column(['sizes' => ['s'=>6, 'l'=>4], 'class'=>'light1'], function(){ echo '1c'; });
+                            }); ?>
 
-        <?= $uikit->row(['class'=>'bordered'], function() use($uikit) {
-                echo $uikit->column(['sizes' => ['l'=>1], 'class'=>'light1'], function(){ echo '5a'; });
-                echo $uikit->column(['sizes' => ['l'=>11], 'class'=>'light2'], function(){ echo '5b'; });
-            }); ?>
+                        <?= $uikit->row(['class'=>'bordered'], function() use($uikit) {
+                                echo $uikit->column(['sizes' => ['l'=>3], 'class'=>'light1'], function(){ echo '2a'; });
+                                echo $uikit->column(['sizes' => ['l'=>6], 'class'=>'light2'], function(){ echo '2b'; });
+                                echo $uikit->column(['sizes' => ['l'=>3], 'class'=>'light1'], function(){ echo '2c'; });
+                            }); ?>
 
-        <?= $uikit->row(['class'=>'bordered'], function() use($uikit) {
-                echo $uikit->column(['sizes' => ['l'=>1], 'class'=>'light1'], function(){ echo '5a'; });
-                echo $uikit->column(['sizes' => ['l'=>10, 'l-offset'=>1], 'class'=>'light2'], function(){ echo '5b'; });
-            }); ?>
+                        <?= $uikit->row(['class'=>'bordered'], function() use($uikit) {
+                                echo $uikit->column(['sizes' => ['s'=>6, 'l'=>2], 'class'=>'light1'], function(){ echo '3a'; });
+                                echo $uikit->column(['sizes' => ['s'=>6, 'l'=>8], 'class'=>'light2'], function(){ echo '3b'; });
+                                echo $uikit->column(['sizes' => ['s'=>12, 'l'=>2], 'class'=>'light1'], function(){ echo '3c'; });
+                            }); ?>
 
-        <?= $uikit->row(['class'=>'bordered'], function() use($uikit) {
-                echo $uikit->column(['sizes' => ['l'=>1], 'class'=>'light1'], function(){ echo '5a'; });
-                echo $uikit->column(['sizes' => ['l'=>9, 'l-offset'=>2], 'class'=>'light2'], function(){ echo '5b'; });
-            }); ?>
+                        <?= $uikit->row(['class'=>'bordered'], function() use($uikit) {
+                                echo $uikit->column(['sizes' => ['s'=>3], 'class'=>'light1'], function(){ echo '4a'; });
+                                echo $uikit->column(['sizes' => ['s'=>9], 'class'=>'light2'], function(){ echo '4b'; });
+                            }); ?>
 
-        <?= $uikit->row(['class'=>'bordered'], function() use($uikit) {
-                echo $uikit->column(['sizes' => ['l'=>1], 'class'=>'light1'], function(){ echo '5a'; });
-                echo $uikit->column(['sizes' => ['l'=>8, 'l-offset'=>3], 'class'=>'light2'], function(){ echo '5b'; });
-            }); ?>
-
-
+                        <?= $uikit->row(['class'=>'bordered'], function() use($uikit) {
+                                echo $uikit->column(['sizes' => ['l'=>4], 'class'=>'light1'], function(){ echo '5a'; });
+                                echo $uikit->column(['sizes' => ['l'=>8], 'class'=>'light2'], function(){ echo '5b'; });
+                            }); ?>
 
 
-        <!--
-            Tables
-        -->
-        <h2>Tables</h2>
+                        <a name="offset-grids"></a>
+                        <h3>Offset Grids</h3>
 
-        <table class="<?= $uikit->table() ?>">
-            <thead>
-                <tr>
-                    <th width="200">Table Header</th>
-                    <th>Table Header</th>
-                    <th width="150">Table Header</th>
-                    <th width="150">Table Header</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Content Goes Here</td>
-                    <td>This is longer content Donec id elit non mi porta gravida at eget metus.</td>
-                    <td>Content Goes Here</td>
-                    <td>Content Goes Here</td>
-                </tr>
-                <tr>
-                    <td>Content Goes Here</td>
-                    <td>This is longer Content Goes Here Donec id elit non mi porta gravida at eget metus.</td>
-                    <td>Content Goes Here</td>
-                    <td>Content Goes Here</td>
-                </tr>
-                <tr>
-                    <td>Content Goes Here</td>
-                    <td>This is longer Content Goes Here Donec id elit non mi porta gravida at eget metus.</td>
-                    <td>Content Goes Here</td>
-                    <td>Content Goes Here</td>
-                </tr>
-            </tbody>
-        </table>
+                        <?= $uikit->row(['class'=>'bordered'], function() use($uikit) {
+                                echo $uikit->column(['sizes' => ['l'=>1], 'class'=>'light1'], function(){ echo '5a'; });
+                                echo $uikit->column(['sizes' => ['l'=>11], 'class'=>'light2'], function(){ echo '5b'; });
+                            }); ?>
+
+                        <?= $uikit->row(['class'=>'bordered'], function() use($uikit) {
+                                echo $uikit->column(['sizes' => ['l'=>1], 'class'=>'light1'], function(){ echo '5a'; });
+                                echo $uikit->column(['sizes' => ['l'=>10, 'l-offset'=>1], 'class'=>'light2'], function(){ echo '5b'; });
+                            }); ?>
+
+                        <?= $uikit->row(['class'=>'bordered'], function() use($uikit) {
+                                echo $uikit->column(['sizes' => ['l'=>1], 'class'=>'light1'], function(){ echo '5a'; });
+                                echo $uikit->column(['sizes' => ['l'=>9, 'l-offset'=>2], 'class'=>'light2'], function(){ echo '5b'; });
+                            }); ?>
+
+                        <?= $uikit->row(['class'=>'bordered'], function() use($uikit) {
+                                echo $uikit->column(['sizes' => ['l'=>1], 'class'=>'light1'], function(){ echo '5a'; });
+                                echo $uikit->column(['sizes' => ['l'=>8, 'l-offset'=>3], 'class'=>'light2'], function(){ echo '5b'; });
+                            }); ?>
 
 
 
 
-    </div>
+                        <!--
+                            Tables
+                        -->
+                        <a name="tables"></a>
+                        <h2>Tables</h2>
+
+                        <table class="<?= $uikit->table() ?>">
+                            <thead>
+                                <tr>
+                                    <th width="200">Table Header</th>
+                                    <th>Table Header</th>
+                                    <th width="150">Table Header</th>
+                                    <th width="150">Table Header</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Content Goes Here</td>
+                                    <td>This is longer content Donec id elit non mi porta gravida at eget metus.</td>
+                                    <td>Content Goes Here</td>
+                                    <td>Content Goes Here</td>
+                                </tr>
+                                <tr>
+                                    <td>Content Goes Here</td>
+                                    <td>This is longer Content Goes Here Donec id elit non mi porta gravida at eget metus.</td>
+                                    <td>Content Goes Here</td>
+                                    <td>Content Goes Here</td>
+                                </tr>
+                                <tr>
+                                    <td>Content Goes Here</td>
+                                    <td>This is longer Content Goes Here Donec id elit non mi porta gravida at eget metus.</td>
+                                    <td>Content Goes Here</td>
+                                    <td>Content Goes Here</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+
+
+
+                    </div>
+
+                <?php }); // End Main Content Column
+        });?>
+
+
+
 
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <?= $scripts ?>

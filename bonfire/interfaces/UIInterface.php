@@ -127,6 +127,18 @@ interface UIInterface {
 
     //--------------------------------------------------------------------
 
+    /**
+     * Creates a vertical navigation list. Will need to be wrapped
+     * in the proper row/column combination to work as a true side navigation.
+     *
+     * @param array    $options
+     * @param callable $c
+     * @return mixed
+     */
+    public function sideNav($options=[], \Closure $c);
+
+    //--------------------------------------------------------------------
+
 
     //--------------------------------------------------------------------
     // Tables

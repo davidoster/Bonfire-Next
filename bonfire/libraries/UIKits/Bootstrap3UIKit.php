@@ -289,7 +289,22 @@ class Bootstrap3UIKit implements UIInterface {
 
     //--------------------------------------------------------------------
 
+    public function sideNav($options=[], \Closure $c)
+    {
+        $classes = $this->buildClassString('nav nav-pills nav-stacked', $options, true);
 
+        $id = $this->buildIdFromOptions($options);
+
+        $output = "<ul {$classes} {$id}>\n";
+
+        $output .= $this->runClosure($c);
+
+        $output .= "</ul>\n";
+
+        return $output;
+    }
+
+    //--------------------------------------------------------------------
 
 
     //--------------------------------------------------------------------
