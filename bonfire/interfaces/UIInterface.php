@@ -28,7 +28,7 @@ interface UIInterface {
      *
      * @return mixed
      */
-    public function row();
+    public function row($options=[], \Closure $c);
 
     //--------------------------------------------------------------------
 
@@ -45,7 +45,7 @@ interface UIInterface {
      * @param array $attributes
      * @return mixed
      */
-    public function column($attributes=[]);
+    public function column($options=[], \Closure $c);
 
     //--------------------------------------------------------------------
 
@@ -53,20 +53,86 @@ interface UIInterface {
     // Navigation
     //--------------------------------------------------------------------
 
+    /**
+     * Generates the container code for a navbar, typically used along the
+     * top of a page.
+     *
+     * @param array    $options
+     * @param callable $c
+     * @return string
+     */
+    public function navbar($options=[], \Closure $c);
+
+    //--------------------------------------------------------------------
+
+    /**
+     * Builds the HTML for the Title portion of the navbar. This typically
+     * includes the code for the hamburger menu on small resolutions.
+     *
+     * @param        $title
+     * @param string $url
+     * @return string
+     */
+    public function navbarTitle($title, $url="#");
+
+    //--------------------------------------------------------------------
+
+    /**
+     * Creates a UL meant to pull to the right within the navbar.
+     *
+     * Available options:
+     *      'class'     - An additional class to add
+     *
+     * @param array    $options
+     * @param callable $c
+     * @return string
+     */
+    public function navbarRight($options=[], \Closure $c);
+
+    //--------------------------------------------------------------------
+
     public function nav();
 
     //--------------------------------------------------------------------
 
     /**
-     * Creates navigation class for a vertical set of nav links.
+     * Creates a single list item for use within a nav section.
      *
-     * For Bootstrap, this would be "nav nav-stacked".
-     * For Foundation it would be "side-nav"
-     *
+     * @param       $title
+     * @param       $url
      * @param array $options
-     * @return mixed
+     * @return string
      */
-    public function nav_sidebar();
+    public function navItem($title, $url, $options=[], $active=false);
+
+    //--------------------------------------------------------------------
+
+    /**
+     * Builds the shell of a Dropdown button for use within a nav area.
+     *
+     * @param          $title
+     * @param array    $options
+     * @param callable $c
+     */
+    public function navDropdown($title,$options=[], \Closure $c);
+
+    //--------------------------------------------------------------------
+
+    /**
+     * Creates a divider for use within a nav list.
+     *
+     * @return string
+     */
+    public function navDivider();
+
+    //--------------------------------------------------------------------
+
+
+    //--------------------------------------------------------------------
+    // Tables
+    //--------------------------------------------------------------------
+
+    public function table();
 
     //--------------------------------------------------------------------
 

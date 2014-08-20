@@ -32,12 +32,15 @@ class Demo extends \Bonfire\Libraries\Controllers\ThemedController {
         {
             case 'Bootstrap3':
                 $data['stylesheet'] = 'http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css';
+                $data['scripts'] = '<script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script><script type="text/javascript">$(".dropdown-toggle").dropdown();</script>';
                 break;
             case 'Foundation5':
-                $data['stylesheet'] = 'http://cdnjs.cloudflare.com/ajax/libs/foundation/5.3.1/css/foundation.css';
+                $data['stylesheet'] = '//cdnjs.cloudflare.com/ajax/libs/foundation/5.3.1/css/foundation.min.css';
+                $data['scripts'] = '<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/foundation/5.3.1/js/foundation.min.js"></script><script type="javascript">$(document).foundation();</script>';
                 break;
             case 'Pure05':
                 $data['stylesheet'] = 'http://yui.yahooapis.com/pure/0.5.0/pure-min.css';
+                $data['scripts'] = '';
                 break;
         }
 

@@ -17,20 +17,23 @@
     <style type="text/css">
         .light1 { background: #f7f7f7; }
         .light2 { background: #d7d7d7; }
-        .<?= $uikit->row() ?> > div { border: 1px solid #ccc; height: 3em; }
+        .bordered > div { border: 1px solid #ccc; height: 3em; }
     </style>
 </head>
 <body>
 
-    <script type="text/javascript">
-        function doRedirect()
-        {
-            var _select = document.getElementById("uikit-chooser");
-            var _val = _select.options[_select.selectedIndex].value;
-            var _url = [location.protocol, '//', location.host, location.pathname].join('');
-            return window.location.href = _url +'?uikit='+ _val;
-        }
-    </script>
+    <!-- Navbar -->
+    <?= $uikit->navbar(['inverse'], function() use($uikit) {
+        echo $uikit->navbarTitle('UIKit Demo');
+
+        echo $uikit->navbarRight([], function() use($uikit) {
+
+            echo $uikit->navDropdown('CSS Framework', [], function() use($uikit) {
+                    echo $uikit->navItem('Bootstrap 3.2', current_url() .'?uikit=Bootstrap3', [], isset($_GET['uikit']) && $_GET['uikit'] == 'Bootstrap3');
+                    echo $uikit->navItem('Foundation 5', current_url() .'?uikit=Foundation5', [], isset($_GET['uikit']) && $_GET['uikit'] == 'Foundation5');
+                });
+        });
+    }); ?>
 
     <div style="margin: 20px 40px; position: relative">
         <h1>UIKit Demo</h1>
@@ -40,61 +43,106 @@
 
         <br />
 
-        <select id="uikit-chooser" onchange="return doRedirect();">
-            <option value="Bootstrap3" <?php if ($uikit->name() == 'Bootstrap3UIKit') echo 'selected' ?>>Bootstrap 3.2.0</option>
-            <option value="Foundation5" <?php if ($uikit->name() == 'Foundation5UIKit') echo 'selected' ?>>Foundation 5</option>
-            <option value="Pure05" <?php if ($uikit->name() == 'Pure05UIkit') echo 'selected' ?>>Pure CSS 0.5</option>
-        </select>
-
-        <br />
 
         <h2>Grid System</h2>
 
-        <div class="<?= $uikit->row() ?>">
-            <div class="<?= $uikit->column(['s'=>2, 'l'=>4]) ?> light1">1a</div>
-            <div class="<?= $uikit->column(['s'=>4, 'l'=>4]) ?> light2">1b</div>
-            <div class="<?= $uikit->column(['s'=>6, 'l'=>4]) ?> light1">1c</div>
-        </div>
-        <div class="<?= $uikit->row() ?>">
-            <div class="<?= $uikit->column(['l'=>3]) ?> light1">2a</div>
-            <div class="<?= $uikit->column(['l'=>6]) ?> light2">2b</div>
-            <div class="<?= $uikit->column(['l'=>3]) ?> light1">2c</div>
-        </div>
-        <div class="<?= $uikit->row() ?>">
-            <div class="<?= $uikit->column(['s'=>6, 'l'=>2]) ?> light1">3a</div>
-            <div class="<?= $uikit->column(['s'=>6, 'l'=>8]) ?> light2">3b</div>
-            <div class="<?= $uikit->column(['s'=>12, 'l'=>2]) ?> light1">3c</div>
-        </div>
-        <div class="<?= $uikit->row() ?>">
-            <div class="<?= $uikit->column(['s'=>3]) ?> light1">4a</div>
-            <div class="<?= $uikit->column(['s'=>9]) ?> light2">4b</div>
-        </div>
-        <div class="<?= $uikit->row() ?>">
-            <div class="<?= $uikit->column(['l'=>4]) ?> light1">5a</div>
-            <div class="<?= $uikit->column(['l'=>8]) ?> light2">5b</div>
-        </div>
+        <?= $uikit->row(['class'=>'bordered'], function() use($uikit) {
+            echo $uikit->column(['sizes' => ['s'=>2, 'l'=>4], 'class'=>'light1'], function(){ echo '1a'; });
+            echo $uikit->column(['sizes' => ['s'=>4, 'l'=>4], 'class'=>'light2'], function(){ echo '1b'; });
+            echo $uikit->column(['sizes' => ['s'=>6, 'l'=>4], 'class'=>'light1'], function(){ echo '1c'; });
+            }); ?>
+
+        <?= $uikit->row(['class'=>'bordered'], function() use($uikit) {
+                echo $uikit->column(['sizes' => ['l'=>3], 'class'=>'light1'], function(){ echo '2a'; });
+                echo $uikit->column(['sizes' => ['l'=>6], 'class'=>'light2'], function(){ echo '2b'; });
+                echo $uikit->column(['sizes' => ['l'=>3], 'class'=>'light1'], function(){ echo '2c'; });
+            }); ?>
+
+        <?= $uikit->row(['class'=>'bordered'], function() use($uikit) {
+                echo $uikit->column(['sizes' => ['s'=>6, 'l'=>2], 'class'=>'light1'], function(){ echo '3a'; });
+                echo $uikit->column(['sizes' => ['s'=>6, 'l'=>8], 'class'=>'light2'], function(){ echo '3b'; });
+                echo $uikit->column(['sizes' => ['s'=>12, 'l'=>2], 'class'=>'light1'], function(){ echo '3c'; });
+            }); ?>
+
+        <?= $uikit->row(['class'=>'bordered'], function() use($uikit) {
+                echo $uikit->column(['sizes' => ['s'=>3], 'class'=>'light1'], function(){ echo '4a'; });
+                echo $uikit->column(['sizes' => ['s'=>9], 'class'=>'light2'], function(){ echo '4b'; });
+            }); ?>
+
+        <?= $uikit->row(['class'=>'bordered'], function() use($uikit) {
+                echo $uikit->column(['sizes' => ['l'=>4], 'class'=>'light1'], function(){ echo '5a'; });
+                echo $uikit->column(['sizes' => ['l'=>8], 'class'=>'light2'], function(){ echo '5b'; });
+            }); ?>
+
+
 
         <h3>Offset Grids</h3>
 
-        <div class="<?= $uikit->row() ?>">
-            <div class="<?= $uikit->column(['l'=>1]) ?> light1">1</div>
-            <div class="<?= $uikit->column(['l'=>11]) ?> light2">11</div>
-        </div>
-        <div class="<?= $uikit->row() ?>">
-            <div class="<?= $uikit->column(['l'=>1]) ?> light1">1</div>
-            <div class="<?= $uikit->column(['l'=>10, 'l-offset'=>1]) ?> light2">10</div>
-        </div>
-        <div class="<?= $uikit->row() ?>">
-            <div class="<?= $uikit->column(['l'=>1]) ?> light1">1</div>
-            <div class="<?= $uikit->column(['l'=>9, 'l-offset'=>2]) ?> light2">9</div>
-        </div>
-        <div class="<?= $uikit->row() ?>">
-            <div class="<?= $uikit->column(['l'=>1]) ?> light1">1</div>
-            <div class="<?= $uikit->column(['l'=>8, 'l-offset'=>3]) ?> light2">8</div>
-        </div>
+        <?= $uikit->row(['class'=>'bordered'], function() use($uikit) {
+                echo $uikit->column(['sizes' => ['l'=>1], 'class'=>'light1'], function(){ echo '5a'; });
+                echo $uikit->column(['sizes' => ['l'=>11], 'class'=>'light2'], function(){ echo '5b'; });
+            }); ?>
+
+        <?= $uikit->row(['class'=>'bordered'], function() use($uikit) {
+                echo $uikit->column(['sizes' => ['l'=>1], 'class'=>'light1'], function(){ echo '5a'; });
+                echo $uikit->column(['sizes' => ['l'=>10, 'l-offset'=>1], 'class'=>'light2'], function(){ echo '5b'; });
+            }); ?>
+
+        <?= $uikit->row(['class'=>'bordered'], function() use($uikit) {
+                echo $uikit->column(['sizes' => ['l'=>1], 'class'=>'light1'], function(){ echo '5a'; });
+                echo $uikit->column(['sizes' => ['l'=>9, 'l-offset'=>2], 'class'=>'light2'], function(){ echo '5b'; });
+            }); ?>
+
+        <?= $uikit->row(['class'=>'bordered'], function() use($uikit) {
+                echo $uikit->column(['sizes' => ['l'=>1], 'class'=>'light1'], function(){ echo '5a'; });
+                echo $uikit->column(['sizes' => ['l'=>8, 'l-offset'=>3], 'class'=>'light2'], function(){ echo '5b'; });
+            }); ?>
+
+
+
+
+        <!--
+            Tables
+        -->
+        <h2>Tables</h2>
+
+        <table class="<?= $uikit->table() ?>">
+            <thead>
+                <tr>
+                    <th width="200">Table Header</th>
+                    <th>Table Header</th>
+                    <th width="150">Table Header</th>
+                    <th width="150">Table Header</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Content Goes Here</td>
+                    <td>This is longer content Donec id elit non mi porta gravida at eget metus.</td>
+                    <td>Content Goes Here</td>
+                    <td>Content Goes Here</td>
+                </tr>
+                <tr>
+                    <td>Content Goes Here</td>
+                    <td>This is longer Content Goes Here Donec id elit non mi porta gravida at eget metus.</td>
+                    <td>Content Goes Here</td>
+                    <td>Content Goes Here</td>
+                </tr>
+                <tr>
+                    <td>Content Goes Here</td>
+                    <td>This is longer Content Goes Here Donec id elit non mi porta gravida at eget metus.</td>
+                    <td>Content Goes Here</td>
+                    <td>Content Goes Here</td>
+                </tr>
+            </tbody>
+        </table>
+
+
+
 
     </div>
 
-
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <?= $scripts ?>
 </body>
 </html>
