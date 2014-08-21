@@ -238,21 +238,6 @@ class Bootstrap3UIKit extends BaseUIKit {
     //--------------------------------------------------------------------
 
     /**
-     * Sets the element that is to be considered the active item. This is
-     * based on the navItem's $title so it must match, though it is NOT
-     * case sensitive.
-     *
-     * @param $title
-     * @return mixed
-     */
-    public function setActiveNavItem($title)
-    {
-        $this->states['activeNavItem'] = strtolower($title);
-    }
-
-    //--------------------------------------------------------------------
-
-    /**
      * Builds the shell of a Dropdown button for use within a nav area.
      *
      * @param          $title

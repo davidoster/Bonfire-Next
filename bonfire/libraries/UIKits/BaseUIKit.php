@@ -126,18 +126,6 @@ abstract class BaseUIKit {
     //--------------------------------------------------------------------
 
     /**
-     * Sets the element that is to be considered the active item. This is
-     * based on the navItem's $title so it must match, though it is NOT
-     * case sensitive.
-     *
-     * @param $title
-     * @return mixed
-     */
-    abstract public function setActiveNavItem($title);
-
-    //--------------------------------------------------------------------
-
-    /**
      * Builds the shell of a Dropdown button for use within a nav area.
      *
      * @param          $title
@@ -203,6 +191,21 @@ abstract class BaseUIKit {
     //--------------------------------------------------------------------
 
     /**
+     * Sets the element that is to be considered the active item. This is
+     * based on the navItem's $title so it must match, though it is NOT
+     * case sensitive.
+     *
+     * @param $title
+     * @return mixed
+     */
+    public function setActiveNavItem($title)
+    {
+        $this->states['activeNavItem'] = strtolower($title);
+    }
+
+    //--------------------------------------------------------------------
+
+    /**
      * Combines an initial classes string with a 'class' item that
      * might be available within the options array.
      *
@@ -222,7 +225,8 @@ abstract class BaseUIKit {
             $classes = array_merge($classes, explode(' ', $options['class']));
         }
 
-        if (isset($this->stats['activeNavItem']) && $this->states['activeNavItem'] == strtolower($this->states['activeNavTitle']))
+        if (isset($this->states['activeNavItem']) && isset($this->states['activeNavTitle']) &&
+            $this->states['activeNavItem'] == strtolower($this->states['activeNavTitle']))
         {
             $classes[] = $this->active_class;
         }
