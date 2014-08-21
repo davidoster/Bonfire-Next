@@ -176,6 +176,24 @@ abstract class BaseUIKit {
      */
     abstract public function buttonLink($title, $url='#', $style='default', $size='default', $options=[]);
 
+    /**
+     * Creates button groups wrapping HTML.
+     *
+     * @param          $options
+     * @param callable $c
+     * @return mixed
+     */
+    abstract public function buttonGroup($options, \Closure $c);
+
+    /**
+     * Creates the button bar wrapping HTML.
+     *
+     * @param          $options
+     * @param callable $c
+     * @return mixed
+     */
+    abstract public function buttonBar($options, \Closure $c);
+
     //--------------------------------------------------------------------
     // Utility Methods
     //--------------------------------------------------------------------

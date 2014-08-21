@@ -416,4 +416,50 @@ class Bootstrap3UIKit extends BaseUIKit {
 
     //--------------------------------------------------------------------
 
+    /**
+     * Creates button groups wrapping HTML.
+     *
+     * @param          $options
+     * @param callable $c
+     * @return mixed
+     */
+    public function buttonGroup($options, \Closure $c)
+    {
+        list($classes, $id, $attributes) = $this->parseStandardOptions($options, 'btn-group', true);
+
+        $output = "<div {$classes} {$id} {$attributes}>\n";
+
+        $output .= $this->runClosure($c);
+
+        $output .= "</div>\n";
+
+        return $output;
+    }
+
+    //--------------------------------------------------------------------
+
+    /**
+     * Creates the button bar wrapping HTML.
+     *
+     * @param          $options
+     * @param callable $c
+     * @return mixed
+     */
+    public function buttonBar($options, \Closure $c)
+    {
+        $options['attributes'][] = 'role="toolbar"';
+
+        list($classes, $id, $attributes) = $this->parseStandardOptions($options, 'btn-toolbar', true);
+
+        $output = "<div {$classes} {$id} {$attributes}>\n";
+
+        $output .= $this->runClosure($c);
+
+        $output .= "</div>\n";
+
+        return $output;
+    }
+
+    //--------------------------------------------------------------------
+
 }

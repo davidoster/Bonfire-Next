@@ -58,6 +58,7 @@
                         echo $uikit->navItem('Offset Grids', '#offset-grids');
                         echo $uikit->navItem('Tables', '#tables');
                         echo $uikit->navItem('Buttons', '#buttons');
+                        echo $uikit->navItem('Button Groups', '#button-groups');
                     });
 
                 }); // End SideNav Column
@@ -226,6 +227,37 @@
                             <?= $uikit->buttonLink('Warning', '#', 'warning', 'default'); ?>
                             <?= $uikit->buttonLink('Danger', '#', 'danger', 'default'); ?>
                         </div>
+
+
+                        <a name="button-groups"></a>
+                        <h2>Button Groups</h2>
+
+                        <p>Button groups are created with the <code>buttonGroup()</code> method.</p>
+
+                        <?= $uikit->buttonGroup([], function() use($uikit) {
+                                echo $uikit->buttonLink('Button 1');
+                                echo $uikit->buttonLink('Button 2');
+                                echo $uikit->buttonLink('Button 3');
+                            }); ?>
+
+
+                        <h3>Button Bars</h3>
+
+                        <p>Groups of button groups, for making more complex UI's, like a toolbar. Created with the <code>buttonGroup()</code> method.</p>
+
+                        <?= $uikit->buttonBar([], function() use($uikit) {
+                            echo $uikit->buttonGroup([], function() use($uikit) {
+                                    echo $uikit->buttonLink('Button 1');
+                                    echo $uikit->buttonLink('Button 2');
+                                    echo $uikit->buttonLink('Button 3');
+                                });
+
+                            echo $uikit->buttonGroup([], function() use($uikit) {
+                                    echo $uikit->buttonLink('Button 4');
+                                    echo $uikit->buttonLink('Button 5');
+                                });
+                            });
+                        ?>
 
                     </div>
 

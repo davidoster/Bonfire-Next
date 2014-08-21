@@ -498,9 +498,61 @@ class Foundation5UIKit extends BaseUIKit {
         $tag = str_replace('{id}', $id, $tag);
         $tag = str_replace('{attributes}', $attributes, $tag);
 
+        // If we're in a button group we need to wrap each item in li tags.
+        if (isset($this->states['inButtonGroup']))
+        {
+            $tag = '<li>'. $tag .'</li>';
+        }
         return $tag;
     }
 
     //--------------------------------------------------------------------
 
+    /**
+     * Creates button groups wrapping HTML.
+     *
+     * @param          $options
+     * @param callable $c
+     * @return mixed
+     */
+    public function buttonGroup($options, \Closure $c)
+    {
+        $this->states['inButtonGroup'] = true;
+
+        list($classes, $id, $attributes) = $this->parseStandardOptions($options, 'button-group', true);
+
+        $output = "<ul {$classes} {$id} {$attributes}>\n";
+
+        $output .= $this->runClosure($c);
+
+        $output .= "</ul>\n";
+
+        unset($this->states['inButtonGroup']);
+
+        return $output;
+    }
+
+    //--------------------------------------------------------------------
+
+    /**
+     * Creates the button bar wrapping HTML.
+     *
+     * @param          $options
+     * @param callable $c
+     * @return mixed
+     */
+    public function buttonBar($options, \Closure $c)
+    {
+        list($classes, $id, $attributes) = $this->parseStandardOptions($options, 'button-bar', true);
+
+        $output = "<div {$classes} {$id} {$attributes}>\n";
+
+        $output .= $this->runClosure($c);
+
+        $output .= "</div>\n";
+
+        return $output;
+    }
+
+    //--------------------------------------------------------------------
 }
