@@ -9,15 +9,9 @@ use Bonfire\Interfaces\UIInterface;
  *
  * Provides a UIKit designed to work with Bootstrap 3.2.
  */
-class Bootstrap3UIKit implements UIInterface {
+class Bootstrap3UIKit extends BaseUIKit {
 
-    public function name()
-    {
-        return 'Bootstrap3UIKit';
-    }
-
-    //--------------------------------------------------------------------
-
+    protected $name = 'Bootstrap3UIKit';
 
     //--------------------------------------------------------------------
     // Grid
@@ -33,11 +27,9 @@ class Bootstrap3UIKit implements UIInterface {
      */
     public function row($options=[], \Closure $c)
     {
-        $classes = $this->buildClassString('row', $options, true);
+        list($classes, $id, $attributes) = $this->parseStandardOptions($options, 'row', true);
 
-        $id = $this->buildIdFromOptions($options);
-
-        $output = "<div {$classes}>";
+        $output = "<div {$classes} {$id} {$attributes}>";
 
         $output .= $this->runClosure($c);
 
@@ -101,11 +93,9 @@ class Bootstrap3UIKit implements UIInterface {
             }
         }
 
-        $classes = $this->buildClassString($classes, $options, true);
+        list($classes, $id, $attributes) = $this->parseStandardOptions($options, $classes, true);
 
-        $id = $this->buildIdFromOptions($options);
-
-        $output = "<div {$classes} {$id}>";
+        $output = "<div {$classes} {$id} {$attributes}>";
 
         $output .= $this->runClosure($c);
 
@@ -152,8 +142,10 @@ class Bootstrap3UIKit implements UIInterface {
             }
         }
 
-        $output .= '<nav class="'. $classes .'" role="navigation">
-  <div class="container-fluid">';
+        list($class, $id, $attributes) = $this->parseStandardOptions($options, $classes, true);
+
+        $output .= "<nav {$class} {$id} {$attributes} role='navigation>
+  <div class='container-fluid'>";
 
         /*
          * Do any user content inside the bar
@@ -205,13 +197,9 @@ class Bootstrap3UIKit implements UIInterface {
      */
     public function navbarRight($options=[], \Closure $c)
     {
-        // Class
-        $classes = $this->buildClassString('nav navbar-nav navbar-right', $options);
-
-        // ID
-        $id = $this->buildIdFromOptions($options);
+        list($classes, $id, $attributes) = $this->parseStandardOptions($options, 'nav navbar-nav navbar-right', true);
         
-        $output = "<ul class='{$classes}' {$id}>\n";
+        $output = "<ul {$classes} {$id} {$attributes}>\n";
 
         $output .= $this->runClosure($c);
 
@@ -238,17 +226,30 @@ class Bootstrap3UIKit implements UIInterface {
      * @param array $options
      * @return string
      */
-    public function navItem($title, $url, $options=[], $active=false)
+    public function navItem($title, $url, $options=[])
     {
-        $options['active'] = $active;
+        $this->states['activeNavTitle'] = $title;
 
-        $classes = $this->buildClassString('', $options, true);
+        list($classes, $id, $attributes) = $this->parseStandardOptions($options, '', true);
 
-        $id = $this->buildIdFromOptions($options);
-
-        return "\t<li {$classes} {$id}><a href='{$url}'>{$title}</a></li>";
+        return "\t<li {$classes} {$id} {$attributes}><a href='{$url}'>{$title}</a></li>";
     }
     
+    //--------------------------------------------------------------------
+
+    /**
+     * Sets the element that is to be considered the active item. This is
+     * based on the navItem's $title so it must match, though it is NOT
+     * case sensitive.
+     *
+     * @param $title
+     * @return mixed
+     */
+    public function setActiveNavItem($title)
+    {
+        $this->states['activeNavItem'] = strtolower($title);
+    }
+
     //--------------------------------------------------------------------
 
     /**
@@ -260,11 +261,9 @@ class Bootstrap3UIKit implements UIInterface {
      */
     public function navDropdown($title,$options=[], \Closure $c)
     {
-        $classes = $this->buildClassString('dropdown', $options, true);
+        list($classes, $id, $attributes) = $this->parseStandardOptions($options, 'dropdown', true);
 
-        $id = $this->buildIdFromOptions($options);
-
-        $output = "\t<li {$classes} {$id}>
+        $output = "\t<li {$classes} {$id} {$attributes}>
         <a href='#' class='dropdown-toggle' data-toggle='dropdown'>{$title} <span class='caret'></span></a>
         <ul class='dropdown-menu' role='menu'>";
 
@@ -291,11 +290,9 @@ class Bootstrap3UIKit implements UIInterface {
 
     public function sideNav($options=[], \Closure $c)
     {
-        $classes = $this->buildClassString('nav nav-pills nav-stacked', $options, true);
+        list($classes, $id, $attributes) = $this->parseStandardOptions($options, 'nav nav-pills nav-stacked', true);
 
-        $id = $this->buildIdFromOptions($options);
-
-        $output = "<ul {$classes} {$id}>\n";
+        $output = "<ul {$classes} {$id} {$attributes}>\n";
 
         $output .= $this->runClosure($c);
 
@@ -317,73 +314,5 @@ class Bootstrap3UIKit implements UIInterface {
     }
 
     //--------------------------------------------------------------------
-
-    /**
-     * Helper method to run a Closure and collect the output of it.
-     *
-     * @param callable $c
-     * @return string
-     */
-    protected function runClosure(\Closure $c)
-    {
-        if (! is_callable($c)) return '';
-
-        ob_start();
-        $c();
-        $output = ob_get_contents();
-        ob_end_clean();
-
-        return $output;
-    }
-
-    //--------------------------------------------------------------------
-
-    /**
-     * Combines an initial classes string with a 'class' item that
-     * might be available within the options array.
-     *
-     * If 'buildEntireString' is TRUE will return the string with the 'class=""' portion.
-     * Otherwise, just returns the raw classes.
-     *
-     * @param string $initial
-     * @param array $options
-     * @return array
-     */
-    protected function buildClassString($initial, $options, $buildEntireString=false)
-    {
-        $classes = explode(' ', $initial);
-
-        if (isset($options['class']))
-        {
-            $classes = array_merge($classes, explode(' ', $options['class']));
-        }
-
-        if (isset($options['active']) && $options['active'] == true)
-        {
-            $classes[] = 'active';
-        }
-
-        $classes = implode(' ', $classes);
-
-        return $buildEntireString ? "class='{$classes}'" : $classes;
-    }
-    //--------------------------------------------------------------------
-
-    /**
-     * Checks the options array for an ID and returns the entire string.
-     *
-     * Example Return:
-     *      id='MyID'
-     *
-     * @param $options
-     * @return string
-     */
-    protected function buildIdFromOptions($options)
-    {
-        return isset($options['id']) ? "id='{$options['id']}'" : '';
-    }
-
-    //--------------------------------------------------------------------
-
 
 }

@@ -9,13 +9,9 @@ use Bonfire\Interfaces\UIInterface;
  *
  * Provides a UIKit designed to work with Foundation 5.
  */
-class Foundation5UIKit implements UIInterface {
+class Foundation5UIKit extends BaseUIKit {
 
-    /**
-     * Bucket for methods to control their current state between method calls.
-     * @var array
-     */
-    protected $states = [];
+
 
     //--------------------------------------------------------------------
 
@@ -40,11 +36,9 @@ class Foundation5UIKit implements UIInterface {
      */
     public function row($options=[], \Closure $c)
     {
-        $classes = $this->buildClassString('row', $options, true);
+        list($classes, $id, $attributes) = $this->parseStandardOptions($options, 'row', true);
 
-        $id = $this->buildIdFromOptions($options);
-
-        $output = "<div {$classes}>";
+        $output = "<div {$classes} {$id} {$attributes}>";
 
         $output .= $this->runClosure($c);
 
@@ -112,7 +106,9 @@ class Foundation5UIKit implements UIInterface {
 
         $id = $this->buildIdFromOptions($options);
 
-        $output = "<div {$classes} {$id}>";
+        $attributes = $this->buildAttributesFromOptions($options);
+
+        $output = "<div {$classes} {$id} {$attributes}>";
 
         $output .= $this->runClosure($c);
 
@@ -161,7 +157,9 @@ class Foundation5UIKit implements UIInterface {
 
         $id = $this->buildIdFromOptions($options);
 
-        $output .= "<nav {$classes} {$id} data-topbar>";
+        $attributes = $this->buildAttributesFromOptions($options);
+
+        $output .= "<nav {$classes} {$id} {$attributes} data-topbar>";
 
         /*
          * Do any user content inside the bar
@@ -230,7 +228,9 @@ class Foundation5UIKit implements UIInterface {
         // ID
         $id = $this->buildIdFromOptions($options);
 
-        $output .= "<ul class='{$classes}' {$id}>\n";
+        $attributes = $this->buildAttributesFromOptions($options);
+
+        $output .= "<ul class='{$classes}' {$id} {$attributes}>\n";
 
         $output .= $this->runClosure($c);
 
@@ -267,7 +267,9 @@ class Foundation5UIKit implements UIInterface {
         // ID
         $id = $this->buildIdFromOptions($options);
 
-        $output .= "<ul class='{$classes}' {$id}>\n";
+        $attributes = $this->buildAttributesFromOptions($options);
+
+        $output .= "<ul class='{$classes}' {$id} {$attributes}>\n";
 
         $output .= $this->runClosure($c);
 
@@ -302,7 +304,9 @@ class Foundation5UIKit implements UIInterface {
 
         $id = $this->buildIdFromOptions($options);
 
-        return "\t<li {$classes} {$id}><a href='{$url}'>{$title}</a></li>";
+        $attributes = $this->buildAttributesFromOptions($options);
+
+        return "\t<li {$classes} {$id} {$attributes}><a href='{$url}'>{$title}</a></li>";
     }
 
     //--------------------------------------------------------------------
@@ -320,7 +324,9 @@ class Foundation5UIKit implements UIInterface {
 
         $id = $this->buildIdFromOptions($options);
 
-        $output = "\t<li {$classes} {$id}>
+        $attributes = $this->buildAttributesFromOptions($options);
+
+        $output = "\t<li {$classes} {$id} {$attributes}>
         <a href='#'>{$title}</a>
         <ul class='dropdown'>";
 
@@ -351,7 +357,9 @@ class Foundation5UIKit implements UIInterface {
 
         $id = $this->buildIdFromOptions($options);
 
-        $output = "<ul {$classes} {$id}>\n";
+        $attributes = $this->buildAttributesFromOptions($options);
+
+        $output = "<ul {$classes} {$id} {$attributes}>\n";
 
         $output .= $this->runClosure($c);
 
@@ -372,73 +380,6 @@ class Foundation5UIKit implements UIInterface {
     public function table()
     {
         return 'table';
-    }
-
-    //--------------------------------------------------------------------
-
-    /**
-     * Helper method to run a Closure and collect the output of it.
-     *
-     * @param callable $c
-     * @return string
-     */
-    protected function runClosure(\Closure $c)
-    {
-        if (! is_callable($c)) return '';
-
-        ob_start();
-        $c();
-        $output = ob_get_contents();
-        ob_end_clean();
-
-        return $output;
-    }
-
-    //--------------------------------------------------------------------
-
-    /**
-     * Combines an initial classes string with a 'class' item that
-     * might be available within the options array.
-     *
-     * If 'buildEntireString' is TRUE will return the string with the 'class=""' portion.
-     * Otherwise, just returns the raw classes.
-     *
-     * @param string $initial
-     * @param array $options
-     * @return array
-     */
-    protected function buildClassString($initial, $options, $buildEntireString=false)
-    {
-        $classes = explode(' ', $initial);
-
-        if (isset($options['class']))
-        {
-            $classes = array_merge($classes, explode(' ', $options['class']));
-        }
-
-        if (isset($options['active']) && $options['active'] == true)
-        {
-            $classes[] = 'active';
-        }
-
-        $classes = implode(' ', $classes);
-
-        return $buildEntireString ? "class='{$classes}'" : $classes;
-    }
-    //--------------------------------------------------------------------
-
-    /**
-     * Checks the options array for an ID and returns the entire string.
-     *
-     * Example Return:
-     *      id='MyID'
-     *
-     * @param $options
-     * @return string
-     */
-    protected function buildIdFromOptions($options)
-    {
-        return isset($options['id']) ? "id='{$options['id']}'" : '';
     }
 
     //--------------------------------------------------------------------

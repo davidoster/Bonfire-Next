@@ -22,6 +22,19 @@
 </head>
 <body>
 
+    <?php
+        if (isset($_GET['uikit'])) {
+            switch ($_GET['uikit']) {
+                case 'Bootstrap3':
+                    $uikit->setActiveNavItem('Bootstrap 3.2');
+                    break;
+                case 'Foundation5':
+                    $uikit->setActiveNavItem('Foundation 5');
+                    break;
+            }
+        }
+    ?>
+
     <!-- Navbar -->
     <?= $uikit->navbar(['inverse'], function() use($uikit) {
         echo $uikit->navbarTitle('UIKit Demo');
@@ -29,13 +42,13 @@
         echo $uikit->navbarRight([], function() use($uikit) {
 
             echo $uikit->navDropdown('CSS Framework', [], function() use($uikit) {
-                    echo $uikit->navItem('Bootstrap 3.2', current_url() .'?uikit=Bootstrap3', [], isset($_GET['uikit']) && $_GET['uikit'] == 'Bootstrap3');
-                    echo $uikit->navItem('Foundation 5', current_url() .'?uikit=Foundation5', [], isset($_GET['uikit']) && $_GET['uikit'] == 'Foundation5');
+                    echo $uikit->navItem('Bootstrap 3.2', current_url() .'?uikit=Bootstrap3');
+                    echo $uikit->navItem('Foundation 5', current_url() .'?uikit=Foundation5');
                 });
         });
     }); ?>
 
-    <?= $uikit->row([], function() use($uikit) {
+    <?= $uikit->row(['attributes' => ['style="max-width:100%"']], function() use($uikit) {
 
             // Sidebar
             echo $uikit->column(['sizes' => ['l'=>3]], function() use($uikit) {
