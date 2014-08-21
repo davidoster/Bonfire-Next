@@ -57,6 +57,7 @@
                         echo $uikit->navItem('Grid System', '#grids');
                         echo $uikit->navItem('Offset Grids', '#offset-grids');
                         echo $uikit->navItem('Tables', '#tables');
+                        echo $uikit->navItem('Buttons', '#buttons');
                     });
 
                 }); // End SideNav Column
@@ -169,7 +170,62 @@
                         </table>
 
 
+                        <a name="buttons"></a>
+                        <h2>Buttons</h2>
 
+                        <p>Buttons can be created using the <code>button()</code> method.</p>
+
+                        <h3>Styles</h3>
+
+                        <div>
+                            <?= $uikit->button('Default', 'default', 'default'); ?>
+                            <?= $uikit->button('Primary', 'primary', 'default'); ?>
+                            <?= $uikit->button('Success', 'success', 'default'); ?>
+                            <?= $uikit->button('Info', 'info', 'default'); ?>
+                            <?= $uikit->button('Warning', 'warning', 'default'); ?>
+                            <?= $uikit->button('Danger', 'danger', 'default'); ?>
+                        </div>
+
+                        <h3>Sizes</h3>
+
+                        <div>
+                            <?= $uikit->button('Large', 'primary', 'large'); ?>
+                            <?= $uikit->button('Default', 'primary', 'default'); ?>
+                            <?= $uikit->button('Small', 'primary', 'small'); ?>
+                            <?= $uikit->button('Extra Small', 'primary', 'xsmall'); ?>
+                        </div>
+
+
+                        <h3>Active State</h3>
+
+                        <p>The active state can be set (if supported) by passing <code>{active}</code> as one of the classes in options.</p>
+
+                        <div>
+                            <?= $uikit->button('Active', 'primary', 'large', ['class' => '{active}']); ?>
+                            <?= $uikit->button('Active', 'default', 'large', ['class' => '{active}']); ?>
+                        </div>
+
+                        <h3>Disabled State</h3>
+
+                        <p>Disabled stated can be set by passing <code>disabled</code> as one of the attributes in the options array.</p>
+
+                        <div>
+                            <?= $uikit->button('Disabled', 'primary', 'large', ['attributes' => ['disabled'] ]); ?>
+                            <?= $uikit->button('Disabled', 'default', 'large', ['attributes' => ['disabled'] ]); ?>
+                        </div>
+
+                        <h3>Link Buttons</h3>
+
+                        <p>Links can also be style as buttons with the <code>buttonLink()</code> method.</p>
+
+                        <div>
+                            <?= $uikit->buttonLink('Default', '#', 'default', 'default'); ?>
+                            <?= $uikit->buttonLink('Primary', '#', 'primary', 'default'); ?>
+                            <?= $uikit->buttonLink('Success', '#', 'success', 'default'); ?>
+                            <?= $uikit->buttonLink('Info', '#', 'info', 'default'); ?>
+                            <?= $uikit->buttonLink('Warning', '#', 'warning', 'default'); ?>
+                            <?= $uikit->buttonLink('Danger', '#', 'danger', 'default'); ?>
+                        </div>
 
                     </div>
 

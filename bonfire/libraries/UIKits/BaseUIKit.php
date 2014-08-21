@@ -145,6 +145,36 @@ abstract class BaseUIKit {
 
     //--------------------------------------------------------------------
 
+    //--------------------------------------------------------------------
+    // Buttons
+    //--------------------------------------------------------------------
+
+    /**
+     * Creates a simple button.
+     *
+     * $style can be 'default', 'primary', 'success', 'info', 'warning', 'danger'
+     * $size can be 'default', 'small', 'xsmall', 'large'
+     *
+     * @param       $title
+     * @param string $style
+     * @param array $options
+     * @return mixed
+     */
+    abstract public function button($title, $style='default', $size='default', $options=[]);
+
+    /**
+     * Creates a simple link styled as a button.
+     *
+     * $style can be 'default', 'primary', 'success', 'info', 'warning', 'danger'
+     * $size can be 'default', 'small', 'xsmall', 'large'
+     *
+     * @param       $title
+     * @param string $url
+     * @param string $style
+     * @param array $options
+     * @return mixed
+     */
+    abstract public function buttonLink($title, $url='#', $style='default', $size='default', $options=[]);
 
     //--------------------------------------------------------------------
     // Utility Methods
@@ -232,6 +262,9 @@ abstract class BaseUIKit {
         }
 
         $classes = implode(' ', $classes);
+
+        // Substitute the active class for a placeholder.
+        $classes = str_replace('{active}', $this->active_class, $classes);
 
         return $buildEntireString ? "class='{$classes}'" : $classes;
     }

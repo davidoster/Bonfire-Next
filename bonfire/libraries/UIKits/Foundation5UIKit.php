@@ -384,5 +384,123 @@ class Foundation5UIKit extends BaseUIKit {
 
     //--------------------------------------------------------------------
 
+    //--------------------------------------------------------------------
+    // Buttons
+    //--------------------------------------------------------------------
+
+    /**
+     * Creates a simple button.
+     *
+     * $style can be 'default', 'primary', 'success', 'info', 'warning', 'danger'
+     * $size can be 'default', 'small', 'xsmall', 'large'
+     *
+     * @param       $title
+     * @param string $style
+     * @param array $options
+     * @return mixed
+     */
+    public function button($title, $style='default', $size='default', $options=[])
+    {
+        $tag= "<button type='button' {classes} {id} {attributes}>{$title}</button>";
+
+        return $this->renderButtonElement($title, $style, $size, $options, $tag);
+    }
+
+    //--------------------------------------------------------------------
+
+    /**
+     * Creates a simple link styled as a button.
+     *
+     * $style can be 'default', 'primary', 'success', 'info', 'warning', 'danger'
+     * $size can be 'default', 'small', 'xsmall', 'large'
+     *
+     * @param       $title
+     * @param string $url
+     * @param string $style
+     * @param array $options
+     * @return mixed
+     */
+    public function buttonLink($title, $url='#', $style='default', $size='default', $options=[])
+    {
+        $class = isset($options['class']) ? $options['class'] .' button' : 'button';
+        $options['class'] = $class;
+
+        $tag = "<a {classes} {id} {attributes} role='button'>{$title}</a>";
+
+        return $this->renderButtonElement($title, $style, $size, $options, $tag);
+    }
+
+    //--------------------------------------------------------------------
+
+    /**
+     * Helper method to render out our buttons in a DRY manner.
+     *
+     * @param $title
+     * @param $style
+     * @param $size
+     * @param $tag
+     */
+    protected function renderButtonElement($title, $style, $size, $options, $tag)
+    {
+        $valid_styles = ['default', 'primary', 'success', 'info', 'warning', 'danger'];
+        $valid_sizes  = ['default', 'small', 'xsmall', 'large'];
+
+        if (! in_array($style, $valid_styles))
+        {
+            $style = 'default';
+            $options['attributes'][] = 'data-error="Invalid Style passed to button method."';
+        }
+
+        $classes = 'btn ';
+
+        // Sizes
+        switch($size)
+        {
+            case 'small':
+                $classes .= 'small ';
+                break;
+            case 'xsmall':
+                $classes .= 'tiny ';
+                break;
+            case 'large':
+                $classes .= 'large ';
+                break;
+            default:
+                break;
+        }
+
+        // Styles
+        switch ($style)
+        {
+            case 'primary':
+                $classes .= '';
+                break;
+            case 'success':
+                $classes .= 'success ';
+                break;
+            case 'info':
+                $classes .= 'secondary ';
+                break;
+            case 'warning':
+                $classes .= 'alert ';
+                break;
+            case 'danger':
+                $classes .= 'alert ';
+                break;
+            case 'default':
+                $classes .= 'secondary ';
+                break;
+        }
+
+        list($classes, $id, $attributes) = $this->parseStandardOptions($options, $classes, true);
+
+        $tag = str_replace('{classes}', $classes, $tag);
+        $tag = str_replace('{id}', $id, $tag);
+        $tag = str_replace('{attributes}', $attributes, $tag);
+
+        return $tag;
+    }
+
+    //--------------------------------------------------------------------
 
 }
