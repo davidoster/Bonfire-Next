@@ -296,7 +296,7 @@ class Foundation5UIKit extends BaseUIKit {
      * @param array $options
      * @return string
      */
-    public function navItem($title, $url, $options=[], $active=false)
+    public function navItem($title, $url='#', $options=[], $active=false)
     {
         $options['active'] = $active;
 
@@ -497,6 +497,7 @@ class Foundation5UIKit extends BaseUIKit {
         $tag = str_replace('{classes}', $classes, $tag);
         $tag = str_replace('{id}', $id, $tag);
         $tag = str_replace('{attributes}', $attributes, $tag);
+        $tag = str_replace('{title}', $title, $tag);
 
         // If we're in a button group we need to wrap each item in li tags.
         if (isset($this->states['inButtonGroup']))
@@ -555,4 +556,32 @@ class Foundation5UIKit extends BaseUIKit {
     }
 
     //--------------------------------------------------------------------
+
+    /**
+     * Creates a button that also has a dropdown menu. Also called Split Buttons
+     * by some frameworks.
+     *
+     * @param        $title
+     * @param string $style
+     * @param string $size
+     * @param array  $options
+     * @param callable $c
+     * @return mixed
+     */
+    public function buttonDropdown($title, $style='default', $size='default', $options=[], \Closure $c)
+    {
+        list($classes, $id, $attributes) = $this->parseStandardOptions($options, 'button split', true);
+
+        $output = "<a href='#' {$classes} {$id} {$attributes}>{$title} <span data-dropdown='drop'></span></a><br>\n
+                  <ul id='drop' class='f-dropdown' data-dropdown-content>\n";
+
+        $output .= $this->runClosure($c);
+
+        $output .= "</ul>\n";
+
+        return $output;
+    }
+
+    //--------------------------------------------------------------------
+
 }

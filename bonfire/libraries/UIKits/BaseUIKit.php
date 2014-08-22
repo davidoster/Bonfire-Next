@@ -194,6 +194,19 @@ abstract class BaseUIKit {
      */
     abstract public function buttonBar($options, \Closure $c);
 
+    /**
+     * Creates a button that also has a dropdown menu. Also called Split Buttons
+     * by some frameworks.
+     *
+     * @param        $title
+     * @param string $style
+     * @param string $size
+     * @param array  $options
+     * @param callable $c
+     * @return mixed
+     */
+    abstract public function buttonDropdown($title, $style='default', $size='default', $options=[], \Closure $c);
+
     //--------------------------------------------------------------------
     // Utility Methods
     //--------------------------------------------------------------------

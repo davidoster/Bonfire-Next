@@ -259,6 +259,18 @@
                             });
                         ?>
 
+
+                        <h3>Dropdown Buttons</h3>
+
+                        <p>You can create dropdown buttons, or split buttons, with the <code>buttonDropdown()</code> method.</p>
+
+                        <?= $uikit->buttonDropdown('Dropdown', 'primary', 'default', [], function() use($uikit){
+                                echo $uikit->navItem('Item 1');
+                                echo $uikit->navItem('Item 2');
+                                echo $uikit->navDivider();
+                                echo $uikit->navItem('Item 3');
+                            }); ?>
+
                     </div>
 
                 <?php }); // End Main Content Column

@@ -226,7 +226,7 @@ class Bootstrap3UIKit extends BaseUIKit {
      * @param array $options
      * @return string
      */
-    public function navItem($title, $url, $options=[])
+    public function navItem($title, $url='#', $options=[])
     {
         $this->states['activeNavTitle'] = $title;
 
@@ -410,6 +410,7 @@ class Bootstrap3UIKit extends BaseUIKit {
         $tag = str_replace('{classes}', $classes, $tag);
         $tag = str_replace('{id}', $id, $tag);
         $tag = str_replace('{attributes}', $attributes, $tag);
+        $tag = str_replace('{title}', $title, $tag);
 
         return $tag;
     }
@@ -462,4 +463,32 @@ class Bootstrap3UIKit extends BaseUIKit {
 
     //--------------------------------------------------------------------
 
+    /**
+     * Creates a button that also has a dropdown menu. Also called Split Buttons
+     * by some frameworks.
+     *
+     * @param        $title
+     * @param string $style
+     * @param string $size
+     * @param array  $options
+     * @param callable $c
+     * @return mixed
+     */
+    public function buttonDropdown($title, $style='default', $size='default', $options=[], \Closure $c)
+    {
+        $tag = "<button type='button' {classes} data-toggle='dropdown'>
+    {title} <span class='caret'></span>
+  </button>
+  <ul class='dropdown-menu' role='menu'>";
+
+        $output = $this->renderButtonElement($title, $style, $size, $options, $tag);
+
+        $output .= $this->runClosure($c);
+
+        $output .= "</ul>\n";
+
+        return $output;
+    }
+
+    //--------------------------------------------------------------------
 }
