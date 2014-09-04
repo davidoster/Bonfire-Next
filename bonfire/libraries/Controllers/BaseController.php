@@ -119,14 +119,13 @@ class BaseController extends \MX_Controller
      * proper HTML.
      *
      * @param  string $text       The text to render.
+     * @param  string $type       The mime type to be set. Defaults to 'text/plain'.
      * @param  bool   $typography If TRUE, will run the text through 'Auto_typography'
      *                            before outputting to the browser.
      *
-     * @todo Allow a custom output type to be set (ie, text/css)
-     *
      * @return void
      */
-    public function renderText($text, $typography = false)
+    public function renderText($text, $type='text/plain', $typography = false)
     {
         // Note that, for now anyway, we don't do any cleaning of the text
         // and leave that up to the client to take care of.
@@ -138,7 +137,7 @@ class BaseController extends \MX_Controller
         }
 
         $this->output->enable_profiler(false)
-                     ->set_content_type('text/plain')
+                     ->set_content_type($type)
                      ->set_output($text);
     }
 
