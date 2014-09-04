@@ -64,5 +64,5 @@ $config['autodetect_variant'] = true;
 //--------------------------------------------------------------------
 // Migrations
 //--------------------------------------------------------------------
-$config['migrate.auto_core']	= FALSE;
+$config['migrate.auto_core']	= TRUE;
 $config['migrate.auto_app']		= FALSE;

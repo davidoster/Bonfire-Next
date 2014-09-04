@@ -16,6 +16,8 @@
 
 namespace Bonfire\Libraries\Controllers;
 
+use Bonfire\Modules;
+
 require_once BFPATH . 'libraries/Pimple.php';
 
 /**
@@ -88,6 +90,17 @@ class BaseController extends \MX_Controller
         /*
          * Auto-Migration Support
          */
+        if (config_item('migrate.auto_core'))
+        {
+            $this->load->library('migration');
+            $this->migration->update_core();
+        }
+
+        if (config_item('migrate.auto_app'))
+        {
+            $this->load->library('migration');
+            $this->migration->update_app();
+        }
 
         /*
          * Profiler
@@ -297,6 +310,9 @@ class BaseController extends \MX_Controller
                 $this->{$method}();
             }
         }
+
+        // Get our active modules ready to roll
+        Modules::loadActiveModuleDefinitions();
     }
 
     //--------------------------------------------------------------------
