@@ -59,6 +59,7 @@
                         echo $uikit->navItem('Tables', '#tables');
                         echo $uikit->navItem('Buttons', '#buttons');
                         echo $uikit->navItem('Button Groups', '#button-groups');
+                        echo $uikit->navItem('Breadcrumbs', '#breadcrumbs');
                     });
 
                 }); // End SideNav Column
@@ -269,6 +270,18 @@
                                 echo $uikit->navItem('Item 2');
                                 echo $uikit->navDivider();
                                 echo $uikit->navItem('Item 3');
+                            }); ?>
+
+
+                        <a name="breadcrumbs"></a>
+                        <h2>Breadcrumbs</h2>
+
+                        <p>Breadcrumb trails can be opened with the <code>breadcrumb()</code> method.</p>
+
+                        <?= $uikit->breadcrumb([], function() use($uikit){
+                                echo $uikit->navItem('Home');
+                                echo $uikit->navItem('Library');
+                                echo $uikit->navItem('Data', '#', [], true);
                             }); ?>
 
                     </div>

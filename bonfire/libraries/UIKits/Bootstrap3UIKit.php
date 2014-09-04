@@ -226,11 +226,13 @@ class Bootstrap3UIKit extends BaseUIKit {
      * @param array $options
      * @return string
      */
-    public function navItem($title, $url='#', $options=[])
+    public function navItem($title, $url='#', $options=[], $isActive=false)
     {
         $this->states['activeNavTitle'] = $title;
 
-        list($classes, $id, $attributes) = $this->parseStandardOptions($options, '', true);
+        $class = $isActive ? $this->active_class : '';
+
+        list($classes, $id, $attributes) = $this->parseStandardOptions($options, $class, true);
 
         return "\t<li {$classes} {$id} {$attributes}><a href='{$url}'>{$title}</a></li>";
     }
@@ -288,6 +290,30 @@ class Bootstrap3UIKit extends BaseUIKit {
 
     //--------------------------------------------------------------------
 
+    /**
+     * Creates a list of nav items to function as breadcrumbs for a site.
+     *
+     * @param array    $options
+     * @param callable $c
+     * @return mixed
+     */
+    public function breadcrumb($options=[], \Closure $c)
+    {
+        list($classes, $id, $attributes) = $this->parseStandardOptions($options, 'breadcrumb', true);
+
+        $output = "<ol {$classes} {$id} {$attributes}>\n";
+
+        $output .= $this->runClosure($c);
+
+        $output .= "</ol>\n";
+
+        return $output;
+    }
+
+    //--------------------------------------------------------------------
+
+
+    //--------------------------------------------------------------------
 
     //--------------------------------------------------------------------
     // Tables

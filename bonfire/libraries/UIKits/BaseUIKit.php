@@ -121,7 +121,7 @@ abstract class BaseUIKit {
      * @param array $options
      * @return string
      */
-    abstract public function navItem($title, $url, $options=[]);
+    abstract public function navItem($title, $url, $options=[], $isActive=false);
 
     //--------------------------------------------------------------------
 
@@ -142,6 +142,17 @@ abstract class BaseUIKit {
      * @return string
      */
     abstract public function navDivider();
+
+    //--------------------------------------------------------------------
+
+    /**
+     * Creates a list of nav items to function as breadcrumbs for a site.
+     *
+     * @param array    $options
+     * @param callable $c
+     * @return mixed
+     */
+    abstract public function breadcrumb($options=[], \Closure $c);
 
     //--------------------------------------------------------------------
 

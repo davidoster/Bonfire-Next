@@ -370,8 +370,27 @@ class Foundation5UIKit extends BaseUIKit {
 
     //--------------------------------------------------------------------
 
+    /**
+     * Creates a list of nav items to function as breadcrumbs for a site.
+     *
+     * @param array    $options
+     * @param callable $c
+     * @return mixed
+     */
+    public function breadcrumb($options=[], \Closure $c)
+    {
+        list($classes, $id, $attributes) = $this->parseStandardOptions($options, 'breadcrumbs', true);
 
+        $output = "<ul {$classes} {$id} {$attributes}>\n";
 
+        $output .= $this->runClosure($c);
+
+        $output .= "</ul>\n";
+
+        return $output;
+    }
+
+    //--------------------------------------------------------------------
 
     //--------------------------------------------------------------------
     // Tables
@@ -583,5 +602,6 @@ class Foundation5UIKit extends BaseUIKit {
     }
 
     //--------------------------------------------------------------------
+
 
 }
