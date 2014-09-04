@@ -83,23 +83,21 @@ switch (ENVIRONMENT)
  * not set (PHP 5.4+), but on PHP 5.3 it may use the TZ environment variable or
  * attempt to guess the timezone from the host operating system. It is
  * recommended to set date.timezone to avoid this, or you can replace
- * @date_default_timezone_get() below with 'UTC' or 'GMT', as desired.
+ * @date_default_timezone_get() below with 'UTC' or the desired timezone.
  *
  * Inspired by PyroCMS and Composer code.
  * @link https://www.pyrocms.com/   PyroCMS
  * @link http://getcomposer.org/    Composer
  */
-    if (ini_get('date.timezone') == '' && function_exists('date_default_timezone_get'))
-    {
-        if (function_exists('date_default_timezone_get'))
-        {
-            date_default_timezone_set(@date_default_timezone_get());
-        }
-        else
-        {
-            date_default_timezone_set('GMT');
-        }
+if (ini_get('date.timezone') == ''
+    && function_exists('date_default_timezone_set')
+) {
+    if (function_exists('date_default_timezone_get')) {
+        date_default_timezone_set(@date_default_timezone_get());
+    } else {
+        date_default_timezone_set('UTC');
     }
+}
 
 /*---------------------------------------------------------------
  * BONFIRE FOLDER NAME
